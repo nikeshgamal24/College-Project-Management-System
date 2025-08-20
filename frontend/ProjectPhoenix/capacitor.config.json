@@ -1,0 +1,10 @@
+{
+  "appId": "com.example.app",
+  "appName": "Project Phoenix",
+  "webDir": "dist",
+  "plugins": {
+    "CapacitorCookies": {
+      "enabled": true
+    }
+  }
+}
