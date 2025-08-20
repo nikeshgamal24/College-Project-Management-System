@@ -1,0 +1,15 @@
+graph TD
+    A["User Login Attempt"] --> B["Express receives request"]
+    B --> C["authLimiter middleware extracts req.ip"]
+    C --> D{"Check IP attempt count"}
+    D -->|"< 5 attempts"| E["Allow request to proceed"]
+    D -->|">= 5 attempts"| F["Return 429 'Too many attempts'"]
+    E --> G["Authentication Controller"]
+    G -->|"Login fails"| H["Increment IP counter"]
+    G -->|"Login succeeds"| I["Don't increment counter<br/>(skipSuccessfulRequests: true)"]
+    F --> J["User sees rate limit message"]
+    
+    style A fill:#e1f5fe
+    style F fill:#ffebee
+    style J fill:#ffebee
+    style I fill:#e8f5e8
