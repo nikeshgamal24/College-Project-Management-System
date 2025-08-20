@@ -55,6 +55,7 @@ const handleNewUser = async (req, res, next) => {
       photo
     };
 
+    
     // Role-specific data preparation
     if (role === roleList.Student) {
       // Extract roll number and batch number from email
@@ -78,6 +79,12 @@ const handleNewUser = async (req, res, next) => {
         institution,
         skillSet: [],
         isAvailable: true
+      };
+    } else if (role === roleList.Admin) {
+      // Admin registration - no additional fields needed beyond base userData
+      // Admin schema already includes: fullname, email, password, phoneNumber, role
+      userData = {
+        ...userData
       };
     }
 
