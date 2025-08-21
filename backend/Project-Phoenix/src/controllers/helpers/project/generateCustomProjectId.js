@@ -6,6 +6,7 @@ const generateCustomProjectId = async ({ eventType, program }) => {
     //get batch last two digit from event type
     const batch = getBatchYearFromEventType(eventType).toString().slice(2);
     const faculty = eventTargetCodeList[program];
+
     //check for only valid event type and faculty
     if (!faculty) return null;
 
@@ -25,6 +26,7 @@ const generateCustomProjectId = async ({ eventType, program }) => {
       serialNumber = latestSerialNumber + 1; // Increment the serial number
     }
 
+    
     // Generate a random uppercase character for the last two characters
     const randomChar1 = String.fromCharCode(
       65 + Math.floor(Math.random() * 26)
@@ -35,6 +37,7 @@ const generateCustomProjectId = async ({ eventType, program }) => {
 
     // Pad serial number with leading zeros to ensure it's two digits
     const paddedSerialNumber = String(serialNumber).padStart(2, "0");
+
     // Concatenate components to form the custom project ID
     return `P${eventType}-${batch}-${paddedSerialNumber}${faculty}`;
   } catch (error) {

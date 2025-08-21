@@ -87,6 +87,7 @@ const getAllEvents = async (req, res) => {
       .sort({ createdAt: -1 })
       .select("-projects");
 
+    console.log("🚀 ~ getAllEvents ~ events:", events);
     //if events is empty then 204: no content
     if (!events) return res.sendStatus(204);
     res.status(200).json({
@@ -120,6 +121,10 @@ const getMyEvent = async (req, res) => {
     //check the status of the student program
     const { program, batchNumber } = currectStudent;
     const allowedEventType = initializeEventTypeBasedOnBatch(batchNumber);
+
+    console.log("🚀 ~ getMyEvent ~ allowedEventType:", allowedEventType);
+    console.log("🚀 ~ getMyEvent ~ program:", program);
+    console.log("🚀 ~ getMyEvent ~ batchNumber:", batchNumber);
 
     //based on the status and the program select the event that the student is eligible
     const studentCurrentEvent = await Event.findOne({
@@ -225,6 +230,8 @@ const createProjectTeam = async (req, res, next) => {
     }
 
     const { batchNumber, program } = currentUser;
+    console.log("🚀 ~ createProjectTeam ~ batchNumber:", batchNumber);
+    console.log("🚀 ~ createProjectTeam ~ program:", program);
 
     // Validate team members in one query instead of N queries
     const students = await Student.find({

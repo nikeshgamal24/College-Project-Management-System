@@ -114,9 +114,7 @@ const getAllEvents = async (req, res, next) => {
     res.status(200).json({
       status: 'success',
       results: events.length,
-      data: {
-        events
-      }
+      data: events
     });
 
   } catch (error) {
@@ -752,9 +750,9 @@ const saveMatchedProjects = async (req, res, next) => {
         const bulkOperations = projects.map(project => ({
           updateOne: {
             filter: { _id: project._id },
-            update: { 
-              $set: { 
-                'supervisor.supervisorId': supervisor._id 
+            update: {
+              $set: {
+                'supervisor.supervisorId': supervisor._id
               }
             }
           }
@@ -768,9 +766,9 @@ const saveMatchedProjects = async (req, res, next) => {
           _id: { $in: projects.map(p => p._id) }
         }).session(session);
 
-        updatedMatches.push({ 
-          supervisor, 
-          projects: updatedProjects 
+        updatedMatches.push({
+          supervisor,
+          projects: updatedProjects
         });
       }
 
@@ -868,7 +866,7 @@ const getResultDetails = async (req, res) => {
     }).populate({
       path: "projects",
       match: {
-        $or: [{ status: eventStatusList.active },{ status:  eventStatusList.complete }],
+        $or: [{ status: eventStatusList.active }, { status: eventStatusList.complete }],
       },
       populate: [
         {
@@ -889,7 +887,7 @@ const getResultDetails = async (req, res) => {
           path: "final",
           populate: {
             path: "evaluations",
-            populate: { path: "individualEvaluation.student"   },
+            populate: { path: "individualEvaluation.student" },
           },
         },
       ],
