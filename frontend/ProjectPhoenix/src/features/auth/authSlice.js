@@ -6,8 +6,24 @@ const authSlice = createSlice({
   reducers: {
     setCredentials: (state, action) => {
       const { data } = action.payload;
-      state.user = data.user;
-      state.token = data.accessToken;
+      
+      // Add debugging to see what's coming in
+      console.log("setCredentials payload:", action.payload);
+      
+      // Handle both direct data and nested data structures
+      if (data?.data?.user && data?.data?.accessToken) {
+        state.user = data.data.user;
+        state.token = data.data.accessToken;
+      } else if (data?.user && data?.accessToken) {
+        state.user = data.user;
+        state.token = data.accessToken;
+      } else if (action.payload?.user && action.payload?.accessToken) {
+        state.user = action.payload.user;
+        state.token = action.payload.accessToken;
+      }
+      
+      console.log("Updated state.user:", state.user);
+      console.log("Updated state.token:", state.token);
     },
     setUser: (state, action) => {
       const { user } = action.payload;

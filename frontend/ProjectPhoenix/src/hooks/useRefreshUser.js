@@ -7,15 +7,19 @@ const useRefreshUser = () => {
 
   const refreshUser = async () => {
     try {
-      const { data: user } = await dispatch(
+      const result = await dispatch(
         authApiSlice.endpoints.refreshUser.initiate(undefined, {
           forceRefetch: true,
         })
       );
-
-      if (user) dispatch(setUser({ user }));
+      
+      console.log("refreshUser result:", result);
+      
+      if (result.data) {
+        dispatch(setUser({ user: result.data }));
+      }
     } catch (error) {
-      console.log(error);
+      console.log("refreshUser error:", error);
     }
   };
   return refreshUser;

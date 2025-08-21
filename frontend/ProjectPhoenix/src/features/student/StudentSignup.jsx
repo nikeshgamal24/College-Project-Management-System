@@ -34,6 +34,7 @@ function StudentSignup() {
 
   const onSignup = async (data) => {
     try {
+      console.log(" Student Signup data", data);
       const res = await signup({
         fullname: data.name,
         email: data.email,
@@ -43,10 +44,23 @@ function StudentSignup() {
         program: data.program,
       });
 
+      console.log(" Student Signup res", res);
+      
       if (res.error) {
+        console.error("Signup error:", res.error);
+        
         if (res.error.status === 409) {
           throw new Error("Account with this email already exists.");
         }
+        
+        if (res.error.status === 400) {
+          // Get validation error details if available
+          const errorMessage = res.error.data?.message || "Invalid form data. Please check your inputs.";
+          throw new Error(errorMessage);
+        }
+        
+        // Handle any other errors
+        throw new Error("Registration failed. Please try again.");
       }
       if (!res.error) {
         reset();

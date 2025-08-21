@@ -24,6 +24,7 @@ function SupervisorSignup() {
 
   const onSignup = async (data) => {
     try {
+      console.log("supervisor signup  data", data);
       const res = await signup({
         fullname: data.name,
         email: data.email,
@@ -31,6 +32,7 @@ function SupervisorSignup() {
         role: ROLES_LIST.supervisor,
         phoneNumber: data.phone,
       });
+      console.log("supervisor signup  res", res);
       if (res.error) {
         if (res.error.status === 409) {
           throw new Error("Account with this email already exists.");
