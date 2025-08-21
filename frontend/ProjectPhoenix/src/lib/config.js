@@ -1,13 +1,10 @@
-// export const API_BASE_URL =
-//   import.meta.env.VITE_API_BASE_URL ||
-//   "http://localhost:3500/api";  // Changed to localhost for local development
+// Use environment variable in production, fallback to localhost for development
+export const API_BASE_URL = 
+  import.meta.env.VITE_API_BASE_URL ||
+  "http://localhost:3500/api";
 
-// Force localhost for development
-export const API_BASE_URL = "http://localhost:3500/api";
-
-console.log(import.meta.env.VITE_API_BASE_URL);
-// export const API_BASE_URL = "https://project-phoenix-omega.vercel.app/api";
-// export const API_BASE_URL = "https://project-phoenix-clz.vercel.app/api";
+// Log the API URL being used
+console.log("Using API URL:", API_BASE_URL);
 
 export const GOOGLE_CLIENT_ID =
   "802396137377-5pfhl96kiru3ttesrvt52uqsq0631jma.apps.googleusercontent.com";
