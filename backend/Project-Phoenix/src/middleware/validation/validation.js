@@ -13,7 +13,7 @@ const validate = (schema) => {
       const errorMessage = error.details
         .map(detail => detail.message)
         .join(', ');
-      
+
       return next(new AppError(errorMessage, 400));
     }
 
@@ -85,8 +85,11 @@ const authSchemas = {
         'string.pattern.base': 'Phone number must be 10-15 digits',
         'any.required': 'Phone number is required'
       }),
-    program: Joi.number()
-      .integer()
+    program: Joi.alternatives()
+      .try(
+        Joi.string().trim(),
+        Joi.number().integer()
+      )
       .when('role', {
         is: 2001, // Student role
         then: Joi.required(),
@@ -105,22 +108,14 @@ const authSchemas = {
       }),
     photo: Joi.string().optional(),
     designation: Joi.string()
-      .when('role', {
-        is: 1984, // Supervisor role
-        then: Joi.required(),
-        otherwise: Joi.optional()
-      })
+      .optional()
       .messages({
-        'any.required': 'Designation is required for supervisors'
+        'string.base': 'Designation must be a string'
       }),
     institution: Joi.string()
-      .when('role', {
-        is: 1984, // Supervisor role
-        then: Joi.required(),
-        otherwise: Joi.optional()
-      })
+      .optional()
       .messages({
-        'any.required': 'Institution is required for supervisors'
+        'string.base': 'Institution must be a string'
       })
   }),
 
@@ -254,8 +249,11 @@ const studentSchemas = {
       .messages({
         'string.pattern.base': 'Phone number must be 10-15 digits'
       }),
-    program: Joi.number()
-      .integer()
+    program: Joi.alternatives()
+      .try(
+        Joi.string().trim(),
+        Joi.number().integer()
+      )
       .messages({
         'number.integer': 'Program must be a valid integer'
       })
@@ -336,15 +334,15 @@ const paramSchemas = {
 const validateParams = (schema) => {
   return (req, res, next) => {
     const { error } = schema.validate(req.params);
-    
+
     if (error) {
       const errorMessage = error.details
         .map(detail => detail.message)
         .join(', ');
-      
+
       return next(new AppError(errorMessage, 400));
     }
-    
+
     next();
   };
 };

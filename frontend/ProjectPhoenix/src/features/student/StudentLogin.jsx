@@ -61,6 +61,9 @@ function StudentLogin() {
         role: ROLES_LIST.student,
       });
 
+      console.log(userData);
+      console.log(userData.error);
+      
       if (userData.error) {
         if (userData.error.status === 401)
           throw new Error("Email or password is incorrect.");

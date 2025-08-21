@@ -64,22 +64,26 @@ const handleNewUser = async (req, res, next) => {
       // Determine progress status based on batch
       const progressStatus = initializeProgressStatus(batchNo);
 
+      // Convert program to number if it's a string
+      const programValue = typeof program === 'string' ? parseInt(program, 10) : program;
+
       userData = {
         ...userData,
         rollNumber: rollNo,
         batchNumber: batchNo,
-        program,
+        program: programValue,
         progressStatus,
         isAssociated: false,
       };
     } else if (role === roleList.Supervisor) {
       userData = {
         ...userData,
-        designation,
-        institution,
+        designation: designation || '',
+        institution: institution || '',
         skillSet: [],
         isAvailable: true
       };
+      console.log("Supervisor userData", userData);
     } else if (role === roleList.Admin) {
       // Admin registration - no additional fields needed beyond base userData
       // Admin schema already includes: fullname, email, password, phoneNumber, role

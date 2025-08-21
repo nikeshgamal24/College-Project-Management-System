@@ -19,7 +19,7 @@ import AdminLayout from "./components/layouts/AdminLayout";
 import StudentLayout from "./components/layouts/StudentLayout";
 import SupervisorLayout from "./components/layouts/SupervisorLayout";
 import DefenseLayout from "./components/layouts/DefenseLayout";
-import { StatusBar, Style } from "@capacitor/status-bar";
+// Import useEffect only - we'll handle Capacitor conditionally
 import { useEffect } from "react";
 
 const router = createBrowserRouter([

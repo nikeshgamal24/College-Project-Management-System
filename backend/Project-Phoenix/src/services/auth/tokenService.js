@@ -73,7 +73,7 @@ class TokenService {
   setCookie(res, refreshToken) {
     res.cookie('jwt', refreshToken, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
+      secure: true, // Always set secure when using SameSite=None
       sameSite: 'None',
       maxAge: 24 * 60 * 60 * 1000, // 1 day
     });
@@ -85,7 +85,7 @@ class TokenService {
   clearCookie(res) {
     res.clearCookie('jwt', {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
+      secure: true, // Always set secure when using SameSite=None
       sameSite: 'None',
     });
   }

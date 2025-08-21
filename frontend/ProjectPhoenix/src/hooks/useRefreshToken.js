@@ -14,11 +14,14 @@ const useRefreshToken = () => {
       );
       if (resultAction.status === "fulfilled") {
         const refreshData = resultAction.data;
+        console.log("Refresh data received:", refreshData);
 
         if (refreshData) {
+          // Pass the data directly to match expected structure
           dispatch(setCredentials({ data: refreshData }));
         }
       } else {
+        console.log("Refresh token failed:", resultAction.error);
         dispatch(logOut());
       }
     } catch (error) {
