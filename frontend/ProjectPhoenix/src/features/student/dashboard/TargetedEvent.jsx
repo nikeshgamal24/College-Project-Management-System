@@ -42,6 +42,7 @@ function TargetedEvent() {
       </CardContent>
     );
   } else if (isSuccess) {
+    console.log("Sudent UI targetedEvent", targetedEvent);
     if (targetedEvent) {
       targetedEventContent = (
         <Card>

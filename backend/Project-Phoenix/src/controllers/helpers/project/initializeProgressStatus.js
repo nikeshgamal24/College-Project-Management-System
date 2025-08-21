@@ -1,7 +1,7 @@
 const initializeProgressStatus = (batchNumber) => {
   const date = new Date();
   const year = date.getFullYear();
-  const currentAcademicYear = year - batchNumber - 1;
+  const currentAcademicYear = year - batchNumber ;
   switch (currentAcademicYear) {
     case 4:
       return "2000";

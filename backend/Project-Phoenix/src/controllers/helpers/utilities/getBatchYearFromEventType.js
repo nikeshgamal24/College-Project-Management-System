@@ -3,11 +3,11 @@ const getBatchYearFromEventType = (eventType) => {
   const currentYear = date.getFullYear();
   const yearDifference =
     eventType.toString() === "0"
-      ? 3
+      ? 2
       : eventType.toString() === "1"
-      ? 4
+      ? 3
       : eventType.toString() === "2"
-      ? 5
+      ? 4
       : null;
 
   //if invalid year difference due to event type
