@@ -2,8 +2,7 @@
   "rewrites": [
     {
       "source": "/api/(.*)",
-      "destination":  "https://college-project-management-system.vercel.app/api/$1"
-
+      "destination": "https://college-project-management-backend-system.vercel.app/api/$1"
     },
     {
       "source": "/(.*)",
