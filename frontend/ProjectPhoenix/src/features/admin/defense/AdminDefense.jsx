@@ -39,6 +39,8 @@ function AdminDefense() {
     error,
   } = useGetAllDefensesQuery();
 
+  console.log("🚀 ~AdminDefense ~ defenses:", defenses);
+
   let content;
   let numberOfActivedefenses,
     numberOfCompletedefenses,

@@ -204,3 +204,174 @@ Stack: Error: Invalid email or password
 20250821	20:32:19	c1b94b08-9154-4f29-8f9e-b177d05b1a52	Error: Invalid email or password
 Stack: Error: Invalid email or password
     at handleLogin (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/auth/authController.js:47:19)
+20250822	10:20:57	c50da4ed-7cbf-49db-a38c-9cf675de4c3a	Error: You are not the supervisor of this project
+Stack: Error: You are not the supervisor of this project
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/supervisorController.js:260:15
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async TransactionService.executeTransaction (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/services/database/transactionService.js:29:24)
+    at async progressLogApprovalGrant (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/supervisorController.js:245:20)
+20250822	10:20:58	35c16ca6-04f8-4061-9f09-b83be1b2ea99	Error: You are not the supervisor of this project
+Stack: Error: You are not the supervisor of this project
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/supervisorController.js:260:15
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async TransactionService.executeTransaction (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/services/database/transactionService.js:29:24)
+    at async progressLogApprovalGrant (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/supervisorController.js:245:20)
+20250822	10:22:59	f9b8246e-950c-4b09-afd1-d4a00d9e78ca	Error: You are not the supervisor of this project
+Stack: Error: You are not the supervisor of this project
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/supervisorController.js:260:15
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async TransactionService.executeTransaction (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/services/database/transactionService.js:29:24)
+    at async progressLogApprovalGrant (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/supervisorController.js:245:20)
+20250822	10:22:59	27b0e30c-d7e8-4b6f-a625-dc88a5c50542	Error: You are not the supervisor of this project
+Stack: Error: You are not the supervisor of this project
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/supervisorController.js:260:15
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async TransactionService.executeTransaction (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/services/database/transactionService.js:29:24)
+    at async progressLogApprovalGrant (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/supervisorController.js:245:20)
+20250822	10:23:09	5f23ccbe-8bee-4fb6-81b6-8c0a53c6ae96	Error: You are not the supervisor of this project
+Stack: Error: You are not the supervisor of this project
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/supervisorController.js:260:15
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async TransactionService.executeTransaction (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/services/database/transactionService.js:29:24)
+    at async progressLogApprovalGrant (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/supervisorController.js:245:20)
+20250822	10:23:09	df3d6c56-55a7-4755-973f-7f592bfa6641	Error: You are not the supervisor of this project
+Stack: Error: You are not the supervisor of this project
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/supervisorController.js:260:15
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async TransactionService.executeTransaction (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/services/database/transactionService.js:29:24)
+    at async progressLogApprovalGrant (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/supervisorController.js:245:20)
+20250822	10:24:19	b3f71b19-5f26-4010-a5e0-5a232608a7fc	Error: You are not the supervisor of this project
+Stack: Error: You are not the supervisor of this project
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/supervisorController.js:261:15
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async TransactionService.executeTransaction (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/services/database/transactionService.js:29:24)
+    at async progressLogApprovalGrant (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/supervisorController.js:246:20)
+20250822	10:24:20	cc73c7f7-e8eb-44dd-ba43-5cccd05b195a	Error: You are not the supervisor of this project
+Stack: Error: You are not the supervisor of this project
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/supervisorController.js:261:15
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async TransactionService.executeTransaction (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/services/database/transactionService.js:29:24)
+    at async progressLogApprovalGrant (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/supervisorController.js:246:20)
+20250822	10:25:25	eb55a78b-a853-4ae1-ad31-22d188bf0388	ReferenceError: Cannot access 'result' before initialization
+Stack: ReferenceError: Cannot access 'result' before initialization
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/supervisorController.js:249:60
+    at TransactionService.executeTransaction (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/services/database/transactionService.js:29:30)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async progressLogApprovalGrant (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/supervisorController.js:247:20)
+20250822	10:28:28	265f7947-a81b-4837-81c1-fed3740d6bdd	ReferenceError: Cannot access 'result' before initialization
+Stack: ReferenceError: Cannot access 'result' before initialization
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/supervisorController.js:249:60
+    at TransactionService.executeTransaction (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/services/database/transactionService.js:29:30)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async progressLogApprovalGrant (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/supervisorController.js:247:20)
+20250822	10:29:03	d80c8f0f-018a-4eb2-b72b-1d66c675f729	Error: You are not the supervisor of this project
+Stack: Error: You are not the supervisor of this project
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/supervisorController.js:266:15
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async TransactionService.executeTransaction (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/services/database/transactionService.js:29:24)
+    at async progressLogApprovalGrant (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/supervisorController.js:247:20)
+20250822	10:29:04	9eb749d4-359a-403d-9b9a-eb9771dcf548	Error: You are not the supervisor of this project
+Stack: Error: You are not the supervisor of this project
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/supervisorController.js:266:15
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async TransactionService.executeTransaction (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/services/database/transactionService.js:29:24)
+    at async progressLogApprovalGrant (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/supervisorController.js:247:20)
+20250822	10:37:09	44fec1e8-d804-4841-9af0-dc624221204a	Error: You are not the supervisor of this project
+Stack: Error: You are not the supervisor of this project
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/supervisorController.js:267:15
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async TransactionService.executeTransaction (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/services/database/transactionService.js:29:24)
+    at async progressLogApprovalGrant (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/supervisorController.js:248:20)
+20250822	10:37:10	d184d449-7ead-4697-9e38-2595e10296d5	Error: You are not the supervisor of this project
+Stack: Error: You are not the supervisor of this project
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/supervisorController.js:267:15
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async TransactionService.executeTransaction (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/services/database/transactionService.js:29:24)
+    at async progressLogApprovalGrant (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/supervisorController.js:248:20)
+20250822	10:38:20	bd902272-af28-489e-a19a-5958df68ffb0	Error: You are not the supervisor of this project
+Stack: Error: You are not the supervisor of this project
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/supervisorController.js:267:15
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async TransactionService.executeTransaction (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/services/database/transactionService.js:29:24)
+    at async progressLogApprovalGrant (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/supervisorController.js:248:20)
+20250822	10:38:20	89defa09-52be-460c-bd76-1e7a0e847a6b	Error: You are not the supervisor of this project
+Stack: Error: You are not the supervisor of this project
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/supervisorController.js:267:15
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async TransactionService.executeTransaction (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/services/database/transactionService.js:29:24)
+    at async progressLogApprovalGrant (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/supervisorController.js:248:20)
+20250822	10:39:46	6159c6d4-84a8-4d98-ab46-c48c802130da	Error: You are not the supervisor of this project
+Stack: Error: You are not the supervisor of this project
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/supervisorController.js:270:17
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async TransactionService.executeTransaction (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/services/database/transactionService.js:29:24)
+    at async progressLogApprovalGrant (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/supervisorController.js:248:20)
+20250822	10:39:47	c122312f-8909-4d1a-8e1f-f395a4bc6045	Error: You are not the supervisor of this project
+Stack: Error: You are not the supervisor of this project
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/supervisorController.js:270:17
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async TransactionService.executeTransaction (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/services/database/transactionService.js:29:24)
+    at async progressLogApprovalGrant (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/supervisorController.js:248:20)
+20250822	10:40:38	8db7204c-fcf7-457d-b8c8-7788ebda3994	Error: You are not the supervisor of this project
+Stack: Error: You are not the supervisor of this project
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/supervisorController.js:270:17
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async TransactionService.executeTransaction (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/services/database/transactionService.js:29:24)
+    at async progressLogApprovalGrant (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/supervisorController.js:248:20)
+20250822	10:40:39	a81ab73c-26eb-4769-a729-af6865f852dd	Error: You are not the supervisor of this project
+Stack: Error: You are not the supervisor of this project
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/supervisorController.js:270:17
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async TransactionService.executeTransaction (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/services/database/transactionService.js:29:24)
+    at async progressLogApprovalGrant (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/supervisorController.js:248:20)
+20250822	10:41:41	76f6dfb6-5d1f-487b-afc2-654d7684f604	Error: You are not the supervisor of this project
+Stack: Error: You are not the supervisor of this project
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/supervisorController.js:270:17
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async TransactionService.executeTransaction (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/services/database/transactionService.js:29:24)
+    at async progressLogApprovalGrant (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/supervisorController.js:248:20)
+20250822	10:41:41	648551da-3156-4138-8ec9-31cdd7407d5e	Error: You are not the supervisor of this project
+Stack: Error: You are not the supervisor of this project
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/supervisorController.js:270:17
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async TransactionService.executeTransaction (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/services/database/transactionService.js:29:24)
+    at async progressLogApprovalGrant (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/supervisorController.js:248:20)
+20250822	10:42:14	111a2e53-05c1-4ab5-9825-0e9fd657b8be	Error: You are not the supervisor of this project
+Stack: Error: You are not the supervisor of this project
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/supervisorController.js:272:17
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async TransactionService.executeTransaction (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/services/database/transactionService.js:29:24)
+    at async progressLogApprovalGrant (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/supervisorController.js:248:20)
+20250822	10:42:15	90f09e0f-5ba3-47a9-8775-ab1c89916501	Error: You are not the supervisor of this project
+Stack: Error: You are not the supervisor of this project
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/supervisorController.js:272:17
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async TransactionService.executeTransaction (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/services/database/transactionService.js:29:24)
+    at async progressLogApprovalGrant (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/supervisorController.js:248:20)
+20250822	10:42:40	15982f22-93f5-43b4-82d9-98c4ef845efa	Error: You are not the supervisor of this project
+Stack: Error: You are not the supervisor of this project
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/supervisorController.js:272:17
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async TransactionService.executeTransaction (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/services/database/transactionService.js:29:24)
+    at async progressLogApprovalGrant (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/supervisorController.js:248:20)
+20250822	10:42:40	e5754b75-aba5-4c2b-9a14-58aa6097852d	Error: You are not the supervisor of this project
+Stack: Error: You are not the supervisor of this project
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/supervisorController.js:272:17
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async TransactionService.executeTransaction (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/services/database/transactionService.js:29:24)
+    at async progressLogApprovalGrant (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/supervisorController.js:248:20)
+20250822	10:43:18	180acb59-4a50-42a2-9294-d3311f28c223	Error: You are not the supervisor of this project
+Stack: Error: You are not the supervisor of this project
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/supervisorController.js:272:17
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async TransactionService.executeTransaction (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/services/database/transactionService.js:29:24)
+    at async progressLogApprovalGrant (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/supervisorController.js:248:20)
+20250822	10:43:19	752f95f8-75f2-4df3-96fe-2f3c646357b6	Error: You are not the supervisor of this project
+Stack: Error: You are not the supervisor of this project
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/supervisorController.js:272:17
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async TransactionService.executeTransaction (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/services/database/transactionService.js:29:24)
+    at async progressLogApprovalGrant (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/supervisorController.js:248:20)
+20250822	10:51:11	a0e0f723-461b-42c0-98c2-9ca1eb8af84f	Error: Invalid access code
+Stack: Error: Invalid access code
+    at handleEvaluatorLogin (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/auth/authController.js:126:19)
