@@ -175,7 +175,7 @@ const getEvent = async (req, res) => {
   }
 
   try {
-  
+
     // Find event by ID and populate the author field
     const event = await Event.findById(req.params.id)
       .populate({ path: "author", select: "-password -refreshToken" })
@@ -344,14 +344,20 @@ const getAllEventsAndEvaluators = async (req, res) => {
 
 const getAllDefenses = async (req, res) => {
   try {
+    console.log("getAllDefenses Block");
     // Find all events and populate the author field
-    const defenses = await Defense.find()
+    const allDefenses = await Defense.find()
       .sort({ createdAt: -1 })
       .populate("rooms")
       .populate("event");
+
+
+    // Filter out defenses where event population failed
+    const defenses = allDefenses.filter(defense => defense.event !== null);
     // Check if events are empty
     if (!defenses.length) return res.sendStatus(204);
 
+    console.log("defenses fetched successfully");
     // Send response
     return res.status(200).json({
       data: defenses,

@@ -31,6 +31,7 @@ import ApiError from "@/components/error/ApiError";
 function AdminDefense() {
   const navigate = useNavigate();
   const tableRef = useRef();
+  console.log("AdminDefense Block");
   const {
     data: defenses,
     isLoading,
