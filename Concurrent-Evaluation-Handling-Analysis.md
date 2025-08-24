@@ -81,18 +81,18 @@ if (!updateResult) {
 flowchart TD
     Start([Multiple Evaluators Submit Simultaneously]) --> Init[Initialize Transaction Session]
     
-    Init --> Atomic{Atomic findOneAndUpdate<br/>hasEvaluated: false → true}
+    Init --> Atomic{Atomic findOneAndUpdate<br/>hasEvaluated false to true}
     
-    Atomic -->|Winner| Success[✅ Update Successful<br/>Returns Updated Document]
-    Atomic -->|Losers| Fail[❌ Update Failed<br/>Returns null]
+    Atomic -->|Winner| Success[Update Successful<br/>Returns Updated Document]
+    Atomic -->|Losers| Fail[Update Failed<br/>Returns null]
     
     Success --> Fresh[Work with Fresh Data<br/>from Atomic Update]
-    Fail --> Error409[Throw 409 Error<br/>"Already Submitted"]
+    Fail --> Error409[Throw 409 Error<br/>Already Submitted]
     
     Fresh --> Conflict{Check for<br/>Evaluation Conflicts}
     
     Conflict -->|No Conflicts| Complete{All Evaluators<br/>Completed?}
-    Conflict -->|Conflicts Found| ConflictError[Throw 409 Error<br/>"Conflict Detected"]
+    Conflict -->|Conflicts Found| ConflictError[Throw 409 Error<br/>Conflict Detected]
     
     Complete -->|Yes| DefenseComplete[Mark Defense Complete<br/>Update Student Progress<br/>Clear Access Codes]
     Complete -->|No| CreateEval[Create Evaluation Record]
@@ -100,11 +100,11 @@ flowchart TD
     DefenseComplete --> CreateEval
     CreateEval --> Commit[Commit Transaction]
     
-    Commit --> SuccessResponse[201: Evaluation Submitted Successfully]
+    Commit --> SuccessResponse[201 Evaluation Submitted Successfully]
     Error409 --> Rollback[Transaction Auto-Rollback]
     ConflictError --> Rollback
     
-    Rollback --> ErrorResponse[409: Conflict/Already Submitted]
+    Rollback --> ErrorResponse[409 Conflict Already Submitted]
     
     style Success fill:#90EE90
     style Fail fill:#FFB6C1
@@ -117,52 +117,52 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-    subgraph "Concurrent Submissions"
-        EA[👤 Evaluator A<br/>Submits Evaluation]
-        EB[👤 Evaluator B<br/>Submits Evaluation]
-        EC[👤 Evaluator C<br/>Submits Evaluation]
+    subgraph CS ["Concurrent Submissions"]
+        EA[Evaluator A<br/>Submits Evaluation]
+        EB[Evaluator B<br/>Submits Evaluation]
+        EC[Evaluator C<br/>Submits Evaluation]
     end
     
     EA --> TX1[Start Transaction A]
     EB --> TX2[Start Transaction B]  
     EC --> TX3[Start Transaction C]
     
-    TX1 --> LOCK[🔒 MongoDB Document Lock]
+    TX1 --> LOCK[MongoDB Document Lock]
     TX2 --> LOCK
     TX3 --> LOCK
     
     LOCK --> WINNER{Random Lock<br/>Acquisition}
     
-    WINNER -->|First| WA[🏆 Evaluator A Wins Lock]
-    WINNER -->|Wait| WB[⏳ Evaluator B Waits]
-    WINNER -->|Wait| WC[⏳ Evaluator C Waits]
+    WINNER -->|First| WA[Evaluator A Wins Lock]
+    WINNER -->|Wait| WB[Evaluator B Waits]
+    WINNER -->|Wait| WC[Evaluator C Waits]
     
-    WA --> QA[Query: hasEvaluated = false?]
-    QA -->|Match Found| UA[Update: hasEvaluated = true ✅]
-    QA -->|No Match| NA[Return null ❌]
+    WA --> QA[Query hasEvaluated equals false]
+    QA -->|Match Found| UA[Update hasEvaluated to true]
+    QA -->|No Match| NA[Return null]
     
-    UA --> RA[🔓 Release Lock A]
+    UA --> RA[Release Lock A]
     NA --> RA
     
-    RA --> WB2[🔒 Evaluator B Gets Lock]
-    WB2 --> QB[Query: hasEvaluated = false?]
-    QB -->|No Match<br/>(Already true)| NB[Return null ❌]
+    RA --> WB2[Evaluator B Gets Lock]
+    WB2 --> QB[Query hasEvaluated equals false]
+    QB -->|No Match Already true| NB[Return null]
     
-    NB --> RB[🔓 Release Lock B]
-    RB --> WC2[🔒 Evaluator C Gets Lock]
+    NB --> RB[Release Lock B]
+    RB --> WC2[Evaluator C Gets Lock]
     
-    WC2 --> QC[Query: hasEvaluated = false?]
-    QC -->|No Match<br/>(Already true)| NC[Return null ❌]
+    WC2 --> QC[Query hasEvaluated equals false]
+    QC -->|No Match Already true| NC[Return null]
     
-    NC --> RC[🔓 Release Lock C]
+    NC --> RC[Release Lock C]
     
     UA --> PROCEED[Continue Processing<br/>Create Evaluation Record]
-    NB --> ERR_B[409 Error: Already Submitted]
-    NC --> ERR_C[409 Error: Already Submitted]
+    NB --> ERR_B[409 Error Already Submitted]
+    NC --> ERR_C[409 Error Already Submitted]
     
-    PROCEED --> SUCCESS[✅ 201 Success Response]
-    ERR_B --> FAIL_B[❌ Error Response B]
-    ERR_C --> FAIL_C[❌ Error Response C]
+    PROCEED --> SUCCESS[201 Success Response]
+    ERR_B --> FAIL_B[Error Response B]
+    ERR_C --> FAIL_C[Error Response C]
     
     style WA fill:#90EE90
     style SUCCESS fill:#90EE90
@@ -228,26 +228,30 @@ sequenceDiagram
 
 ```mermaid
 stateDiagram-v2
-    [*] --> NotEvaluated: hasEvaluated: false
+    [*] --> NotEvaluated
+    NotEvaluated : hasEvaluated: false
     
-    NotEvaluated --> Evaluating: Multiple evaluators attempt
+    NotEvaluated --> Evaluating : Multiple evaluators attempt
     
     state Evaluating {
-        [*] --> FirstToLock: Random winner gets lock
-        FirstToLock --> UpdateState: Condition met (hasEvaluated: false)
-        UpdateState --> [*]: hasEvaluated: true
+        [*] --> FirstToLock
+        FirstToLock : Random winner gets lock
+        FirstToLock --> UpdateState : Condition met
+        UpdateState : hasEvaluated false to true
+        UpdateState --> [*]
     }
     
-    Evaluating --> Evaluated: Winner completes update
+    Evaluating --> Evaluated : Winner completes update
     
     state Evaluated {
-        note right of SubsequentAttempts: All subsequent attempts fail
-        [*] --> SubsequentAttempts: hasEvaluated: true
-        SubsequentAttempts --> Rejected: Condition not met
-        Rejected --> [*]: Return null
+        [*] --> SubsequentAttempts
+        SubsequentAttempts : hasEvaluated: true
+        SubsequentAttempts --> Rejected : Condition not met
+        Rejected : Return null
+        Rejected --> [*]
     }
     
-    Evaluated --> [*]: Final state
+    Evaluated --> [*]
 ```
 
 ## Deterministic vs Non-Deterministic Ordering
