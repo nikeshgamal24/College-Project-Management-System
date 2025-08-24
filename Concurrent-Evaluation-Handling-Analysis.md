@@ -79,98 +79,108 @@ if (!updateResult) {
 
 ```mermaid
 flowchart TD
-    Start([Multiple Evaluators Submit Simultaneously]) --> Init[Initialize Transaction Session]
+    Start(["🔥 Multiple Evaluators<br/>Submit Simultaneously<br/>Race Condition Scenario"]) --> Init["📦 Initialize Transaction Session<br/>ACID Compliance Setup"]
     
-    Init --> Atomic{Atomic findOneAndUpdate<br/>hasEvaluated: false → true}
+    Init --> Atomic{"⚡ ATOMIC findOneAndUpdate<br/>🎯 Condition: hasEvaluated = false<br/>🔄 Update: hasEvaluated = true"}
     
-    Atomic -->|Winner| Success[✅ Update Successful<br/>Returns Updated Document]
-    Atomic -->|Losers| Fail[❌ Update Failed<br/>Returns null]
+    Atomic -->|"🏆 WINNER"| Success["✅ Update Successful<br/>📄 Returns Updated Document<br/>🎉 First to Execute"]
+    Atomic -->|"❌ LOSERS"| Fail["🚫 Update Failed<br/>❌ Returns null<br/>⏰ Too Late"]
     
-    Success --> Fresh[Work with Fresh Data<br/>from Atomic Update]
-    Fail --> Error409[Throw 409 Error<br/>"Already Submitted"]
+    Success --> Fresh["📊 Work with Fresh Data<br/>📈 Use Updated Document<br/>🔄 Continue Processing"]
+    Fail --> Error409["🚨 Throw 409 Error<br/>⚠️ Already Submitted<br/>🔒 Duplicate Blocked"]
     
-    Fresh --> Conflict{Check for<br/>Evaluation Conflicts}
+    Fresh --> Conflict{"⚖️ Check for Evaluation Conflicts<br/>🔍 Data Consistency Check<br/>📋 Validate Submissions"}
     
-    Conflict -->|No Conflicts| Complete{All Evaluators<br/>Completed?}
-    Conflict -->|Conflicts Found| ConflictError[Throw 409 Error<br/>"Conflict Detected"]
+    Conflict -->|"✅ No Conflicts"| Complete{"🏁 All Evaluators Completed?<br/>👥 Defense Status Check<br/>📊 Progress Validation"}
+    Conflict -->|"⚠️ Conflicts Found"| ConflictError["🚨 Throw 409 Error<br/>⚡ Conflict Detected<br/>🔄 Data Inconsistency"]
     
-    Complete -->|Yes| DefenseComplete[Mark Defense Complete<br/>Update Student Progress<br/>Clear Access Codes]
-    Complete -->|No| CreateEval[Create Evaluation Record]
+    Complete -->|"🎯 YES - All Done"| DefenseComplete["🏆 Mark Defense Complete<br/>📈 Update Student Progress<br/>🔐 Clear Access Codes<br/>✨ Finalize Process"]
+    Complete -->|"⏳ NO - More Pending"| CreateEval["📝 Create Evaluation Record<br/>💾 Store Assessment Data<br/>📋 Individual Result"]
     
     DefenseComplete --> CreateEval
-    CreateEval --> Commit[Commit Transaction]
+    CreateEval --> Commit["💾 Commit Transaction<br/>✅ Make Changes Permanent<br/>🔒 Ensure Atomicity"]
     
-    Commit --> SuccessResponse[201: Evaluation Submitted Successfully]
-    Error409 --> Rollback[Transaction Auto-Rollback]
+    Commit --> SuccessResponse["🎉 HTTP 201 SUCCESS<br/>✅ Evaluation Submitted<br/>🚀 Process Complete"]
+    Error409 --> Rollback["🔄 Transaction Auto-Rollback<br/>↩️ Revert All Changes<br/>🛡️ Maintain Consistency"]
     ConflictError --> Rollback
     
-    Rollback --> ErrorResponse[409: Conflict/Already Submitted]
-    
-    style Success fill:#90EE90
-    style Fail fill:#FFB6C1
-    style SuccessResponse fill:#90EE90
-    style ErrorResponse fill:#FFB6C1
-    style Atomic fill:#87CEEB
+    Rollback --> ErrorResponse["❌ HTTP 409 CONFLICT<br/>🚫 Already Submitted<br/>⚠️ Operation Failed"]
+
+    classDef successPath fill:#d4edda,stroke:#155724,stroke-width:3px,color:#155724,font-weight:bold
+    classDef errorPath fill:#f8d7da,stroke:#721c24,stroke-width:3px,color:#721c24,font-weight:bold
+    classDef processPath fill:#d1ecf1,stroke:#0c5460,stroke-width:2px,color:#0c5460,font-weight:bold
+    classDef decisionPath fill:#fff3cd,stroke:#856404,stroke-width:2px,color:#856404,font-weight:bold
+    classDef criticalPath fill:#e2e3e5,stroke:#383d41,stroke-width:3px,color:#383d41,font-weight:bold
+
+    class Success,Fresh,CreateEval,Commit,SuccessResponse,DefenseComplete successPath
+    class Fail,Error409,ConflictError,Rollback,ErrorResponse errorPath
+    class Start,Init processPath
+    class Conflict,Complete decisionPath
+    class Atomic criticalPath
 ```
 
 ## Concurrent Submission Detailed Flow
 
 ```mermaid
 flowchart TD
-    subgraph "Concurrent Submissions"
-        EA[👤 Evaluator A<br/>Submits Evaluation]
-        EB[👤 Evaluator B<br/>Submits Evaluation]
-        EC[👤 Evaluator C<br/>Submits Evaluation]
+    subgraph CS ["🔥 Concurrent Submissions (Race Condition Scenario)"]
+        EA["🔵 Evaluator A<br/>📝 Submits Evaluation<br/>⏰ Time: T0"]
+        EB["🟡 Evaluator B<br/>📝 Submits Evaluation<br/>⏰ Time: T0"]
+        EC["🟠 Evaluator C<br/>📝 Submits Evaluation<br/>⏰ Time: T0"]
     end
     
-    EA --> TX1[Start Transaction A]
-    EB --> TX2[Start Transaction B]  
-    EC --> TX3[Start Transaction C]
+    EA --> TX1["📦 Start Transaction A<br/>🔄 ACID Session"]
+    EB --> TX2["📦 Start Transaction B<br/>🔄 ACID Session"]  
+    EC --> TX3["📦 Start Transaction C<br/>🔄 ACID Session"]
     
-    TX1 --> LOCK[🔒 MongoDB Document Lock]
+    TX1 --> LOCK["🔒 MongoDB Document Lock<br/>⚡ Serialization Point<br/>🎯 Single Point of Control"]
     TX2 --> LOCK
     TX3 --> LOCK
     
-    LOCK --> WINNER{Random Lock<br/>Acquisition}
+    LOCK --> WINNER{"🎲 Random Lock Acquisition<br/>⚡ Database Determines Order<br/>🏁 Who Gets There First?"}
     
-    WINNER -->|First| WA[🏆 Evaluator A Wins Lock]
-    WINNER -->|Wait| WB[⏳ Evaluator B Waits]
-    WINNER -->|Wait| WC[⏳ Evaluator C Waits]
+    WINNER -->|"🏆 WINNER"| WA["🔵 Evaluator A Wins Lock<br/>✅ Gets Exclusive Access<br/>⏰ Executes First"]
+    WINNER -->|"⏳ WAITS"| WB["🟡 Evaluator B Waits<br/>🔄 Queued for Access<br/>⏰ Blocked"]
+    WINNER -->|"⏳ WAITS"| WC["🟠 Evaluator C Waits<br/>🔄 Queued for Access<br/>⏰ Blocked"]
     
-    WA --> QA[Query: hasEvaluated = false?]
-    QA -->|Match Found| UA[Update: hasEvaluated = true ✅]
-    QA -->|No Match| NA[Return null ❌]
+    WA --> QA["🔍 Query: hasEvaluated = false<br/>📊 Check Current State<br/>🎯 Condition Evaluation"]
+    QA -->|"✅ MATCH FOUND"| UA["🎉 ATOMIC UPDATE SUCCESS<br/>🔄 hasEvaluated: false → true<br/>📄 Return Updated Document"]
+    QA -->|"❌ NO MATCH"| NA["🚫 Return null<br/>⚠️ Condition Not Met<br/>🔴 Update Failed"]
     
-    UA --> RA[🔓 Release Lock A]
+    UA --> RA["🔓 Release Lock A<br/>✅ Operation Complete<br/>⏰ Time: T1"]
     NA --> RA
     
-    RA --> WB2[🔒 Evaluator B Gets Lock]
-    WB2 --> QB[Query: hasEvaluated = false?]
-    QB -->|No Match<br/>(Already true)| NB[Return null ❌]
+    RA --> WB2["🟡 Evaluator B Gets Lock<br/>🔒 Now Has Access<br/>⏰ Executes Second"]
+    WB2 --> QB["🔍 Query: hasEvaluated = false<br/>📊 Check State (Now True)<br/>🎯 Condition Check"]
+    QB -->|"❌ NO MATCH"| NB["🚫 Return null<br/>🔴 Already Updated by A<br/>😞 Too Late"]
     
-    NB --> RB[🔓 Release Lock B]
-    RB --> WC2[🔒 Evaluator C Gets Lock]
+    NB --> RB["🔓 Release Lock B<br/>❌ Failed Operation<br/>⏰ Time: T2"]
+    RB --> WC2["🟠 Evaluator C Gets Lock<br/>🔒 Final Attempt<br/>⏰ Executes Third"]
     
-    WC2 --> QC[Query: hasEvaluated = false?]
-    QC -->|No Match<br/>(Already true)| NC[Return null ❌]
+    WC2 --> QC["🔍 Query: hasEvaluated = false<br/>📊 Check State (Still True)<br/>🎯 Final Check"]
+    QC -->|"❌ NO MATCH"| NC["🚫 Return null<br/>🔴 Still Updated<br/>😞 Also Too Late"]
     
-    NC --> RC[🔓 Release Lock C]
+    NC --> RC["🔓 Release Lock C<br/>❌ Failed Operation<br/>⏰ Time: T3"]
     
-    UA --> PROCEED[Continue Processing<br/>Create Evaluation Record]
-    NB --> ERR_B[409 Error: Already Submitted]
-    NC --> ERR_C[409 Error: Already Submitted]
+    UA --> PROCEED["🚀 Continue Processing<br/>📝 Create Evaluation Record<br/>💾 Store Assessment Data"]
+    NB --> ERR_B["🚨 HTTP 409 Error<br/>⚠️ Already Submitted<br/>🚫 Duplicate Blocked"]
+    NC --> ERR_C["🚨 HTTP 409 Error<br/>⚠️ Already Submitted<br/>🚫 Duplicate Blocked"]
     
-    PROCEED --> SUCCESS[✅ 201 Success Response]
-    ERR_B --> FAIL_B[❌ Error Response B]
-    ERR_C --> FAIL_C[❌ Error Response C]
-    
-    style WA fill:#90EE90
-    style SUCCESS fill:#90EE90
-    style ERR_B fill:#FFB6C1
-    style ERR_C fill:#FFB6C1
-    style FAIL_B fill:#FFB6C1
-    style FAIL_C fill:#FFB6C1
-    style LOCK fill:#87CEEB
+    PROCEED --> SUCCESS["🎉 HTTP 201 SUCCESS<br/>✅ Evaluation Accepted<br/>🏆 Mission Accomplished"]
+    ERR_B --> FAIL_B["❌ Error Response B<br/>😞 Submission Rejected<br/>🔄 Try Again Later"]
+    ERR_C --> FAIL_C["❌ Error Response C<br/>😞 Submission Rejected<br/>🔄 Try Again Later"]
+
+    classDef winnerPath fill:#d4edda,stroke:#155724,stroke-width:3px,color:#155724,font-weight:bold
+    classDef loserPath fill:#f8d7da,stroke:#721c24,stroke-width:3px,color:#721c24,font-weight:bold
+    classDef processPath fill:#d1ecf1,stroke:#0c5460,stroke-width:2px,color:#0c5460,font-weight:bold
+    classDef lockPath fill:#e2e3e5,stroke:#383d41,stroke-width:3px,color:#383d41,font-weight:bold
+    classDef waitPath fill:#fff3cd,stroke:#856404,stroke-width:2px,color:#856404
+
+    class WA,UA,PROCEED,SUCCESS winnerPath
+    class NB,NC,ERR_B,ERR_C,FAIL_B,FAIL_C,NA loserPath
+    class EA,EB,EC,TX1,TX2,TX3,RA,RB,RC,WB2,WC2 processPath
+    class LOCK lockPath
+    class WB,WC,WINNER,QA,QB,QC waitPath
 ```
 
 ## MongoDB Document-Level Locking Mechanics
@@ -228,23 +238,27 @@ sequenceDiagram
 
 ```mermaid
 stateDiagram-v2
-    [*] --> NotEvaluated: hasEvaluated: false
+    [*] --> NotEvaluated
+    NotEvaluated: hasEvaluated = false
     
     NotEvaluated --> Evaluating: Multiple evaluators attempt
     
     state Evaluating {
-        [*] --> FirstToLock: Random winner gets lock
-        FirstToLock --> UpdateState: Condition met (hasEvaluated: false)
-        UpdateState --> [*]: hasEvaluated: true
+        [*] --> FirstToLock
+        FirstToLock: Random winner gets lock
+        FirstToLock --> UpdateState: Condition met (hasEvaluated = false)
+        UpdateState: hasEvaluated false to true
+        UpdateState --> [*]
     }
     
     Evaluating --> Evaluated: Winner completes update
     
     state Evaluated {
-        note right of SubsequentAttempts: All subsequent attempts fail
-        [*] --> SubsequentAttempts: hasEvaluated: true
+        [*] --> SubsequentAttempts
+        SubsequentAttempts: hasEvaluated = true
         SubsequentAttempts --> Rejected: Condition not met
-        Rejected --> [*]: Return null
+        Rejected: Return null
+        Rejected --> [*]
     }
     
     Evaluated --> [*]: Final state
@@ -278,45 +292,61 @@ graph LR
 
 ```mermaid
 graph TD
-    subgraph "Initial State"
-        P1[Project: hasEvaluated = false]
+    subgraph IS ["📋 Initial State"]
+        P1["📄 Project Document<br/>hasEvaluated = false<br/>🟢 Ready for Evaluation"]
     end
     
-    subgraph "Concurrent Submissions"
-        E1[Evaluator 1]
-        E2[Evaluator 2]
-        E3[Evaluator 3]
-        E4[Evaluator 4]
-        E5[Evaluator 5]
+    subgraph CS ["🔥 Concurrent Submissions (T=0)"]
+        E1["🔵 Evaluator 1<br/>📝 Submit Evaluation<br/>⏰ Timestamp: T0"]
+        E2["🟡 Evaluator 2<br/>📝 Submit Evaluation<br/>⏰ Timestamp: T0"]
+        E3["🟠 Evaluator 3<br/>📝 Submit Evaluation<br/>⏰ Timestamp: T0"]
+        E4["🟣 Evaluator 4<br/>📝 Submit Evaluation<br/>⏰ Timestamp: T0"]
+        E5["🔴 Evaluator 5<br/>📝 Submit Evaluation<br/>⏰ Timestamp: T0"]
     end
     
-    E1 --> ML[MongoDB Lock]
+    E1 --> ML["🔒 MongoDB Document Lock<br/>⚡ Serialization Gateway<br/>🎯 Single Access Point"]
     E2 --> ML
     E3 --> ML
     E4 --> ML
     E5 --> ML
     
-    ML --> W[Random Winner: E3]
+    ML --> W["🎲 Random Selection<br/>🏆 Winner: Evaluator 3<br/>⚡ Database Chooses"]
     
-    subgraph "Execution Order"
-        W --> U1[E3: Update Success ✅]
-        U1 --> W2[E1: Gets Lock]
-        W2 --> U2[E1: No Match ❌]
-        U2 --> W3[E2: Gets Lock]
-        W3 --> U3[E2: No Match ❌]
-        U3 --> W4[E4: Gets Lock]
-        W4 --> U4[E4: No Match ❌]
-        U4 --> W5[E5: Gets Lock]
-        W5 --> U5[E5: No Match ❌]
+    subgraph EO ["🔄 Execution Order (Serialized)"]
+        W --> U1["🟠 E3: ATOMIC UPDATE ✅<br/>🔄 hasEvaluated: false → true<br/>📄 Returns Updated Document<br/>⏰ Time: T1"]
+        U1 --> W2["🔵 E1: Gets Lock Next<br/>🔒 Exclusive Access<br/>⏰ Time: T2"]
+        W2 --> U2["🔵 E1: Query Condition ❌<br/>🔍 hasEvaluated = true (now)<br/>❌ Returns null<br/>😞 Too Late"]
+        U2 --> W3["🟡 E2: Gets Lock<br/>🔒 Third in Line<br/>⏰ Time: T3"]
+        W3 --> U3["🟡 E2: Query Condition ❌<br/>🔍 hasEvaluated = true (still)<br/>❌ Returns null<br/>😞 Also Too Late"]
+        U3 --> W4["🟣 E4: Gets Lock<br/>🔒 Fourth Attempt<br/>⏰ Time: T4"]
+        W4 --> U4["🟣 E4: Query Condition ❌<br/>🔍 hasEvaluated = true (unchanged)<br/>❌ Returns null<br/>😞 Still Too Late"]
+        U4 --> W5["🔴 E5: Gets Lock<br/>🔒 Final Attempt<br/>⏰ Time: T5"]
+        W5 --> U5["🔴 E5: Query Condition ❌<br/>🔍 hasEvaluated = true (final)<br/>❌ Returns null<br/>😞 Last and Too Late"]
     end
     
-    subgraph "Final Results"
-        R1[E3: 201 Success]
-        R2[E1: 409 Already Submitted]
-        R3[E2: 409 Already Submitted]
-        R4[E4: 409 Already Submitted]
-        R5[E5: 409 Already Submitted]
+    subgraph FR ["📊 Final Results"]
+        R1["🎉 E3: HTTP 201 SUCCESS<br/>✅ Evaluation Accepted<br/>🏆 Winner Takes All<br/>📝 Record Created"]
+        R2["😞 E1: HTTP 409 CONFLICT<br/>⚠️ Already Submitted<br/>🚫 Duplicate Rejected<br/>❌ Mission Failed"]
+        R3["😞 E2: HTTP 409 CONFLICT<br/>⚠️ Already Submitted<br/>🚫 Duplicate Rejected<br/>❌ Mission Failed"]
+        R4["😞 E4: HTTP 409 CONFLICT<br/>⚠️ Already Submitted<br/>🚫 Duplicate Rejected<br/>❌ Mission Failed"]
+        R5["😞 E5: HTTP 409 CONFLICT<br/>⚠️ Already Submitted<br/>🚫 Duplicate Rejected<br/>❌ Mission Failed"]
     end
+
+    U1 --> R1
+    U2 --> R2
+    U3 --> R3
+    U4 --> R4
+    U5 --> R5
+
+    classDef winnerStyle fill:#d4edda,stroke:#155724,stroke-width:3px,color:#155724,font-weight:bold
+    classDef loserStyle fill:#f8d7da,stroke:#721c24,stroke-width:3px,color:#721c24,font-weight:bold
+    classDef processStyle fill:#d1ecf1,stroke:#0c5460,stroke-width:2px,color:#0c5460,font-weight:bold
+    classDef lockStyle fill:#e2e3e5,stroke:#383d41,stroke-width:3px,color:#383d41,font-weight:bold
+
+    class U1,R1 winnerStyle
+    class U2,U3,U4,U5,R2,R3,R4,R5 loserStyle
+    class E1,E2,E3,E4,E5,W2,W3,W4,W5,P1 processStyle
+    class ML,W lockStyle
 ```
 
 ## Error Handling Strategy
