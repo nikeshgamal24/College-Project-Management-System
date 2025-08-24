@@ -201,32 +201,32 @@ const getProjectBydId = async (req, res) => {
 const submitEvaluation = async (req, res) => {
   // Start a MongoDB session for transaction
   const session = await mongoose.startSession();
-  
+
   try {
     // Start transaction
     await session.withTransaction(async () => {
-    //request body received
-    const {
-      individualEvaluation,
-      projectEvaluation,
-      projectId,
-      evaluatorId,
-      defenseId,
-      eventId,
-      evaluationType,
-      roomId,
-    } = req.body;
+      //request body received
+      const {
+        individualEvaluation,
+        projectEvaluation,
+        projectId,
+        evaluatorId,
+        defenseId,
+        eventId,
+        evaluationType,
+        roomId,
+      } = req.body;
 
-    if (
-      !Array.isArray(individualEvaluation) ||
-      !individualEvaluation.length ||
-      !projectEvaluation ||
-      !projectId ||
-      !evaluatorId ||
-      !defenseId ||
-      !eventId ||
-      !roomId
-    ) {
+      if (
+        !Array.isArray(individualEvaluation) ||
+        !individualEvaluation.length ||
+        !projectEvaluation ||
+        !projectId ||
+        !evaluatorId ||
+        !defenseId ||
+        !eventId ||
+        !roomId
+      ) {
         // Abort transaction by throwing error
         throw new AppError("Required Credentials Missing", 400);
       }
@@ -265,31 +265,31 @@ const submitEvaluation = async (req, res) => {
 
       // Check for evaluation conflicts
     const matchingEvaluations = await Evaluation.find({
-      _id: { $in: project[evaluationType].evaluations },
-      project: projectId,
-      defense: defenseId,
+        _id: { $in: project[evaluationType].evaluations },
+        project: projectId,
+        defense: defenseId,
       }).session(session);
 
     if (matchingEvaluations.length) {
-      const conflictExists = determineConflictExistsStatus({
-        matchingEvaluations: matchingEvaluations,
-        individualEvaluation: individualEvaluation,
-        projectEvaluation: projectEvaluation,
-      });
+          const conflictExists = determineConflictExistsStatus({
+            matchingEvaluations: matchingEvaluations,
+            individualEvaluation: individualEvaluation,
+            projectEvaluation: projectEvaluation,
+          });
 
-      if (conflictExists) {
-          // Abort transaction by throwing error - no need to manually rollback
-          throw new AppError("Conflict data detected - evaluation reverted", 409);
+          if (conflictExists) {
+            // Abort transaction by throwing error - no need to manually rollback
+            throw new AppError("Conflict data detected - evaluation reverted", 409);
+          }
         }
-      }
 
       // Find the specific defense object for this evaluator
-    const projectSubEvent = project[evaluationType];
-    const obj = projectSubEvent.defenses.find((defense) => {
-      return defense.evaluators.some((evaluator) => {
-        return evaluatorId === evaluator.evaluator.toString();
+      const projectSubEvent = project[evaluationType];
+      const obj = projectSubEvent.defenses.find((defense) => {
+        return defense.evaluators.some((evaluator) => {
+          return evaluatorId === evaluator.evaluator.toString();
+        });
       });
-    });
 
       if (!obj) {
         // Abort transaction by throwing error
@@ -308,7 +308,7 @@ const submitEvaluation = async (req, res) => {
       // 🏆 DEFENSE COMPLETION: If all evaluators done, mark defense as complete
       if (allEvaluatedResult && !obj.isGraded) {
         console.log("🚀 ~ All evaluators completed - updating defense status");
-        
+
         // Atomically mark defense as graded - within transaction
         await Project.findOneAndUpdate(
           {
@@ -325,11 +325,13 @@ const submitEvaluation = async (req, res) => {
         );
 
         // Update student progress status - within transaction
-        await updateStudentProgressStatusWithSession(project, evaluationType, projectEvaluation, session);
-        
+        await updateStudentProgressStatusWithSession(updateResult, evaluationType, projectEvaluation, session);
+
+        console.log("🚀 ~ Working Before checkAndUpdateDefenseCompletionWithSession");
+
         // Check and update overall defense completion - within transaction
         await checkAndUpdateDefenseCompletionWithSession(defenseId, evaluationType, session);
-
+          
         // Clear evaluator access codes - within transaction
         await clearEvaluatorAccessCodesWithSession(evaluatorId, defenseId, roomId, evaluationType, session);
       }
@@ -342,7 +344,7 @@ const submitEvaluation = async (req, res) => {
         evaluatorId,
         defenseId,
         eventId,
-      evaluationType,
+        evaluationType,
         session
       });
 
@@ -353,7 +355,7 @@ const submitEvaluation = async (req, res) => {
       req.transactionResult = {
         success: true,
         message: "Evaluation submitted successfully",
-      data: newEvaluation,
+        data: newEvaluation,
         evaluatorId: evaluatorId,
         defenseCompleted: allEvaluatedResult,
         timestamp: new Date().toISOString()
@@ -367,10 +369,10 @@ const submitEvaluation = async (req, res) => {
     // Transaction aborted or other error
     console.error(`Evaluation submission error: ${err.message}`);
     console.error(`Stack trace: ${err.stack}`);
-    
+
     // Determine appropriate status code
     const statusCode = err.statusCode || 500;
-    
+
     return res.status(statusCode).json({
       success: false,
       message: err.message || "Internal server error during evaluation submission",
@@ -433,7 +435,7 @@ const submitEvaluation = async (req, res) => {
 const updateStudentProgressStatusWithSession = async (project, evaluationType, projectEvaluation, session) => {
   try {
     const projectJudgement = projectEvaluation.judgement;
-    
+
     // Determine if judgment is passing
     const isPassingJudgment = (
       projectJudgement === proposalJudgementConfig.ACCEPTED ||
@@ -452,7 +454,7 @@ const updateStudentProgressStatusWithSession = async (project, evaluationType, p
         if (!student) return;
 
         const eventType = initializeEventTypeBasedOnBatch(student.batchNumber);
-        
+
         switch (eventType) {
           case "0":
             student.progressStatus = updateProjectFirstProgressStatus(
@@ -475,8 +477,8 @@ const updateStudentProgressStatusWithSession = async (project, evaluationType, p
         if (evaluationType === defenseTypeCode.final) {
           student.isAssociated = false;
           student.project = undefined;
-          await Project.findByIdAndUpdate(project._id, { 
-            status: eventStatusList.complete 
+          await Project.findByIdAndUpdate(project._id, {
+            status: eventStatusList.complete
           }, { session });
         }
 
@@ -526,8 +528,8 @@ const updateStudentProgressStatusWithSession = async (project, evaluationType, p
                 progressStatusEligibilityCode[evaluationType].rejected
               );
               student.project = undefined;
-              await Project.findByIdAndUpdate(project._id, { 
-                status: eventStatusList.archive 
+              await Project.findByIdAndUpdate(project._id, {
+                status: eventStatusList.archive
               }, { session });
               break;
             case "1":
@@ -536,8 +538,8 @@ const updateStudentProgressStatusWithSession = async (project, evaluationType, p
                 progressStatusEligibilityCode[evaluationType].rejected
               );
               student.project = undefined;
-              await Project.findByIdAndUpdate(project._id, { 
-                status: eventStatusList.archive 
+              await Project.findByIdAndUpdate(project._id, {
+                status: eventStatusList.archive
               }, { session });
               break;
             case "2":
@@ -546,8 +548,8 @@ const updateStudentProgressStatusWithSession = async (project, evaluationType, p
                 progressStatusEligibilityCode[evaluationType].rejected
               );
               student.project = undefined;
-              await Project.findByIdAndUpdate(project._id, { 
-                status: eventStatusList.archive 
+              await Project.findByIdAndUpdate(project._id, {
+                status: eventStatusList.archive
               }, { session });
               break;
           }
@@ -611,11 +613,11 @@ const checkAndUpdateDefenseCompletionWithSession = async (defenseId, evaluationT
 
     for (const room of defense.rooms) {
       let roomCompleted = true;
-      
+
       for (const project of room.projects) {
         const projectDefenses = project[evaluationType].defenses;
         const hasGradedDefense = projectDefenses.some(def => def.isGraded);
-        
+
         if (!hasGradedDefense) {
           roomCompleted = false;
           break;
@@ -633,8 +635,8 @@ const checkAndUpdateDefenseCompletionWithSession = async (defenseId, evaluationT
     }
 
     if (allRoomsCompleted) {
-      await Defense.findByIdAndUpdate(defenseId, { 
-        status: eventStatusList.complete 
+      await Defense.findByIdAndUpdate(defenseId, {
+        status: eventStatusList.complete
       }, { session });
       console.log(`Defense ${defenseId} marked as complete`);
     }
@@ -666,7 +668,7 @@ const clearEvaluatorAccessCodesWithSession = async (evaluatorId, defenseId, room
   try {
     const room = await Room.findById(roomId).session(session).populate('projects');
     const projects = await Project.find({ _id: { $in: room.projects } }).session(session);
-    
+
     const allProjectsEvaluated = determineAllProjectsEvaluatedByEvaluator({
       projects,
       evaluationType,
@@ -699,7 +701,7 @@ const clearEvaluatorAccessCodesWithSession = async (evaluatorId, defenseId, room
  * @returns {Object} Created evaluation record
  */
 const createEvaluationRecord = async (params) => {
-  return createEvaluationRecordWithSession({...params});
+  return createEvaluationRecordWithSession({ ...params });
 };
 
 /**
@@ -719,77 +721,100 @@ const createEvaluationRecordWithSession = async ({
 }) => {
   let formattedIndividualEvaluations;
 
-  switch (evaluationType) {
-    case "proposal":
-      formattedIndividualEvaluations = individualEvaluation.map((evaluation) => ({
-        student: evaluation.member,
-        performanceAtPresentation: evaluation.performanceAtPresentation,
-        absent: evaluation.absent,
-        projectTitleAndAbstract: evaluation.absent ? "0" : projectEvaluation.projectTitleAndAbstract,
-        project: evaluation.absent ? "0" : projectEvaluation.project,
-        objective: evaluation.absent ? "0" : projectEvaluation.objective,
-        teamWork: evaluation.absent ? "0" : projectEvaluation.teamWork,
-        documentation: evaluation.absent ? "0" : projectEvaluation.documentation,
-        plagiarism: evaluation.absent ? "0" : projectEvaluation.plagiarism,
-      }));
-      break;
 
-    case "mid":
-      formattedIndividualEvaluations = individualEvaluation.map((evaluation) => ({
-        student: evaluation.member,
-        performanceAtPresentation: evaluation.performanceAtPresentation,
-        absent: evaluation.absent,
-        feedbackIncorporated: evaluation.absent ? "0" : projectEvaluation.feedbackIncorporated,
-        workProgress: evaluation.absent ? "0" : projectEvaluation.workProgress,
-        documentation: evaluation.absent ? "0" : projectEvaluation.documentation,
-      }));
-      break;
+  try {
+    switch (evaluationType) {
+      case "proposal":
+        console.log("Proposal Evaluation Block");
+        formattedIndividualEvaluations = individualEvaluation.map((evaluation) => ({
+          student: evaluation.member,
+          performanceAtPresentation: evaluation.performanceAtPresentation || "0",
+          absent: evaluation.absent || false,
+          projectTitleAndAbstract: evaluation.absent ? "0" : (projectEvaluation.projectTitleAndAbstract || "0"),
+          project: evaluation.absent ? "0" : (projectEvaluation.project || "0"),
+          objective: evaluation.absent ? "0" : (projectEvaluation.objective || "0"),
+          teamWork: evaluation.absent ? "0" : (projectEvaluation.teamWork || "0"),
+          documentation: evaluation.absent ? "0" : (projectEvaluation.documentation || "0"),
+          plagiarism: evaluation.absent ? "0" : (projectEvaluation.plagiarism || "0"),
+        }));
+        break;
 
-    case "final":
-      formattedIndividualEvaluations = individualEvaluation.map((evaluation) => ({
-        student: evaluation.member,
-        performanceAtPresentation: evaluation.performanceAtPresentation,
-        absent: evaluation.absent,
-        contributionInWork: evaluation.absent ? "0" : evaluation.contributionInWork,
-        projectTitle: evaluation.absent ? "0" : projectEvaluation.projectTitle,
-        volume: evaluation.absent ? "0" : projectEvaluation.volume,
-        objective: evaluation.absent ? "0" : projectEvaluation.objective,
-        creativity: evaluation.absent ? "0" : projectEvaluation.creativity,
-        analysisAndDesign: evaluation.absent ? "0" : projectEvaluation.analysisAndDesign,
-        toolAndTechniques: evaluation.absent ? "0" : projectEvaluation.toolAndTechniques,
-        documentation: evaluation.absent ? "0" : projectEvaluation.documentation,
-        accomplished: evaluation.absent ? "0" : projectEvaluation.accomplished,
-        demo: evaluation.absent ? "0" : projectEvaluation.demo,
-      }));
-      break;
+      case "mid":
+        console.log("Mid Evaluation Block");
+        formattedIndividualEvaluations = individualEvaluation.map((evaluation) => ({
+          student: evaluation.member,
+          performanceAtPresentation: evaluation.performanceAtPresentation || "0",
+          absent: evaluation.absent || false,
+          feedbackIncorporated: evaluation.absent ? "0" : (projectEvaluation.feedbackIncorporated || "0"),
+          workProgress: evaluation.absent ? "0" : (projectEvaluation.workProgress || "0"),
+          documentation: evaluation.absent ? "0" : (projectEvaluation.documentation || "0"),
+        }));
+        break;
 
-    default:
-      throw new Error("Invalid evaluation type");
+      case "final":
+        console.log("Final Evaluation Block");
+        formattedIndividualEvaluations = individualEvaluation.map((evaluation) => ({
+          student: evaluation.member,
+          performanceAtPresentation: evaluation.performanceAtPresentation || "0",
+          absent: evaluation.absent || false,
+          contributionInWork: evaluation.absent ? "0" : (evaluation.contributionInWork || "0"),
+          projectTitle: evaluation.absent ? "0" : (projectEvaluation.projectTitle || "0"),
+          volume: evaluation.absent ? "0" : (projectEvaluation.volume || "0"),
+          objective: evaluation.absent ? "0" : (projectEvaluation.objective || "0"),
+          creativity: evaluation.absent ? "0" : (projectEvaluation.creativity || "0"),
+          analysisAndDesign: evaluation.absent ? "0" : (projectEvaluation.analysisAndDesign || "0"),
+          toolAndTechniques: evaluation.absent ? "0" : (projectEvaluation.toolAndTechniques || "0"),
+          documentation: evaluation.absent ? "0" : (projectEvaluation.documentation || "0"),
+          accomplished: evaluation.absent ? "0" : (projectEvaluation.accomplished || "0"),
+          demo: evaluation.absent ? "0" : (projectEvaluation.demo || "0"),
+        }));
+        break;
+
+      default:
+        throw new Error("Invalid evaluation type");
+    }
+  } catch (error) {
+    console.error("Error formatting evaluation data:", error);
+    throw new Error("Failed to format evaluation data: " + error.message);
   }
 
-  const newEvaluation = await Evaluation.create([{
-    individualEvaluation: formattedIndividualEvaluations,
-    projectEvaluation: projectEvaluation,
-    project: projectId,
-    evaluator: evaluatorId,
-    defense: defenseId,
-    event: eventId,
-    evaluationType: evaluationType,
-  }], { session })[0];
-
-  if (!newEvaluation) {
-    throw new Error("Failed to create evaluation record");
+  let newEvaluation;
+  try {
+    const createdEvaluations = await Evaluation.create([{
+      individualEvaluation: formattedIndividualEvaluations,
+      projectEvaluation: projectEvaluation,
+      project: projectId,
+      evaluator: evaluatorId,
+      defense: defenseId,
+      event: eventId,
+      evaluationType: evaluationType,
+    }], { session });
+    
+    newEvaluation = createdEvaluations[0];
+    
+    if (!newEvaluation) {
+      throw new Error("Failed to create evaluation record");
+    }
+  } catch (error) {
+    console.error("Error creating evaluation:", error);
+    throw new Error("Failed to create evaluation record: " + error.message);
   }
-
+  
   // Update defense and project with evaluation reference
-  await Defense.findByIdAndUpdate(defenseId, {
-    $push: { evaluations: newEvaluation._id }
-  }, { session });
-
-  await Project.findByIdAndUpdate(projectId, {
-    $push: { [`${evaluationType}.evaluations`]: newEvaluation._id }
-  }, { session });
-
+  try {
+    await Defense.findByIdAndUpdate(defenseId, {
+      $push: { evaluations: newEvaluation._id }
+    }, { session });
+    
+    await Project.findByIdAndUpdate(projectId, {
+      $push: { [`${evaluationType}.evaluations`]: newEvaluation._id }
+    }, { session });
+  } catch (error) {
+    console.error("Error updating references:", error);
+    throw new Error("Failed to update evaluation references: " + error.message);
+  }
+  
+  console.log("New Evaluation Created");
   return newEvaluation;
 };
 
