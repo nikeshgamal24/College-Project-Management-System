@@ -239,29 +239,29 @@ sequenceDiagram
 ```mermaid
 stateDiagram-v2
     [*] --> NotEvaluated
-    NotEvaluated : hasEvaluated: false
+    NotEvaluated: hasEvaluated = false
     
-    NotEvaluated --> Evaluating : Multiple evaluators attempt
+    NotEvaluated --> Evaluating: Multiple evaluators attempt
     
     state Evaluating {
         [*] --> FirstToLock
-        FirstToLock : Random winner gets lock
-        FirstToLock --> UpdateState : Condition met
-        UpdateState : hasEvaluated false to true
+        FirstToLock: Random winner gets lock
+        FirstToLock --> UpdateState: Condition met (hasEvaluated = false)
+        UpdateState: hasEvaluated false to true
         UpdateState --> [*]
     }
     
-    Evaluating --> Evaluated : Winner completes update
+    Evaluating --> Evaluated: Winner completes update
     
     state Evaluated {
         [*] --> SubsequentAttempts
-        SubsequentAttempts : hasEvaluated: true
-        SubsequentAttempts --> Rejected : Condition not met
-        Rejected : Return null
+        SubsequentAttempts: hasEvaluated = true
+        SubsequentAttempts --> Rejected: Condition not met
+        Rejected: Return null
         Rejected --> [*]
     }
     
-    Evaluated --> [*]
+    Evaluated --> [*]: Final state
 ```
 
 ## Deterministic vs Non-Deterministic Ordering
