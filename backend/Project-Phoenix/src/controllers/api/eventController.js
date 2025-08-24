@@ -396,7 +396,7 @@ const createNewDefense = async (req, res) => {
     for (const room of req.body.rooms) {
       if (room.evaluators.length === 0)
         return res.status(400).json({
-          message: "Evaluators redentials are missing",
+          message: "Evaluators credentials are missing",
         });
     }
 
@@ -450,9 +450,10 @@ const createNewDefense = async (req, res) => {
           const projectDoc = await Project.findOne({
             _id: project._id,
           });
-
+          console.log("projectDoc", projectDoc);
+          console.log("defenseType", defenseType);
           const defenseField = projectDoc[defenseType];
-
+          console.log("defenseField", defenseField);
           // Ensure the defense field exists and is an object with a defenseId array
           if (!defenseField) {
             project[defenseType] = { defenseId: [] };
@@ -469,6 +470,11 @@ const createNewDefense = async (req, res) => {
             }),
           };
 
+          // Add new defense ID to the array
+          defenseField.defenses.push(defenseObjDetails);
+          console.log(defenseField.defenses);
+          
+          console.log("defenseObjDetails", defenseObjDetails);
           // Add new defense ID to the array
           // Save the updated project
           await projectDoc.save();
