@@ -3,6 +3,8 @@ export const API_BASE_URL =
   import.meta.env.VITE_API_BASE_URL ||
   "http://localhost:3500/api";
 
+// export const API_BASE_URL = "http://localhost:3500/api";
+
 // Log the API URL being used
 console.log("Using API URL:", API_BASE_URL);
 

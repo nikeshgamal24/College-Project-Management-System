@@ -175,14 +175,7 @@ const getEvent = async (req, res) => {
   }
 
   try {
-    console.log(
-      "🚀 ~ getEvent ~ eventStatusList.complete:",
-      eventStatusList.complete
-    );
-    console.log(
-      "🚀 ~ getEvent ~ eventStatusList.active:",
-      eventStatusList.active
-    );
+
     // Find event by ID and populate the author field
     const event = await Event.findById(req.params.id)
       .populate({ path: "author", select: "-password -refreshToken" })
@@ -201,7 +194,6 @@ const getEvent = async (req, res) => {
           },
         ],
       });
-    console.log("🚀 ~ getEvent ~ event:", event);
 
     // Check if event exists
     if (!event) {
@@ -270,8 +262,7 @@ const createEvaluator = async (req, res) => {
     //if no evaluator is created
     if (!newEvaluator) return res.sendStatus(400);
 
-    //if creation is success
-    console.log(newEvaluator);
+
 
     //return if everything goes well
     return res.status(201).json({
@@ -353,14 +344,20 @@ const getAllEventsAndEvaluators = async (req, res) => {
 
 const getAllDefenses = async (req, res) => {
   try {
+    console.log("getAllDefenses Block");
     // Find all events and populate the author field
-    const defenses = await Defense.find()
+    const allDefenses = await Defense.find()
       .sort({ createdAt: -1 })
       .populate("rooms")
       .populate("event");
+
+
+    // Filter out defenses where event population failed
+    const defenses = allDefenses.filter(defense => defense.event !== null);
     // Check if events are empty
     if (!defenses.length) return res.sendStatus(204);
 
+    console.log("defenses fetched successfully");
     // Send response
     return res.status(200).json({
       data: defenses,
@@ -388,7 +385,6 @@ const createNewDefense = async (req, res) => {
       defenseType: req.body.defenseType,
       status: eventStatusList.active,
     });
-    console.log("🚀 ~ createNewDefense ~ defenseExists:", defenseExists);
 
     //does not allow to create defense of a particular event that has been already created for e.g. if project I proposal defense has already been created then if we create it again it will give 409----> conflict
     if (defenseExists.length) {
@@ -398,8 +394,6 @@ const createNewDefense = async (req, res) => {
     }
 
     for (const room of req.body.rooms) {
-      console.log(room);
-      console.log(room.evaluators.length);
       if (room.evaluators.length === 0)
         return res.status(400).json({
           message: "Evaluators redentials are missing",
@@ -446,7 +440,6 @@ const createNewDefense = async (req, res) => {
     });
     const eventDefenseField = eventDoc[defenseType];
     eventDefenseField.defenseId.push(newDefense._id);
-    console.log(eventDefenseField.defenseId);
     // Save the updated project
     await eventDoc.save();
 
@@ -467,16 +460,6 @@ const createNewDefense = async (req, res) => {
             project[defenseType].defenses = [];
           }
 
-          console.log(
-            "Trying to project defense array section before pushing new defense id"
-          );
-          console.log("defenseField");
-          console.log(defenseField);
-          console.log(newDefense._id);
-          console.log(
-            "Trying to update project defense array section after pushing new defense id"
-          );
-
           //creating a object that contains defense ID , evaluators list with their evaluation status and isGraded status and push them into defenseField's defenses
 
           const defenseObjDetails = {
@@ -487,14 +470,9 @@ const createNewDefense = async (req, res) => {
           };
 
           // Add new defense ID to the array
-          defenseField.defenses.push(defenseObjDetails);
-          console.log(defenseField.defenses);
           // Save the updated project
           await projectDoc.save();
 
-          console.log("Project after saving:");
-          console.log(projectDoc);
-          console.log("---------after project Doc save()-------");
         } catch (error) {
           console.error(`Error updating project ${project._id}:`, error);
           return res.sendStatus(400);
@@ -595,7 +573,6 @@ const getDefenseById = async (req, res) => {
 
 const extendDeadline = async (req, res) => {
   try {
-    console.log(req.body);
     const { subEventType, reportDeadline, defenseDate, event } = req.body;
     if (!subEventType || !reportDeadline || !defenseDate || !event) {
       return res.status(400).json({ error: "Missing required fields" });
@@ -703,8 +680,6 @@ const matchProjects = async (req, res) => {
     if (matches.statusCode === 204) return res.sendStatus(204);
 
     // const matches = await matchProjectsToSupervisors();// for demo
-    console.log("**************************************************");
-    console.log("🚀 ~ matchProjects ~ matches:", matches);
     return res.status(200).json({
       matches,
     });
@@ -858,7 +833,6 @@ const getProjectById = async (req, res) => {
 
 const getResultDetails = async (req, res) => {
   try {
-    console.log("🚀 ~ getResultDetails ~ req?.parama?.id:", req?.params?.id);
     if (!req?.params?.id) return res.sendStatus(404);
 
     const event = await Event.findOne({
@@ -894,7 +868,6 @@ const getResultDetails = async (req, res) => {
     });
 
     if (!event) return res.sendStatus(400);
-    console.log("🚀 ~ getResultDetails ~ event:", event);
 
     return res.status(200).json({
       data: event,

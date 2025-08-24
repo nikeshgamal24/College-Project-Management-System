@@ -1,6 +1,7 @@
 const eventStatusList = require("../../config/constants/eventStatusList");
 const Project = require("../../models/academic/Project");
 const Supervisor = require("../../models/user/Supervisor");
+const Student = require("../../models/user/Student");
 const Event = require("../../models/academic/Event");
 const ProgressLog = require("../../models/system/ProgressLog");
 const { AppError } = require("../../middleware/errorHandler");
@@ -243,27 +244,31 @@ const progressLogApprovalGrant = async (req, res, next) => {
     }
 
     const result = await transactionService.executeTransaction(async (session) => {
+
       // Find project with populated data
       const project = await Project.findById(projectId)
         .populate([
           { path: "teamMembers", select: "-OTP -password -refreshToken" },
-          { path: "progressLogs" },
+          { path: "progressLogs", model: "ProgressLog" },
         ])
         .session(session);
+
 
       if (!project) {
         throw new AppError('Project not found', 404);
       }
 
       // Verify supervisor is assigned to this project
-      if (project.supervisor?.supervisorId?.toString() !== req.userId) {
+      if (project.supervisor?.supervisorId?.toString() !== req.userId.toString()) {
         throw new AppError('You are not the supervisor of this project', 403);
       }
 
+
       // Check if all progress logs are verified
-      const isProgressLogHasBeenVerified = project.progressLogs.every(
-        (progressLog) => progressLog.approved === true
-      );
+      const isProgressLogHasBeenVerified = project.progressLogs && project.progressLogs.length > 0 ?
+        project.progressLogs.every(progressLog => progressLog.approved === true) : true;
+
+      console.log("🚀 ~progressLogApprovalGrant ~ isProgressLogHasBeenVerified:", isProgressLogHasBeenVerified);
 
       if (!isProgressLogHasBeenVerified) {
         throw new AppError('All progress logs must be verified before approval', 409);
@@ -312,7 +317,6 @@ const progressLogApprovalGrant = async (req, res, next) => {
 
       // Save project changes
       await project.save({ session });
-
       return project;
     });
 
@@ -328,6 +332,7 @@ const progressLogApprovalGrant = async (req, res, next) => {
     next(error);
   }
 };
+
 module.exports = {
   updateSupervisor,
   getAllActiveProjects,
