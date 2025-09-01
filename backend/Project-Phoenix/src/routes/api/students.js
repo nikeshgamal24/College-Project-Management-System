@@ -65,4 +65,49 @@ router
 router
   .route("/progress-log/:id") //get projectId for the log of the project id
   .get(verifyRoles(roleList.Student), studentController.getAllProjectLogsOfProject);
+
+// Profile management routes
+router
+  .route("/profile/:id")
+  .get(verifyRoles(roleList.Student), studentController.getStudentProfile)
+  .put(
+    verifyRoles(roleList.Student),
+    validate(studentSchemas.updateProfile),
+    studentController.updateStudentProfile
+  );
+
+router
+  .route("/profile/:id/photo")
+  .put(
+    verifyRoles(roleList.Student),
+    uploader.single("photo"),
+    studentController.updateStudentPhoto
+  );
+
+router
+  .route("/profile/:id/password/request-otp")
+  .post(
+    verifyRoles(roleList.Student),
+    validate(studentSchemas.requestPasswordChangeOTP),
+    studentController.requestPasswordChangeOTP
+  );
+
+router
+  .route("/profile/:id/password/:otp")
+  .put(
+    verifyRoles(roleList.Student),
+    validateParams(paramSchemas.idAndOtp),
+    (req, res, next) => {
+      console.log("🔍 ROUTE HIT: /profile/:id/password/:otp");
+      console.log("🔍 Method:", req.method);
+      console.log("🔍 URL:", req.originalUrl);
+      console.log("🔍 Params:", req.params);
+      console.log("🔍 Body:", req.body);
+      console.log("🔍 Headers:", req.headers['content-type']);
+      next();
+    },
+    validate(studentSchemas.changePasswordWithOTP),
+    studentController.changeStudentPassword
+  );
+
 module.exports = router;

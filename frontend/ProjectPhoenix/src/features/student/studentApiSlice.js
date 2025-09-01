@@ -87,6 +87,95 @@ export const studentApiSlice = apiSlice.injectEndpoints({
       },
       invalidatesTags: ["Project"],
     }),
+
+    // Profile management endpoints
+    getStudentProfile: builder.query({
+      query: (id) => ({
+        url: `/student/profile/${id}`,
+        method: "GET",
+      }),
+      providesTags: ["StudentProfile"],
+    }),
+
+    updateStudentProfile: builder.mutation({
+      query: ({ id, data }) => ({
+        url: `/student/profile/${id}`,
+        method: "PUT",
+        body: data,
+      }),
+      // Optimistic update for immediate UI feedback
+      async onQueryStarted({ id, data }, { dispatch, queryFulfilled, getState }) {
+        // Optimistically update the profile cache
+        const patchResult = dispatch(
+          studentApiSlice.util.updateQueryData('getStudentProfile', id, (draft) => {
+            if (draft?.data) {
+              Object.assign(draft.data, data);
+            }
+          })
+        );
+        
+        try {
+          await queryFulfilled;
+          // Query succeeded, the optimistic update will be replaced with real data
+        } catch {
+          // Query failed, revert the optimistic update
+          patchResult.undo();
+        }
+      },
+      invalidatesTags: ["StudentProfile"],
+    }),
+
+    updateStudentPhoto: builder.mutation({
+      query: ({ id, photo }) => {
+        const formData = new FormData();
+        formData.append("photo", photo);
+        return {
+          url: `/student/profile/${id}/photo`,
+          method: "PUT",
+          body: formData,
+        };
+      },
+      // Optimistic update to immediately show the new photo
+      async onQueryStarted({ id, photo }, { dispatch, queryFulfilled, getState }) {
+        // Optimistically update the profile cache
+        const patchResult = dispatch(
+          studentApiSlice.util.updateQueryData('getStudentProfile', id, (draft) => {
+            if (draft?.data) {
+              // Create a temporary URL for the new photo
+              const tempPhotoUrl = URL.createObjectURL(photo);
+              draft.data.photo = tempPhotoUrl;
+            }
+          })
+        );
+        
+        try {
+          await queryFulfilled;
+          // Query succeeded, the optimistic update will be replaced with real data
+        } catch {
+          // Query failed, revert the optimistic update
+          patchResult.undo();
+        }
+      },
+      invalidatesTags: ["StudentProfile"],
+    }),
+
+    // Step 1: Request password change OTP
+    requestPasswordChangeOTP: builder.mutation({
+      query: ({ id, currentPassword, newPassword, confirmPassword }) => ({
+        url: `/student/profile/${id}/password/request-otp`,
+        method: "POST",
+        body: { currentPassword, newPassword, confirmPassword },
+      }),
+    }),
+
+    // Step 2: Change password with OTP
+    changeStudentPassword: builder.mutation({
+      query: ({ id, otp, newPassword }) => ({
+        url: `/student/profile/${id}/password/${otp}`,
+        method: "PUT",
+        body: { newPassword },
+      }),
+    }),
   }),
 });
 
@@ -98,6 +187,12 @@ export const {
   useGetSelectionStudentsQuery,
   useCreateProjectMutation,
   useSubmitReportMutation,
+  // Profile management hooks
+  useGetStudentProfileQuery,
+  useUpdateStudentProfileMutation,
+  useUpdateStudentPhotoMutation,
+  useRequestPasswordChangeOTPMutation,
+  useChangeStudentPasswordMutation,
   useGetArchiveQuery,
   useGetProjectProgressQuery,
   useCreateProgressMutation,

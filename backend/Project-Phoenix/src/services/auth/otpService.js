@@ -15,7 +15,7 @@ class OTPService {
    */
   async hashOTP(otp) {
     try {
-      return await bcrypt.hash(otp, 12);
+      return await bcrypt.hash(otp, 10);
     } catch (error) {
       throw new AppError('Failed to hash OTP', 500);
     }
@@ -50,7 +50,7 @@ class OTPService {
   /**
    * Generate complete OTP data for user
    */
-  async generateOTPData(minutes = 5) {
+  async generateOTPData(minutes = 10) {
     const otp = this.generateSecureOTP();
     const hashedOTP = await this.hashOTP(otp);
     const expirationTime = this.generateExpirationTime(minutes);

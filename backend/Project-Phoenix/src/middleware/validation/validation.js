@@ -4,12 +4,19 @@ const { AppError } = require('../errorHandler');
 // Validation middleware factory
 const validate = (schema) => {
   return (req, res, next) => {
+    console.log("🔍 VALIDATION MIDDLEWARE HIT");
+    console.log("🔍 Schema:", schema.describe().keys);
+    console.log("🔍 Request body:", req.body);
+    console.log("🔍 Request body type:", typeof req.body);
+    console.log("🔍 Request body keys:", Object.keys(req.body || {}));
+    
     const { error } = schema.validate(req.body, {
       abortEarly: false,
       convert: false,
     });
 
     if (error) {
+      console.log("❌ VALIDATION ERROR:", error.details);
       const errorMessage = error.details
         .map(detail => detail.message)
         .join(', ');
@@ -17,6 +24,7 @@ const validate = (schema) => {
       return next(new AppError(errorMessage, 400));
     }
 
+    console.log("✅ VALIDATION PASSED");
     next();
   };
 };
@@ -259,6 +267,108 @@ const studentSchemas = {
       })
   }).min(1).messages({
     'object.min': 'At least one field must be provided for update'
+  }),
+
+  // Profile update validation
+  updateProfile: Joi.object({
+    fullname: Joi.string()
+      .min(2)
+      .max(50)
+      .pattern(/^[a-zA-Z\s]+$/)
+      .messages({
+        'string.min': 'Full name must be at least 2 characters long',
+        'string.max': 'Full name cannot exceed 50 characters',
+        'string.pattern.base': 'Full name can only contain letters and spaces'
+      }),
+    phoneNumber: Joi.string()
+      .pattern(/^[0-9]{10,15}$/)
+      .messages({
+        'string.pattern.base': 'Phone number must be 10-15 digits'
+      }),
+    program: Joi.alternatives()
+      .try(
+        Joi.string().trim(),
+        Joi.number().integer()
+      )
+      .messages({
+        'number.integer': 'Program must be a valid integer'
+      }),
+    rollNumber: Joi.number()
+      .integer()
+      .min(1)
+      .messages({
+        'number.integer': 'Roll number must be a valid integer',
+        'number.min': 'Roll number must be greater than 0'
+      }),
+    batchNumber: Joi.number()
+      .integer()
+      .min(1)
+      .messages({
+        'number.integer': 'Batch number must be a valid integer',
+        'number.min': 'Batch number must be greater than 0'
+      })
+  }).min(1).messages({
+    'object.min': 'At least one field must be provided for update'
+  }),
+
+  // Password change validation
+  changePassword: Joi.object({
+    currentPassword: Joi.string()
+      .min(8)
+      .required()
+      .messages({
+        'string.min': 'Current password must be at least 8 characters long',
+        'any.required': 'Current password is required'
+      }),
+    newPassword: Joi.string()
+      .min(8)
+      .pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/)
+      .required()
+      .messages({
+        'string.min': 'New password must be at least 8 characters long',
+        'string.pattern.base': 'New password must contain at least one uppercase letter, one lowercase letter, one number, and one special character',
+        'any.required': 'New password is required'
+      })
+  }),
+
+  // Request password change OTP validation
+  requestPasswordChangeOTP: Joi.object({
+    currentPassword: Joi.string()
+      .min(8)
+      .required()
+      .messages({
+        'string.min': 'Current password must be at least 8 characters long',
+        'any.required': 'Current password is required'
+      }),
+    newPassword: Joi.string()
+      .min(8)
+      .pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/)
+      .required()
+      .messages({
+        'string.min': 'New password must be at least 8 characters long',
+        'string.pattern.base': 'New password must contain at least one uppercase letter, one lowercase letter, one number, and one special character',
+        'any.required': 'New password is required'
+      }),
+    confirmPassword: Joi.string()
+      .valid(Joi.ref('newPassword'))
+      .required()
+      .messages({
+        'any.only': 'Confirm password must match new password',
+        'any.required': 'Confirm password is required'
+      })
+  }),
+
+  // Change password with OTP validation
+  changePasswordWithOTP: Joi.object({
+    newPassword: Joi.string()
+      .min(8)
+      .pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/)
+      .required()
+      .messages({
+        'string.min': 'New password must be at least 8 characters long',
+        'string.pattern.base': 'New password must contain at least one uppercase letter, one lowercase letter, one number, and one special character',
+        'any.required': 'New password is required'
+      })
   })
 };
 
@@ -326,6 +436,25 @@ const paramSchemas = {
       .messages({
         'string.pattern.base': 'Invalid ID format',
         'any.required': 'ID is required'
+      })
+  }),
+  
+  idAndOtp: Joi.object({
+    id: Joi.string()
+      .pattern(/^[0-9a-fA-F]{24}$/)
+      .required()
+      .messages({
+        'string.pattern.base': 'Invalid ID format',
+        'any.required': 'ID is required'
+      }),
+    otp: Joi.string()
+      .length(6)
+      .pattern(/^[0-9]+$/)
+      .required()
+      .messages({
+        'string.length': 'OTP must be exactly 6 digits',
+        'string.pattern.base': 'OTP must contain only numbers',
+        'any.required': 'OTP is required'
       })
   })
 };

@@ -78,7 +78,7 @@ class EmailService {
         </div>
         
         <div style="background-color: #fff3cd; padding: 15px; border-radius: 5px; border-left: 4px solid #ffc107; margin: 20px 0;">
-          <p style="margin: 0; color: #856404;"><strong>⚠️ Important:</strong> This OTP will expire in 5 minutes.</p>
+          <p style="margin: 0; color: #856404;"><strong>⚠️ Important:</strong> This OTP will expire in 10 minutes.</p>
         </div>
         
         <p>If you didn't request this password reset, please ignore this email.</p>

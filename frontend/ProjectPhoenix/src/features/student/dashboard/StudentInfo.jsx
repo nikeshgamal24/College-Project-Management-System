@@ -14,9 +14,9 @@ import {
 
 import { selectCurrentUser } from "@/features/auth/authSlice";
 
-import { ArrowUpRight, Contact, FolderGit2, Loader2 } from "lucide-react";
+import { ArrowUpRight, Contact, FolderGit2, Loader2, Settings } from "lucide-react";
 import { useSelector } from "react-redux";
-import { useGetProjectQuery } from "../studentApiSlice";
+import { useGetProjectQuery, useGetStudentProfileQuery } from "../studentApiSlice";
 import { getInitials } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { ROLES_LIST, getEventTypeByCode, getProgramByCode } from "@/lib/config";
@@ -28,6 +28,13 @@ import { Button } from "@/components/ui/button";
 function StudentInfo() {
   const user = useSelector(selectCurrentUser);
 
+  // Get the latest profile data as a fallback
+  const { data: profileData } = useGetStudentProfileQuery(user?._id, { 
+    skip: !user?._id,
+    // Refetch when component mounts to ensure latest data
+    refetchOnMountOrArgChange: true 
+  });
+
   const {
     data: project,
     isLoading,
@@ -35,6 +42,14 @@ function StudentInfo() {
     isError,
     error,
   } = useGetProjectQuery(user.project, { skip: !user.isAssociated });
+
+  // Use profile data if available, otherwise fall back to user data
+  const displayUser = profileData?.data || user;
+  
+  // Debug logging to see data synchronization
+  console.log('Dashboard - Redux User:', user);
+  console.log('Dashboard - Profile Query Data:', profileData?.data);
+  console.log('Dashboard - Display User:', displayUser);
 
   let projectContent, profileContent;
 
@@ -44,14 +59,14 @@ function StudentInfo() {
         <div className="flex">
           <div className="flex flex-rows items-center gap-3">
             <Avatar className="h-14 w-14">
-              <AvatarImage src={user.photo} />
+              <AvatarImage src={displayUser.photo} />
               <AvatarFallback className="bg-slate-200">
-                {getInitials(user.fullname)}
+                {getInitials(displayUser.fullname)}
               </AvatarFallback>
             </Avatar>
             <div className=" text-slate-500">
-              <div className="text-slate-950 font-medium">{user.fullname}</div>
-              <div className="text-xs">{user.email}</div>
+              <div className="text-slate-950 font-medium">{displayUser.fullname}</div>
+              <div className="text-xs">{displayUser.email}</div>
             </div>
           </div>
         </div>
@@ -61,20 +76,20 @@ function StudentInfo() {
         <div className="flex items-center justify-between">
           <div className="text-sm text-slate-500">Program</div>
           <div className="text-sm font-medium">
-            {getProgramByCode(user.program.toString())}
+            {getProgramByCode(displayUser.program?.toString() || user.program?.toString())}
           </div>
         </div>
         <div className="flex items-center justify-between">
           <div className="text-sm text-slate-500">Roll No</div>
-          <div className="text-sm font-medium ">{user.rollNumber}</div>
+          <div className="text-sm font-medium ">{displayUser.rollNumber || user.rollNumber}</div>
         </div>
         <div className="flex items-center justify-between">
           <div className="text-sm text-slate-500">Batch</div>
-          <div className="text-sm font-medium ">{user.batchNumber}</div>
+          <div className="text-sm font-medium ">{displayUser.batchNumber || user.batchNumber}</div>
         </div>
         <div className="flex items-center justify-between">
           <div className="text-sm text-slate-500">Contact</div>
-          <div className="text-sm font-medium ">{user.phoneNumber}</div>
+          <div className="text-sm font-medium ">{displayUser.phoneNumber || user.phoneNumber}</div>
         </div>
         <div className="flex items-center justify-between">
           <div className="text-sm text-slate-500">Project Member</div>
@@ -202,7 +217,19 @@ function StudentInfo() {
             </CardDescription>
           </div>
 
-          <Contact className="text-slate-500" />
+          <div className="flex items-center gap-2">
+            <Button 
+              size="sm" 
+              variant="ghost" 
+              asChild
+              onClick={() => console.log("Settings button clicked")}
+            >
+              <Link to={`/${ROLES_LIST.student}/settings`}>
+                <Settings className="h-4 w-4" />
+              </Link>
+            </Button>
+            <Contact className="text-slate-500" />
+          </div>
         </CardHeader>
         <CardContent>
           <div className="grid gap-3 mt-4">{profileContent}</div>

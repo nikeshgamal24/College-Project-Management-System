@@ -2,6 +2,7 @@ import StudentDashboard from "@/features/student/dashboard/StudentDashboard";
 import StudentArchive from "@/features/student/archive/StudentArchive";
 import StudentGuidelines from "@/features/student/StudentGuidelines";
 import StudentProject from "@/features/student/project/StudentProject";
+import StudentProfileSettings from "@/features/student/settings/StudentProfileSettings";
 
 import { Navigate } from "react-router-dom";
 import Error from "@/components/error/Error";
@@ -42,6 +43,20 @@ const StudentRoutes = [
   {
     path: "coverpage",
     element: <StudentCoverpage />,
+    errorElement: <Error />,
+  },
+  {
+    path: "settings",
+    element: <StudentProfileSettings />,
+    errorElement: <Error />,
+  },
+  // Temporary test route
+  {
+    path: "test-settings",
+    element: <div className="p-8 text-center">
+      <h1 className="text-2xl font-bold text-green-600">✅ Settings Route Working!</h1>
+      <p className="mt-4">The route is connected. Now let's check the component.</p>
+    </div>,
     errorElement: <Error />,
   },
 ];
