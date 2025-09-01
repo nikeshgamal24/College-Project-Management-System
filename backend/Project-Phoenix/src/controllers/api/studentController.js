@@ -183,10 +183,9 @@ const updateStudentPhoto = async (req, res) => {
       return res.status(400).json({ message: "No photo file provided." });
     }
 
-    console.log("🚀 ~ updateStudentPhoto ~ req.file:", req.file);
     // Upload photo to cloud storage
     const photoUrl = await uploadFile(req.file);
-    console.log("🚀 ~ updateStudentPhoto ~ photoUrl:", photoUrl);
+
     // Update student photo
     const student = await Student.findByIdAndUpdate(
       req.params.id,
@@ -255,14 +254,13 @@ const requestPasswordChangeOTP = async (req, res) => {
       .select("+password")
       .exec();
 
-    console.log("🚀 ~ requestPasswordChangeOTP ~ student:", student);
-
     if (!student) {
       return res.status(404).json({ message: "Student not found." });
     }
 
     // Verify current password
     const isPasswordValid = await student.comparePassword(currentPassword);
+
     if (!isPasswordValid) {
       return res.status(400).json({ message: "Current password is incorrect." });
     }
@@ -270,8 +268,8 @@ const requestPasswordChangeOTP = async (req, res) => {
     // Generate OTP for password change
     const emailService = require("../../services/email/emailService");
 
-    const otpData = await otpService.generateOTPData(10); // 5 minutes expiry
-    console.log("🚀 ~ requestPasswordChangeOTP ~ otpData:", otpData);
+    const otpData = await otpService.generateOTPData(10); // 10 minutes expiry
+
     // Store OTP in student document (as plain text for easy comparison)
     student.OTP = otpData.plainOtp; // Store plain text OTP, not hashed
     student.otpExpiration = otpData.expirationTime;
@@ -304,11 +302,6 @@ const requestPasswordChangeOTP = async (req, res) => {
 // Step 2: Verify OTP and change password
 const changeStudentPassword = async (req, res) => {
   try {
-    console.log("🚀 ~ changeStudentPassword block");
-    console.log("🚀 ~ req.params:", req.params);
-    console.log("🚀 ~ req.body:", req.body);
-    console.log("🚀 ~ req.body type:", typeof req.body);
-    console.log("🚀 ~ req.body keys:", Object.keys(req.body || {}));
 
     if (!req?.params?.id) {
       return res.status(400).json({ message: "Student ID is required." });
@@ -325,8 +318,6 @@ const changeStudentPassword = async (req, res) => {
 
     const otp = req.params.otp;
     const { newPassword } = req.body;
-    console.log("🚀 ~ changeStudentPassword ~ otp (from params):", otp);
-    console.log("🚀 ~ changeStudentPassword ~ newPassword (from body):", newPassword);
 
     if (!newPassword) {
       return res.status(400).json({
@@ -339,7 +330,7 @@ const changeStudentPassword = async (req, res) => {
     const student = await Student.findById(req.params.id)
       .select("+password +OTP +otpExpiration")
       .exec();
-    console.log("🚀 ~ changeStudentPassword ~ student:", student);
+
     if (!student) {
       return res.status(404).json({ message: "Student not found." });
     }
@@ -390,7 +381,6 @@ const getAllEvents = async (req, res) => {
       .sort({ createdAt: -1 })
       .select("-projects");
 
-    console.log("🚀 ~ getAllEvents ~ events:", events);
     //if events is empty then 204: no content
     if (!events) return res.sendStatus(204);
     res.status(200).json({
@@ -425,10 +415,6 @@ const getMyEvent = async (req, res) => {
     const { program, batchNumber } = currectStudent;
     const allowedEventType = initializeEventTypeBasedOnBatch(batchNumber);
 
-    console.log("🚀 ~ getMyEvent ~ allowedEventType:", allowedEventType);
-    console.log("🚀 ~ getMyEvent ~ program:", program);
-    console.log("🚀 ~ getMyEvent ~ batchNumber:", batchNumber);
-
     //based on the status and the program select the event that the student is eligible
     const studentCurrentEvent = await Event.findOne({
       eventType: allowedEventType,
@@ -440,13 +426,11 @@ const getMyEvent = async (req, res) => {
 
     //filter student's progress status particular eventtype's status ko range ma para ki nai pardaiina 204
 
-    console.log("🚀 ~ getMyEvent ~ allowedEventType:", allowedEventType);
     const withinRange = progressStatusValidityForEvent({
       allowedEventType: allowedEventType,
       studentProgressStatus: currectStudent.progressStatus,
     });
 
-    console.log("🚀 ~ getMyEvent ~ withinRange:", withinRange);
     //if wihthinrange is false then return 204
     if (!withinRange) return res.sendStatus(204);
 
@@ -533,8 +517,6 @@ const createProjectTeam = async (req, res, next) => {
     }
 
     const { batchNumber, program } = currentUser;
-    console.log("🚀 ~ createProjectTeam ~ batchNumber:", batchNumber);
-    console.log("🚀 ~ createProjectTeam ~ program:", program);
 
     // Validate team members in one query instead of N queries
     const students = await Student.find({
@@ -866,8 +848,7 @@ const submitReport = async (req, res, next) => {
 
 const getAllArchiveProjects = async (req, res) => {
   const studentId = req.userId;
-  console.log(studentId);
-  console.log(req.params.studentId);
+
   if (!studentId) {
     return res.status(400).json({ message: "ID parameter is required." });
   }
@@ -955,7 +936,6 @@ const getAllProjectLogsOfProject = async (req, res) => {
   try {
     //get the project id from the params
     const projectId = req.params.id;
-    console.log("🚀 ~ getAllProjectLogsOfProject ~ projectId:", projectId);
 
     //if projectId is not found
     if (!projectId) return res.sendStatus(400);
@@ -963,11 +943,6 @@ const getAllProjectLogsOfProject = async (req, res) => {
     const progressLogs = await ProgressLog.find({
       projectId: projectId,
     }).populate([{ path: "author" }, { path: "projectId" }]);
-
-    console.log(
-      "🚀 ~ getAllProjectLogsOfProject ~ progressLogs:",
-      progressLogs
-    );
 
     //when there is no progress logs for the project
     if (!progressLogs || !progressLogs.length) return res.sendStatus(204);

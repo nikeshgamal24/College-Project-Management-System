@@ -97,15 +97,6 @@ router
   .put(
     verifyRoles(roleList.Student),
     validateParams(paramSchemas.idAndOtp),
-    (req, res, next) => {
-      console.log("🔍 ROUTE HIT: /profile/:id/password/:otp");
-      console.log("🔍 Method:", req.method);
-      console.log("🔍 URL:", req.originalUrl);
-      console.log("🔍 Params:", req.params);
-      console.log("🔍 Body:", req.body);
-      console.log("🔍 Headers:", req.headers['content-type']);
-      next();
-    },
     validate(studentSchemas.changePasswordWithOTP),
     studentController.changeStudentPassword
   );
