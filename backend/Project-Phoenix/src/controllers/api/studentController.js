@@ -876,6 +876,79 @@ const getAllArchiveProjects = async (req, res) => {
   }
 };
 
+const getArchiveProjectById = async (req, res) => {
+  if (!req?.params?.id) {
+    return res.status(400).json({ message: "ID parameter is required." });
+  }
+
+  try {
+    console.log("Getting archive project by ID:", req.params.id);
+    console.log("Current user ID:", req.userId);
+    const populateOptions = [
+      { path: "teamMembers", select: "-password -OTP -refreshToken" },
+      { path: "progressLogs", populate: { path: "author", select: "-password -OTP -refreshToken" } },
+      { path: "supervisor", populate: { path: "supervisorId", select: "-password -OTP -refreshToken" } },
+      { path: "event" },
+      {
+        path: "proposal",
+        populate: [
+          { path: "evaluations", populate: { path: "evaluator", select: "-password -OTP -refreshToken" } },
+        ],
+      },
+      {
+        path: "mid",
+        populate: [
+          { path: "evaluations", populate: { path: "evaluator", select: "-password -OTP -refreshToken" } },
+        ],
+      },
+      {
+        path: "final",
+        populate: [
+          { path: "evaluations", populate: { path: "evaluator", select: "-password -OTP -refreshToken" } },
+        ],
+      },
+    ];
+
+    const project = await Project.findById(req.params.id).populate(populateOptions);
+
+    if (!project) {
+      return res.status(404).json({ message: `No Project matches with id: ${req.params.id}.` });
+    }
+
+    // Check if the current user is a team member
+    console.log("Current user ID:", req.userId);
+    console.log("Project team members:", project.teamMembers?.map(m => ({ id: m._id, name: m.fullname })));
+    
+    const isTeamMember = project.teamMembers?.some(member => {
+      const memberId = member._id?.toString();
+      const userId = req.userId?.toString();
+      console.log("Comparing member ID:", memberId, "with user ID:", userId);
+      return memberId === userId;
+    });
+    
+    console.log("Is team member:", isTeamMember);
+    
+    if (!isTeamMember) {
+      return res.status(403).json({ message: "You don't have access to this project." });
+    }
+
+    // Check if the project is in archive or complete status
+    console.log("Project status:", project.status);
+    console.log("Expected statuses:", [eventStatusList.complete, eventStatusList.archive]);
+    
+    if (![eventStatusList.complete, eventStatusList.archive].includes(project.status)) {
+      return res.status(403).json({ message: "This project is not archived or completed." });
+    }
+
+    return res.status(200).json({
+      data: project,
+    });
+  } catch (err) {
+    console.error(`Error: ${err.message}`);
+    return res.status(500).json({ message: "Internal server error." });
+  }
+};
+
 const createProgressLog = async (req, res, next) => {
   try {
     const { title, description, logDate, projectId } = req.body;
@@ -965,6 +1038,7 @@ module.exports = {
   getProjectById,
   submitReport,
   getAllArchiveProjects,
+  getArchiveProjectById,
   createProgressLog,
   getAllProjectLogsOfProject,
   // Profile management functions

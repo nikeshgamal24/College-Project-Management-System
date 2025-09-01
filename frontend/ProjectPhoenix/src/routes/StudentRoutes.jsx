@@ -1,5 +1,6 @@
 import StudentDashboard from "@/features/student/dashboard/StudentDashboard";
 import StudentArchive from "@/features/student/archive/StudentArchive";
+import ProjectDetails from "@/features/student/archive/ProjectDetails";
 import StudentGuidelines from "@/features/student/StudentGuidelines";
 import StudentProject from "@/features/student/project/StudentProject";
 import StudentProfileSettings from "@/features/student/settings/StudentProfileSettings";
@@ -33,6 +34,11 @@ const StudentRoutes = [
   {
     path: "archive",
     element: <StudentArchive />,
+    errorElement: <Error />,
+  },
+  {
+    path: "archive/:id",
+    element: <ProjectDetails />,
     errorElement: <Error />,
   },
   {

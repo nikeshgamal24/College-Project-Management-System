@@ -59,6 +59,14 @@ router
   .get(verifyRoles(roleList.Student), studentController.getAllArchiveProjects);
 
 router
+  .route("/archive/:id")
+  .get(
+    verifyRoles(roleList.Student),
+    validateParams(paramSchemas.objectId),
+    studentController.getArchiveProjectById
+  );
+
+router
   .route("/progress-log/create")
   .post(verifyRoles(roleList.Student), studentController.createProgressLog);
 

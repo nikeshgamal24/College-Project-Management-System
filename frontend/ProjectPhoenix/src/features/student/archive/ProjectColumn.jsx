@@ -13,7 +13,7 @@ import { TableCell, TableHead } from "@/components/ui/table";
 import { getEventStatusByCode, getEventTypeByCode } from "@/lib/config";
 import { format } from "date-fns";
 
-import { MoreHorizontal, ArrowUpDown } from "lucide-react";
+import { MoreHorizontal, ArrowUpDown, Eye } from "lucide-react";
 import { Link } from "react-router-dom";
 
 export const ProjectColumn = [
@@ -42,13 +42,21 @@ export const ProjectColumn = [
     cell: ({ row }) => {
       const projectName = row.getValue("projectName");
       const description = row.original.projectDescription;
+      const projectId = row.original._id;
 
       return (
         <TableCell className="text-gray-600 max-w-64">
-          <div className="font-semibold line-clamp-1">{projectName}</div>
-          {description && (
-            <div className="text-xs line-clamp-2">{description}</div>
-          )}
+          <Link 
+            to={`/2001/archive/${projectId}`}
+            className="block hover:bg-gray-50 p-2 -m-2 rounded transition-colors"
+          >
+            <div className="font-semibold line-clamp-1 text-blue-600 hover:text-blue-800">
+              {projectName}
+            </div>
+            {description && (
+              <div className="text-xs line-clamp-2 text-gray-500">{description}</div>
+            )}
+          </Link>
         </TableCell>
       );
     },
@@ -174,52 +182,46 @@ export const ProjectColumn = [
     },
   },
 
-  // {
-  //   id: "actions",
-  //   cell: ({ row }) => {
-  //     const project = row.original;
+  {
+    id: "actions",
+    cell: ({ row }) => {
+      const project = row.original;
 
-  //     return (
-  //       <TableCell className="hidden md:table-cell">
-  //         <DropdownMenu>
-  //           <DropdownMenuTrigger asChild>
-  //             <Button variant="ghost" className="h-8 w-8 p-0">
-  //               <span className="sr-only">Open menu</span>
-  //               <MoreHorizontal className="h-4 w-4" />
-  //             </Button>
-  //           </DropdownMenuTrigger>
-  //           <DropdownMenuContent align="end">
-  //             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-  //             <DropdownMenuItem
-  //               onClick={(e) => {
-  //                 e.stopPropagation();
-  //                 navigator.clipboard.writeText(project.projectCode);
-  //               }}
-  //             >
-  //               Copy Project Code
-  //             </DropdownMenuItem>
-  //             <DropdownMenuSeparator />
-  //             <DropdownMenuItem>
-  //               <Link
-  //                 onClick={(e) => {
-  //                   e.stopPropagation();
-  //                 }}
-  //                 to={`${row.original._id}`}
-  //               >
-  //                 View Project
-  //               </Link>
-  //             </DropdownMenuItem>
-  //             <DropdownMenuItem
-  //               onClick={(e) => {
-  //                 e.stopPropagation();
-  //               }}
-  //             >
-  //               Archive
-  //             </DropdownMenuItem>
-  //           </DropdownMenuContent>
-  //         </DropdownMenu>
-  //       </TableCell>
-  //     );
-  //   },
-  // },
+      return (
+        <TableCell className="hidden md:table-cell">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="h-8 w-8 p-0">
+                <span className="sr-only">Open menu</span>
+                <MoreHorizontal className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuLabel>Actions</DropdownMenuLabel>
+              <DropdownMenuItem
+                onClick={(e) => {
+                  e.stopPropagation();
+                  navigator.clipboard.writeText(project.projectCode);
+                }}
+              >
+                Copy Project Code
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem asChild>
+                <Link
+                  onClick={(e) => {
+                    e.stopPropagation();
+                  }}
+                  to={`/2001/archive/${project._id}`}
+                >
+                  <Eye className="h-4 w-4 mr-2" />
+                  View Details
+                </Link>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </TableCell>
+      );
+    },
+  },
 ];
