@@ -95,16 +95,16 @@ app.use(express.json({
 app.use(cookieParser());
 
 // Global request logger for debugging
-app.use((req, res, next) => {
-  console.log(`🚀 ===== INCOMING REQUEST =====`);
-  console.log(`🚀 ${req.method} ${req.originalUrl}`);
-  console.log("🚀 Headers:", req.headers.authorization ? 'Bearer token present' : 'No auth token');
-  console.log("🚀 Body:", req.body);
-  console.log("🚀 Params:", req.params);
-  console.log("🚀 Query:", req.query);
-  console.log("🚀 =============================");
-  next();
-});
+// app.use((req, res, next) => {
+//   console.log(`🚀 ===== INCOMING REQUEST =====`);
+//   console.log(`🚀 ${req.method} ${req.originalUrl}`);
+//   console.log("🚀 Headers:", req.headers.authorization ? 'Bearer token present' : 'No auth token');
+//   console.log("🚀 Body:", req.body);
+//   console.log("🚀 Params:", req.params);
+//   console.log("🚀 Query:", req.query);
+//   console.log("🚀 =============================");
+//   next();
+// });
 
 // Custom logger middleware (enable in development)
 // if (NODE_ENV === 'development') {

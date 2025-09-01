@@ -60,10 +60,26 @@ export const studentApiSlice = apiSlice.injectEndpoints({
       }),
     }),
     getArchiveProject: builder.query({
-      query: (credentials) => ({
-        url: `/student/associatedProjects/${credentials}`,
+      query: (id) => ({
+        url: `/student/archive/${id}`,
         method: "GET",
       }),
+      // Transform the response to handle error cases properly
+      transformResponse: (response, meta, arg) => {
+        // If the response has an error status, throw an error
+        if (meta?.response?.status >= 400) {
+          throw new Error(response?.message || 'Failed to fetch project');
+        }
+        return response;
+      },
+      // Handle errors properly
+      transformErrorResponse: (response, meta, arg) => {
+        return {
+          status: meta?.response?.status,
+          data: response,
+          message: response?.message || 'An error occurred while fetching the project'
+        };
+      },
     }),
     createProject: builder.mutation({
       query: (credentials) => ({
@@ -194,6 +210,7 @@ export const {
   useRequestPasswordChangeOTPMutation,
   useChangeStudentPasswordMutation,
   useGetArchiveQuery,
+  useGetArchiveProjectQuery,
   useGetProjectProgressQuery,
   useCreateProgressMutation,
 } = studentApiSlice;
