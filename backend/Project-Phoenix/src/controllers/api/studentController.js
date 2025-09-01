@@ -6,6 +6,7 @@ const Project = require("../../models/academic/Project");
 const ProgressLog = require("../../models/system/ProgressLog");
 const { AppError } = require("../../middleware/errorHandler");
 const transactionService = require("../../services/database/transactionService");
+const otpService = require("../../services/auth/otpService");
 const jwt = require("jsonwebtoken");
 const {
   filterSensitiveFields,
@@ -80,6 +81,308 @@ const updateStudent = async (req, res) => {
   }
 };
 
+// Enhanced profile management functions
+const getStudentProfile = async (req, res) => {
+  try {
+    if (!req?.params?.id) {
+      return res.status(400).json({ message: "Student ID is required." });
+    }
+
+    const student = await Student.findById(req.params.id)
+      .select("-refreshToken -password -OTP")
+      .populate("project", "projectName projectCode status")
+      .exec();
+
+    if (!student) {
+      return res.status(404).json({ message: "Student not found." });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: student,
+    });
+  } catch (err) {
+    console.error(`Error fetching student profile: ${err.message}`);
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch profile"
+    });
+  }
+};
+
+const updateStudentProfile = async (req, res) => {
+  try {
+    if (!req?.params?.id) {
+      return res.status(400).json({ message: "Student ID is required." });
+    }
+
+    // Verify the student is updating their own profile
+    if (req.params.id.toString() !== req.userId.toString()) {
+      return res.status(403).json({ message: "You can only update your own profile." });
+    }
+
+    const updateFields = {};
+    const allowedFields = [
+      "fullname",
+      "phoneNumber",
+      "program",
+      "rollNumber",
+      "batchNumber"
+    ];
+
+    allowedFields.forEach((field) => {
+      if (req.body[field] !== undefined && req.body[field] !== "") {
+        updateFields[field] = req.body[field];
+      }
+    });
+
+    if (Object.keys(updateFields).length === 0) {
+      return res.status(400).json({ message: "No valid fields to update." });
+    }
+
+    const student = await Student.findByIdAndUpdate(
+      req.params.id,
+      { $set: updateFields },
+      {
+        new: true,
+        runValidators: true,
+        select: "-refreshToken -password -OTP",
+      }
+    ).exec();
+
+    if (!student) {
+      return res.status(404).json({ message: "Student not found." });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Profile updated successfully",
+      data: student,
+    });
+  } catch (err) {
+    console.error(`Error updating student profile: ${err.message}`);
+    res.status(500).json({
+      success: false,
+      message: "Failed to update profile"
+    });
+  }
+};
+
+const updateStudentPhoto = async (req, res) => {
+  try {
+    if (!req?.params?.id) {
+      return res.status(400).json({ message: "Student ID is required." });
+    }
+
+    // Verify the student is updating their own profile
+    if (req.params.id.toString() !== req.userId.toString()) {
+      return res.status(403).json({ message: "You can only update your own profile." });
+    }
+
+    if (!req.file) {
+      return res.status(400).json({ message: "No photo file provided." });
+    }
+
+    console.log("🚀 ~ updateStudentPhoto ~ req.file:", req.file);
+    // Upload photo to cloud storage
+    const photoUrl = await uploadFile(req.file);
+    console.log("🚀 ~ updateStudentPhoto ~ photoUrl:", photoUrl);
+    // Update student photo
+    const student = await Student.findByIdAndUpdate(
+      req.params.id,
+      { photo: photoUrl },
+      {
+        new: true,
+        select: "-refreshToken -password -OTP",
+      }
+    ).exec();
+
+    if (!student) {
+      return res.status(404).json({ message: "Student not found." });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Photo updated successfully",
+      data: {
+        photo: student.photo,
+        fullname: student.fullname,
+      },
+    });
+  } catch (err) {
+    console.error(`Error updating student photo: ${err.message}`);
+    res.status(500).json({
+      success: false,
+      message: "Failed to update photo"
+    });
+  }
+};
+
+// Step 1: Request password change OTP
+const requestPasswordChangeOTP = async (req, res) => {
+  try {
+    if (!req?.params?.id) {
+      return res.status(400).json({ message: "Student ID is required." });
+    }
+
+    // Verify the student is updating their own profile
+    if (req.params.id.toString() !== req.userId.toString()) {
+      return res.status(403).json({ message: "You can only update your own profile." });
+    }
+
+    const { currentPassword, newPassword, confirmPassword } = req.body;
+
+    if (!currentPassword || !newPassword || !confirmPassword) {
+      return res.status(400).json({
+        message: "Current password, new password, and confirm password are required."
+      });
+    }
+
+    if (newPassword !== confirmPassword) {
+      return res.status(400).json({
+        message: "New password and confirm password do not match."
+      });
+    }
+
+    if (newPassword.length < 8) {
+      return res.status(400).json({
+        message: "New password must be at least 8 characters long."
+      });
+    }
+
+    // Get student with password for verification
+    const student = await Student.findById(req.params.id)
+      .select("+password")
+      .exec();
+
+    console.log("🚀 ~ requestPasswordChangeOTP ~ student:", student);
+
+    if (!student) {
+      return res.status(404).json({ message: "Student not found." });
+    }
+
+    // Verify current password
+    const isPasswordValid = await student.comparePassword(currentPassword);
+    if (!isPasswordValid) {
+      return res.status(400).json({ message: "Current password is incorrect." });
+    }
+
+    // Generate OTP for password change
+    const emailService = require("../../services/email/emailService");
+
+    const otpData = await otpService.generateOTPData(10); // 5 minutes expiry
+    console.log("🚀 ~ requestPasswordChangeOTP ~ otpData:", otpData);
+    // Store OTP in student document (as plain text for easy comparison)
+    student.OTP = otpData.plainOtp; // Store plain text OTP, not hashed
+    student.otpExpiration = otpData.expirationTime;
+    await student.save();
+
+    // Send OTP via email
+    await emailService.sendOTPEmail(
+      student.email,
+      otpData.plainOtp,
+      student.fullname
+    );
+
+    res.status(200).json({
+      success: true,
+      message: "OTP sent to your registered email for password change verification. Please check your email and enter the OTP to change your password within 10 minutes.",
+      data: {
+        otpSent: true,
+        email: student.email
+      }
+    });
+  } catch (err) {
+    console.error(`Error requesting password change OTP: ${err.message}`);
+    res.status(500).json({
+      success: false,
+      message: "Failed to send OTP for password change"
+    });
+  }
+};
+
+// Step 2: Verify OTP and change password
+const changeStudentPassword = async (req, res) => {
+  try {
+    console.log("🚀 ~ changeStudentPassword block");
+    console.log("🚀 ~ req.params:", req.params);
+    console.log("🚀 ~ req.body:", req.body);
+    console.log("🚀 ~ req.body type:", typeof req.body);
+    console.log("🚀 ~ req.body keys:", Object.keys(req.body || {}));
+
+    if (!req?.params?.id) {
+      return res.status(400).json({ message: "Student ID is required." });
+    }
+
+    if (!req?.params?.otp) {
+      return res.status(400).json({ message: "OTP is required." });
+    }
+
+    // Verify the student is updating their own profile
+    if (req.params.id.toString() !== req.userId.toString()) {
+      return res.status(403).json({ message: "You can only update your own profile." });
+    }
+
+    const otp = req.params.otp;
+    const { newPassword } = req.body;
+    console.log("🚀 ~ changeStudentPassword ~ otp (from params):", otp);
+    console.log("🚀 ~ changeStudentPassword ~ newPassword (from body):", newPassword);
+
+    if (!newPassword) {
+      return res.status(400).json({
+        message: "New password is required."
+      });
+    }
+
+
+    // Get student with OTP for verification
+    const student = await Student.findById(req.params.id)
+      .select("+password +OTP +otpExpiration")
+      .exec();
+    console.log("🚀 ~ changeStudentPassword ~ student:", student);
+    if (!student) {
+      return res.status(404).json({ message: "Student not found." });
+    }
+
+    // Check if OTP exists 
+    //  # TODO is not expired
+    if (!student.OTP) {
+      return res.status(400).json({
+        message: "No OTP requested or OTP expired. Please request a new OTP."
+      });
+    }
+
+    // Verify OTP (direct comparison since OTP is stored as plain text)
+    const isOTPValid = (otp === student.OTP);
+
+    if (!isOTPValid) {
+      return res.status(400).json({ message: "Invalid OTP." });
+    }
+
+    // Check if OTP is expired
+    // if (otpService.isOTPExpired(student.otpExpiration)) {
+    //   return res.status(400).json({ message: "OTP has expired. Please request a new OTP." });
+    // }
+
+    // Update password and clear OTP
+    student.password = newPassword;
+    student.OTP = undefined;
+    // student.otpExpiration = undefined;
+    await student.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Password changed successfully",
+    });
+  } catch (err) {
+    console.error(`Error changing password: ${err.message}`);
+    res.status(500).json({
+      success: false,
+      message: "Failed to change password"
+    });
+  }
+};
+
 //get all events that are running
 const getAllEvents = async (req, res) => {
   try {
@@ -146,7 +449,7 @@ const getMyEvent = async (req, res) => {
     console.log("🚀 ~ getMyEvent ~ withinRange:", withinRange);
     //if wihthinrange is false then return 204
     if (!withinRange) return res.sendStatus(204);
-    
+
     //hide sensitive details of author
     const sensitiveDetails = ["role", "refreshToken", "password", "OTP"];
     studentCurrentEvent.author = filterSensitiveFields(
@@ -689,4 +992,10 @@ module.exports = {
   getAllArchiveProjects,
   createProgressLog,
   getAllProjectLogsOfProject,
+  // Profile management functions
+  getStudentProfile,
+  updateStudentProfile,
+  updateStudentPhoto,
+  requestPasswordChangeOTP,
+  changeStudentPassword,
 };

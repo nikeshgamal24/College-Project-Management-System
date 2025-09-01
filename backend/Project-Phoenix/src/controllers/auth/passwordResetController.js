@@ -71,7 +71,7 @@ const passwordReset = async (req, res, next) => {
     }
 
     // Hash new password with higher salt rounds for security
-    const newHashedPassword = await bcrypt.hash(password, 12);
+          const newHashedPassword = await bcrypt.hash(password, 10);
     
     // Update password and clear any remaining OTP/reset tokens
     foundUser.password = newHashedPassword;

@@ -29,6 +29,22 @@ const authSlice = createSlice({
       const { user } = action.payload;
       state.user = user.user;
     },
+    updateUserPhoto: (state, action) => {
+      const { photo } = action.payload;
+      if (state.user) {
+        state.user.photo = photo;
+      }
+    },
+    updateUserProfile: (state, action) => {
+      const { fullname, phoneNumber, program, rollNumber, batchNumber } = action.payload;
+      if (state.user) {
+        if (fullname) state.user.fullname = fullname;
+        if (phoneNumber) state.user.phoneNumber = phoneNumber;
+        if (program) state.user.program = program;
+        if (rollNumber) state.user.rollNumber = rollNumber;
+        if (batchNumber) state.user.batchNumber = batchNumber;
+      }
+    },
     logOut: (state) => {
       state.user = null;
       state.token = null;
@@ -36,7 +52,7 @@ const authSlice = createSlice({
   },
 });
 
-export const { setCredentials, logOut, setUser } = authSlice.actions;
+export const { setCredentials, logOut, setUser, updateUserPhoto, updateUserProfile } = authSlice.actions;
 
 export default authSlice.reducer;
 

@@ -41,8 +41,9 @@ const handleLogin = async (req, res, next) => {
       return next(new AppError('Invalid email or password', 401));
     }
 
-    // Verify password
+        // Verify password using bcrypt.compare
     const isPasswordValid = await bcrypt.compare(password, foundUser.password);
+    console.log("🚀 ~ handleLogin ~ isPasswordValid:", isPasswordValid);
     if (!isPasswordValid) {
       return next(new AppError('Invalid email or password', 401));
     }
