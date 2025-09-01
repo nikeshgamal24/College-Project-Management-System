@@ -166,29 +166,29 @@ const DefenseEvaluationCard = ({ projectData }) => {
   const getStatusColor = (judgement, defenseType) => {
     if (defenseType === 'proposal') {
       switch (judgement) {
-        case "00": return "bg-green-100 text-green-800 border-green-200";
-        case "01": return "bg-yellow-100 text-yellow-800 border-yellow-200";
-        case "02": return "bg-orange-100 text-orange-800 border-orange-200";
-        case "03": return "bg-red-100 text-red-800 border-red-200";
-        default: return "bg-slate-100 text-slate-800 border-slate-200";
+        case "00": return "bg-green-100 text-green-800 border-green-200 hover:bg-green-100 hover:text-green-800 hover:border-green-200";
+        case "01": return "bg-yellow-100 text-yellow-800 border-yellow-200 hover:bg-yellow-100 hover:text-yellow-800 hover:border-yellow-200";
+        case "02": return "bg-orange-100 text-orange-800 border-orange-200 hover:bg-orange-100 hover:text-orange-800 hover:border-orange-200";
+        case "03": return "bg-red-100 text-red-800 border-red-200 hover:bg-red-100 hover:text-red-800 hover:border-red-200";
+        default: return "bg-slate-100 text-slate-800 border-slate-200 hover:bg-slate-100 hover:text-slate-800 hover:border-slate-200";
       }
     } else if (defenseType === 'mid') {
       switch (judgement) {
-        case 10: return "bg-green-100 text-green-800 border-green-200";
-        case 11: return "bg-blue-100 text-blue-800 border-blue-200";
-        case 12: return "bg-red-100 text-red-800 border-red-200";
-        default: return "bg-slate-100 text-slate-800 border-slate-200";
+        case 10: return "bg-green-100 text-green-800 border-green-200 hover:bg-green-100 hover:text-green-800 hover:border-green-200";
+        case 11: return "bg-blue-100 text-blue-800 border-blue-200 hover:bg-blue-100 hover:text-blue-800 hover:border-blue-200";
+        case 12: return "bg-red-100 text-red-800 border-red-200 hover:bg-red-100 hover:text-red-800 hover:border-red-200";
+        default: return "bg-slate-100 text-slate-800 border-slate-200 hover:bg-slate-100 hover:text-slate-800 hover:border-slate-200";
       }
     } else if (defenseType === 'final') {
       switch (judgement) {
-        case 20: return "bg-green-100 text-green-800 border-green-200";
-        case 21: return "bg-yellow-100 text-yellow-800 border-yellow-200";
-        case 22: return "bg-orange-100 text-orange-800 border-orange-200";
-        case 23: return "bg-red-100 text-red-800 border-red-200";
-        default: return "bg-slate-100 text-slate-800 border-slate-200";
+        case 20: return "bg-green-100 text-green-800 border-green-200 hover:bg-green-100 hover:text-green-800 hover:border-green-200";
+        case 21: return "bg-yellow-100 text-yellow-800 border-yellow-200 hover:bg-yellow-100 hover:text-yellow-800 hover:border-green-200";
+        case 22: return "bg-orange-100 text-orange-800 border-orange-200 hover:bg-orange-100 hover:text-orange-800 hover:border-orange-200";
+        case 23: return "bg-red-100 text-red-800 border-red-200 hover:bg-red-100 hover:text-red-800 hover:border-red-200";
+        default: return "bg-slate-100 text-slate-800 border-slate-200 hover:bg-slate-100 hover:text-slate-800 hover:border-slate-200";
       }
     }
-    return "bg-slate-100 text-slate-800 border-slate-200";
+    return "bg-slate-100 text-slate-800 border-slate-200 hover:bg-slate-100 hover:text-slate-800 hover:border-slate-200";
   };
 
   const getColumnIcon = (defenseType) => {
@@ -208,11 +208,11 @@ const DefenseEvaluationCard = ({ projectData }) => {
     return (
       <Dialog key={index}>
         <DialogTrigger asChild>
-          <Card className="cursor-pointer hover:shadow-lg transition-all duration-300 hover:-translate-y-1 border-0 shadow-md bg-gradient-to-br from-white to-slate-50">
+          <Card className="cursor-pointer hover:shadow-lg transition-all duration-300 hover:-translate-y-1 border-2 border-slate-200 shadow-md bg-white hover:border-slate-400 hover:bg-slate-50">
             <CardContent className="p-4">
               <div className="group flex flex-col h-full">
                 <div className="flex items-start justify-between mb-3">
-                  <Badge className={`text-xs font-semibold px-3 py-1 border ${statusColor}`}>
+                  <Badge className={`text-xs font-semibold px-3 py-1 border-2 ${statusColor}`}>
                     {judgementText}
                   </Badge>
                   <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200">
@@ -220,14 +220,14 @@ const DefenseEvaluationCard = ({ projectData }) => {
                   </div>
                 </div>
                 
-                <div className="flex items-center text-xs text-slate-600 mb-3 bg-slate-100 px-2 py-1 rounded-full w-fit">
+                <div className="flex items-center text-xs text-slate-600 mb-3 bg-slate-100 px-2 py-1 rounded-full w-fit border border-slate-200">
                   <Calendar className="w-3 h-3 mr-1 text-slate-500" />
                   {safeFormatDate(evaluation.createdAt)}
                 </div>
                 
                 {evaluation.evaluator && (
                   <div className="mt-auto">
-                    <div className="flex items-center gap-2 bg-blue-50 px-3 py-2 rounded-lg border border-blue-100">
+                    <div className="flex items-center gap-2 bg-blue-50 px-3 py-2 rounded-lg border-2 border-blue-200">
                       <User className="w-3 h-3 text-blue-600" />
                       <div className="text-xs">
                         <div className="font-medium text-blue-800">{evaluation.evaluator.fullname}</div>
