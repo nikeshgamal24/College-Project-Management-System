@@ -272,7 +272,7 @@ const requestPasswordChangeOTP = async (req, res) => {
 
     // Store OTP in student document (as plain text for easy comparison)
     student.OTP = otpData.plainOtp; // Store plain text OTP, not hashed
-    student.otpExpiration = otpData.expirationTime;
+    student.OTPExpiry = otpData.OTPExpiry;
     await student.save();
 
     // Send OTP via email
@@ -328,7 +328,7 @@ const changeStudentPassword = async (req, res) => {
 
     // Get student with OTP for verification
     const student = await Student.findById(req.params.id)
-      .select("+password +OTP +otpExpiration")
+      .select("+password +OTP +OTPExpiry")
       .exec();
 
     if (!student) {
@@ -351,14 +351,14 @@ const changeStudentPassword = async (req, res) => {
     }
 
     // Check if OTP is expired
-    // if (otpService.isOTPExpired(student.otpExpiration)) {
-    //   return res.status(400).json({ message: "OTP has expired. Please request a new OTP." });
-    // }
+    if (otpService.isOTPExpired(student.OTPExpiry)) {
+      return res.status(400).json({ message: "OTP has expired. Please request a new OTP." });
+    }
 
     // Update password and clear OTP
     student.password = newPassword;
     student.OTP = undefined;
-    // student.otpExpiration = undefined;
+    student.OTPExpiry = undefined;
     await student.save();
 
     res.status(200).json({

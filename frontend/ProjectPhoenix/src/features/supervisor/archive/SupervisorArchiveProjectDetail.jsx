@@ -202,35 +202,64 @@ function SupervisorArchiveProjectDetail() {
                   </div>
 
                   <div className="grid gap-3 mt-4  col-span-4 lg:col-span-2">
-                    <div className="flex flex-col gap-3">
+                    <div className="flex flex-col gap-4">
                       {project.data.teamMembers.map((member) => {
                         return (
                           <div
                             key={member._id}
-                            className="flex items-center justify-between"
+                            className="border rounded-lg p-4 bg-slate-50/50 hover:bg-slate-100/50 transition-colors"
                           >
-                            <div className="flex">
-                              <div className="flex flex-row items-center gap-3">
-                                <Avatar>
+                            <div className="flex items-start justify-between">
+                              <div className="flex items-start gap-3">
+                                <Avatar className="h-12 w-12">
                                   <AvatarImage src={member.photo} />
                                   <AvatarFallback className="bg-slate-200">
                                     {getInitials(member.fullname)}
                                   </AvatarFallback>
                                 </Avatar>
-                                <div className="text-sm text-slate-500">
-                                  <div className="text-slate-950 font-medium">
+                                <div className="flex-1">
+                                  <div className="text-slate-950 font-semibold text-base">
                                     {member.fullname}
                                   </div>
-                                  <div className="text-xs">{member.email}</div>
+                                  <div className="text-sm text-slate-600 mb-2">
+                                    {member.email}
+                                  </div>
+                                  <div className="grid grid-cols-2 gap-2 text-xs">
+                                    <div className="flex items-center gap-1">
+                                      <span className="text-slate-500">Roll:</span>
+                                      <span className="font-medium">{member.rollNumber || 'N/A'}</span>
+                                    </div>
+                                    <div className="flex items-center gap-1">
+                                      <span className="text-slate-500">Batch:</span>
+                                      <span className="font-medium">{member.batchNumber || 'N/A'}</span>
+                                    </div>
+                                    <div className="flex items-center gap-1">
+                                      <span className="text-slate-500">Program:</span>
+                                      <span className="font-medium">
+                                        {member.program ? getProgramByCode(member.program.toString()) : 'N/A'}
+                                      </span>
+                                    </div>
+                                    <div className="flex items-center gap-1">
+                                      <span className="text-slate-500">Status:</span>
+                                      <Badge 
+                                        variant={member.isAssociated ? "default" : "secondary"}
+                                        className="text-xs px-2 py-0"
+                                      >
+                                        {member.isAssociated ? 'Active' : 'Inactive'}
+                                      </Badge>
+                                    </div>
+                                  </div>
                                 </div>
                               </div>
+                              <div className="text-right">
+                                <Badge
+                                  variant="outline"
+                                  className="text-xs font-normal"
+                                >
+                                  {member.phoneNumber || 'No Phone'}
+                                </Badge>
+                              </div>
                             </div>
-                            <Badge
-                              variant="outline"
-                              className="text-xs font-normal"
-                            >
-                              {member.phoneNumber}
-                            </Badge>
                           </div>
                         );
                       })}

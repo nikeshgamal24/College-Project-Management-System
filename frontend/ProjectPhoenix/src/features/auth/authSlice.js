@@ -36,10 +36,27 @@ const authSlice = createSlice({
       }
     },
     updateUserProfile: (state, action) => {
-      const { fullname, phoneNumber, program, rollNumber, batchNumber } = action.payload;
+      const { 
+        fullname, 
+        email, 
+        phoneNumber, 
+        designation, 
+        institution, 
+        skillSet, 
+        photo,
+        program, 
+        rollNumber, 
+        batchNumber 
+      } = action.payload;
+      
       if (state.user) {
         if (fullname) state.user.fullname = fullname;
+        if (email) state.user.email = email;
         if (phoneNumber) state.user.phoneNumber = phoneNumber;
+        if (designation) state.user.designation = designation;
+        if (institution) state.user.institution = institution;
+        if (skillSet) state.user.skillSet = skillSet;
+        if (photo) state.user.photo = photo;
         if (program) state.user.program = program;
         if (rollNumber) state.user.rollNumber = rollNumber;
         if (batchNumber) state.user.batchNumber = batchNumber;

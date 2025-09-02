@@ -753,3 +753,14 @@ Stack: Error: OTP is required
 20250901	13:30:55	b4210f8a-f41b-494f-a50f-643b0bc7d33a	Error: Invalid email or password
 Stack: Error: Invalid email or password
     at handleLogin (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/auth/authController.js:48:19)
+20250901	22:04:27	3257dc70-c5c6-413e-944b-f52cf38dc94e	Error: Invalid email or password
+Stack: Error: Invalid email or password
+    at handleLogin (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/auth/authController.js:41:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+20250901	22:05:45	b35deab9-d198-4156-b5d8-f4e194b172b7	Error: Invalid email or password
+Stack: Error: Invalid email or password
+    at handleLogin (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/auth/authController.js:41:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+20250902	09:48:53	afa3b9cd-d550-44f5-a23b-2c3666b682c3	Error: Invalid email or password
+Stack: Error: Invalid email or password
+    at handleLogin (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/auth/authController.js:48:19)

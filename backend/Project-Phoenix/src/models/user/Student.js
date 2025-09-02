@@ -54,7 +54,11 @@ const studentSchema = new Schema(
     },
     OTP: {
       type: String,
-      select: false, // Don't include OTP in queries by default
+      select: false // Hidden by default for security
+    },
+    OTPExpiry: {
+      type: Date,
+      select: false
     },
     timeStamps: {
       type: Date,

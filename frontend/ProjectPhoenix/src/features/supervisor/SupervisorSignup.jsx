@@ -92,7 +92,7 @@ function SupervisorSignup() {
             {...register("email", {
               required: "Email is required",
               pattern: {
-                value: /^^[^\d@]+@ncit\.edu\.np$/,
+                // value: /^^[^\d@]+@ncit\.edu\.np$/,
                 message: "Invalid email address",
               },
             })}

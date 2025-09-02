@@ -1,8 +1,33 @@
 const express = require("express");
 const router = express.Router();
+const multer = require("multer");
 const supervisorController = require("../../controllers/api/supervisorController");
 const roleList = require("../../config/constants/roles");
 const verifyRoles = require("../../middleware/auth/verifyRoles");
+const { validate, validateParams, supervisorSchemas, paramSchemas } = require("../../middleware/validation/validation");
+
+// Configure multer for file uploads
+const upload = multer({
+  storage: multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, 'uploads/supervisors/');
+    },
+    filename: function (req, file, cb) {
+      const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+      cb(null, file.fieldname + '-' + uniqueSuffix + '.' + file.originalname.split('.').pop());
+    }
+  }),
+  limits: {
+    fileSize: 5 * 1024 * 1024 // 5MB limit
+  },
+  fileFilter: function (req, file, cb) {
+    if (file.mimetype.startsWith('image/')) {
+      cb(null, true);
+    } else {
+      cb(new Error('Only image files are allowed!'), false);
+    }
+  }
+});
 
 /**
  * @openapi
@@ -108,7 +133,7 @@ const verifyRoles = require("../../middleware/auth/verifyRoles");
 
 router
   .route("/supervisors/:id")
-  .put(verifyRoles(roleList.Supervisor), supervisorController.updateSupervisor);
+  .put(verifyRoles(roleList.Supervisor), supervisorController.updateSupervisorProfile);
 
 /**
  * @openapi
@@ -741,6 +766,100 @@ router
   .post(
     verifyRoles(roleList.Supervisor),
     supervisorController.progressLogApprovalGrant
+  );
+
+/**
+ * @openapi
+ * '/api/supervisor/supervisors/{id}':
+ *   get:
+ *     tags:
+ *       - Supervisor API
+ *     summary: Get supervisor profile
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         description: ID of supervisor
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       '200':
+ *         description: OK
+ *       400:
+ *         description: Bad Request
+ *       404:
+ *         description: Not Found
+ */
+router
+  .route("/supervisors/:id")
+  .get(
+    verifyRoles(roleList.Supervisor),
+    supervisorController.getSupervisorProfile
+  );
+
+/**
+ * @openapi
+ * '/api/supervisor/supervisors/{id}/photo':
+ *   put:
+ *     tags:
+ *       - Supervisor API
+ *     summary: Update supervisor photo
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         description: ID of supervisor
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       '200':
+ *         description: OK
+ *       400:
+ *         description: Bad Request
+ *       404:
+ *         description: Not Found
+ */
+router
+  .route("/supervisors/:id/photo")
+  .put(
+    verifyRoles(roleList.Supervisor),
+    upload.single('photo'),
+    supervisorController.updateSupervisorPhoto
+  );
+
+router
+  .route("/profile/:id/password/request-otp")
+  .post(
+    verifyRoles(roleList.Supervisor),
+    (req, res, next) => {
+      console.log('req.body:', req.body);
+      next();
+    },
+    supervisorController.requestPasswordChangeOTP
+  );
+
+
+router
+  .route("/profile/:id/password/:otp")
+  .put(
+    verifyRoles(roleList.Supervisor),
+    supervisorController.changeSupervisorPassword
+  );
+
+
+router
+  .route("/auth/request-password-change-otp")
+  .post(
+    verifyRoles(roleList.Supervisor),
+    supervisorController.requestPasswordChangeOTP
+  );
+
+
+router
+  .route("/auth/change-password")
+  .post(
+    verifyRoles(roleList.Supervisor),
+    supervisorController.changeSupervisorPassword
   );
 
 module.exports = router;

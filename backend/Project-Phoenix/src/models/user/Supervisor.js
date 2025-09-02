@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const validator = require("validator");
+const bcrypt = require("bcryptjs");
 
 const supervisorSchema = new Schema(
   {
@@ -42,7 +43,14 @@ const supervisorSchema = new Schema(
       type: Boolean,
       default: true,
     },
-    OTP: String,
+    OTP: {
+      type: String,
+      select: false // Hidden by default for security
+    },
+    OTPExpiry: {
+      type: Date,
+      select: false
+    },
     timeStamps: {
       type: Date,
       timestamps: true,
@@ -52,5 +60,22 @@ const supervisorSchema = new Schema(
     timestamps: true,
   }
 );
+
+// Pre-save middleware for password hashing
+supervisorSchema.pre('save', async function(next) {
+  if (!this.isModified('password')) return next();
+  
+  // Only hash if password is not already hashed
+  if (!this.password.startsWith('$2')) {
+    this.password = await bcrypt.hash(this.password, 10);
+  }
+  
+  next();
+});
+
+// Password comparison method
+supervisorSchema.methods.comparePassword = async function(candidatePassword) {
+  return await bcrypt.compare(candidatePassword, this.password);
+};
 
 module.exports = mongoose.model("Supervisor", supervisorSchema);
