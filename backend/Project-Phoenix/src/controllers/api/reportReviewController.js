@@ -96,7 +96,7 @@ const getReportsForReview = async (req, res, next) => {
 
     const reports = await ReportReview.find(query)
       .populate('projectId', 'projectName projectCode teamMembers supervisor')
-      .populate('submittedBy', 'fullname email rollNumber')
+      .populate('submittedBy', 'fullname email rollNumber photo')
       .populate('projectId.teamMembers', 'fullname email rollNumber')
       .populate('supervisorFeedback.reviewedBy', 'fullname email')
       .sort({ submittedAt: -1 });
@@ -120,7 +120,7 @@ const getReportForReview = async (req, res, next) => {
 
     const report = await ReportReview.findById(id)
       .populate('projectId', 'projectName projectCode teamMembers supervisor')
-      .populate('submittedBy', 'fullname email rollNumber')
+      .populate('submittedBy', 'fullname email rollNumber photo')
       .populate('projectId.teamMembers', 'fullname email rollNumber')
       .populate('supervisorFeedback.reviewedBy', 'fullname email')
       .populate('supervisorFeedback.sectionFeedback.commentedBy', 'fullname email');
@@ -303,6 +303,7 @@ const getStudentReports = async (req, res, next) => {
 
     const reports = await ReportReview.find(query)
       .populate('projectId', 'projectName projectCode')
+      .populate('submittedBy', 'fullname email rollNumber photo')
       .populate('supervisorFeedback.reviewedBy', 'fullname email')
       .populate('supervisorFeedback.sectionFeedback.commentedBy', 'fullname email')
       .sort({ submittedAt: -1 });
@@ -362,6 +363,78 @@ const respondToFeedback = async (req, res, next) => {
   }
 };
 
+// Update report (replace file)
+const updateReport = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { version } = req.body;
+
+    if (!req.file) {
+      return next(new AppError('New report file is required', 400));
+    }
+
+    const result = await transactionService.executeTransaction(async (session) => {
+      // Find the report and verify ownership
+      const report = await ReportReview.findById(id).session(session);
+
+      if (!report) {
+        throw new AppError('Report not found', 404);
+      }
+
+      // Verify student owns this report
+      if (report.submittedBy.toString() !== req.userId.toString()) {
+        throw new AppError('You are not authorized to update this report', 403);
+      }
+
+      // Only allow updates if report is not yet reviewed
+      if (report.status !== 'submitted') {
+        throw new AppError('Cannot update report that has already been reviewed', 400);
+      }
+
+      // Upload new file to cloudinary
+      const uploadResult = await uploadFile(req.file.path);
+      if (!uploadResult?.secure_url) {
+        throw new AppError('File upload failed', 500);
+      }
+
+      // Update report with new file and version
+      report.reportFile = {
+        filePath: uploadResult.secure_url,
+        fileName: req.file.originalname,
+        fileSize: req.file.size,
+        mimeType: req.file.mimetype
+      };
+
+      if (version) {
+        report.version = version;
+      }
+
+      report.updatedAt = new Date();
+
+      await report.save({ session });
+
+      // Populate the response
+      await report.populate([
+        { path: 'projectId', select: 'projectName projectCode' },
+        { path: 'submittedBy', select: 'fullname email rollNumber photo' }
+      ]);
+
+      return report;
+    });
+
+    res.status(200).json({
+      status: 'success',
+      message: 'Report updated successfully',
+      data: {
+        report: result
+      }
+    });
+
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   submitReportForReview,
   getReportsForReview,
@@ -370,5 +443,6 @@ module.exports = {
   addOverallComments,
   updateReportStatus,
   getStudentReports,
-  respondToFeedback
+  respondToFeedback,
+  updateReport
 };

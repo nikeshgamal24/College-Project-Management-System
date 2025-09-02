@@ -803,7 +803,7 @@ function ProjectDetails() {
                           <div className="flex flex-wrap gap-1">
                             {projectData.supervisor.supervisorId.skillSet.map((skill, index) => (
                               <Badge
-                                className="mr-1 mb-1 font-normal"
+                                className="mr-1 mb-1 font-normal bg-slate-900 text-white border-slate-900 hover:bg-slate-700 transition-colors"
                                 variant="outline"
                                 key={index}
                               >

@@ -167,19 +167,27 @@ function StudentInfo() {
                         </AvatarFallback>
                       </Avatar>
                     </HoverCardTrigger>
-                    <HoverCardContent side="top">
-                      <div className="flex flex-row items-center gap-3">
-                        <Avatar>
+                    <HoverCardContent side="top" className="w-80">
+                      <div className="flex items-center gap-3 p-2">
+                        <Avatar className="h-10 w-10">
                           <AvatarImage src={member.photo} />
                           <AvatarFallback className="bg-slate-200">
                             {getInitials(member.fullname)}
                           </AvatarFallback>
                         </Avatar>
-                        <div className="text-sm text-slate-500">
-                          <div className="text-slate-950 font-medium">
+                        <div className="space-y-1">
+                          <div className="font-semibold text-slate-900">
                             {member.fullname}
                           </div>
-                          <div className="text-xs">{member.email}</div>
+                          <div className="text-sm text-slate-600">{member.email}</div>
+                          <div className="flex items-center gap-3 text-xs text-slate-500">
+                            <span>Roll: {member.rollNumber || member.roll || "N/A"}</span>
+                            <span>Batch: {member.batchNumber || "N/A"}</span>
+                          </div>
+                          <div className="flex items-center gap-3 text-xs text-slate-500">
+                            <span>Program: {member.program ? getProgramByCode(member.program.toString()) : "N/A"}</span>
+                            <span>Phone: {member.phoneNumber || "N/A"}</span>
+                          </div>
                         </div>
                       </div>
                     </HoverCardContent>

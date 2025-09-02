@@ -33,6 +33,8 @@ const getSupervisorProfile = async (req, res) => {
         message: `No supervisor matches ID ${req.params.id}.` 
       });
     }
+    console.log("🚀 ~ getSupervisorProfile ~ supervisor:", supervisor);
+
 
     return res.status(200).json({
       data: supervisor,
@@ -49,6 +51,8 @@ const updateSupervisorProfile = async (req, res) => {
     if (!req?.params?.id) {
       return res.sendStatus(400);
     }
+
+    console.log("🚀 ~ updateSupervisorProfile ~ req.body:", req.body);
 
     const updateFields = {};
     const allowedFields = [
@@ -546,6 +550,141 @@ const addProgressLogComment = async (req, res, next) => {
   }
 };
 
+// Update supervisor comment
+const updateProgressLogComment = async (req, res, next) => {
+  try {
+    const { id, commentId } = req.params;
+    const { comment } = req.body;
+
+    if (!comment || comment.trim().length === 0) {
+      return next(new AppError('Comment is required', 400));
+    }
+
+    const result = await transactionService.executeTransaction(async (session) => {
+      // Find the progress log and verify the comment exists and belongs to the supervisor
+      const progressLog = await ProgressLog.findOne({
+        _id: id,
+        'supervisorComments._id': commentId,
+        'supervisorComments.commentedBy': req.userId
+      }).session(session);
+
+      if (!progressLog) {
+        throw new AppError('Comment not found or you are not authorized to edit it', 404);
+      }
+
+      // Additional security: Verify the supervisor is still assigned to the project
+      const project = await Project.findOne({
+        _id: progressLog.projectId,
+        supervisor: req.userId,
+        status: eventStatusList.active
+      }).session(session);
+
+      if (!project) {
+        throw new AppError('You are not authorized to edit comments on this project', 403);
+      }
+
+      // Update the specific comment
+      const updatedLog = await ProgressLog.findOneAndUpdate(
+        {
+          _id: id,
+          'supervisorComments._id': commentId,
+          'supervisorComments.commentedBy': req.userId
+        },
+        {
+          $set: {
+            'supervisorComments.$.comment': comment.trim(),
+            'supervisorComments.$.updatedAt': new Date()
+          }
+        },
+        { 
+          new: true,
+          session 
+        }
+      ).populate([
+        { path: 'author', select: 'fullname email' },
+        { path: 'supervisorComments.commentedBy', select: 'fullname email' }
+      ]);
+
+      return updatedLog;
+    });
+
+    res.status(200).json({
+      status: 'success',
+      message: 'Comment updated successfully',
+      data: {
+        progressLog: result
+      }
+    });
+
+  } catch (error) {
+    next(error);
+  }
+};
+
+// Delete supervisor comment
+const deleteProgressLogComment = async (req, res, next) => {
+  try {
+    const { id, commentId } = req.params;
+
+    const result = await transactionService.executeTransaction(async (session) => {
+      // Find the progress log and verify the comment exists and belongs to the supervisor
+      const progressLog = await ProgressLog.findOne({
+        _id: id,
+        'supervisorComments._id': commentId,
+        'supervisorComments.commentedBy': req.userId
+      }).session(session);
+
+      if (!progressLog) {
+        throw new AppError('Comment not found or you are not authorized to delete it', 404);
+      }
+
+      // Additional security: Verify the supervisor is still assigned to the project
+      const project = await Project.findOne({
+        _id: progressLog.projectId,
+        supervisor: req.userId,
+        status: eventStatusList.active
+      }).session(session);
+
+      if (!project) {
+        throw new AppError('You are not authorized to delete comments on this project', 403);
+      }
+
+      // Remove the specific comment
+      const updatedLog = await ProgressLog.findByIdAndUpdate(
+        id,
+        {
+          $pull: {
+            supervisorComments: {
+              _id: commentId,
+              commentedBy: req.userId
+            }
+          }
+        },
+        { 
+          new: true,
+          session 
+        }
+      ).populate([
+        { path: 'author', select: 'fullname email' },
+        { path: 'supervisorComments.commentedBy', select: 'fullname email' }
+      ]);
+
+      return updatedLog;
+    });
+
+    res.status(200).json({
+      status: 'success',
+      message: 'Comment deleted successfully',
+      data: {
+        progressLog: result
+      }
+    });
+
+  } catch (error) {
+    next(error);
+  }
+};
+
 // Request password change OTP
 const requestPasswordChangeOTP = async (req, res) => {
   try {
@@ -708,6 +847,8 @@ module.exports = {
   progressLogApprovalGrant,
   bulkVerifyProgressLogs,
   addProgressLogComment,
+  updateProgressLogComment,
+  deleteProgressLogComment,
   // Profile Management
   getSupervisorProfile,
   updateSupervisorProfile,

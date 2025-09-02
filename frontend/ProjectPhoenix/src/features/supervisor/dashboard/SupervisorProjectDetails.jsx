@@ -1,4 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { selectCurrentUser } from "@/features/auth/authSlice";
 import {
   useGetSupervisorAssignedProjectDetailsQuery,
   useGrantDefensePermissionMutation,
@@ -10,6 +12,8 @@ import BulkProgressLogOperations from "./BulkProgressLogOperations";
 import ProgressLogComments from "./ProgressLogComments";
 import CompactProgressLogs from "./CompactProgressLogs";
 import { SupervisorReportDashboard } from "../../reportReview";
+import NotificationBadge from "../../../components/ui/notification-badge";
+import { useNotifications } from "../../../hooks/useNotifications";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -64,6 +68,8 @@ import {
 
 function SupervisorProjectDetails() {
   const { id } = useParams();
+  const user = useSelector(selectCurrentUser);
+  const { notifications } = useNotifications();
   const {
     data: project,
     isLoading,
@@ -345,6 +351,7 @@ function SupervisorProjectDetails() {
                   progressLogs={project?.data?.progressLogs || []}
                   onVerify={handleVerifyProgressLog}
                   isLoading={isVerifying}
+                  user={user}
                 />
               </CardContent>
             </Card>
@@ -469,7 +476,16 @@ function SupervisorProjectDetails() {
             <Card>
               <CardHeader className="flex flex-row bg-slate-100 rounded-t-md border-b py-4 justify-between items-center">
                 <div>
-                  <CardTitle className="text-lg">Report Review</CardTitle>
+                  <div className="flex items-center gap-2">
+                    <CardTitle className="text-lg">Report Review</CardTitle>
+                    <NotificationBadge 
+                      count={(notifications.newStudentResponses || 0) + (notifications.newReports || 0)} 
+                      variant="default"
+                      size="sm"
+                    >
+                      <div></div>
+                    </NotificationBadge>
+                  </div>
                   <CardDescription className="text-xs">
                     Review and provide feedback on student reports
                   </CardDescription>
@@ -608,6 +624,7 @@ const Children = ({ progress }) => {
       <ProgressLogComments 
         progressLog={progress}
         showInputField={!progress.approved}
+        user={user}
         onCommentAdded={() => {
           // RTK Query will automatically refetch due to invalidatesTags
         }}

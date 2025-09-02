@@ -16,13 +16,16 @@ import {
   AlertCircle,
   Clock,
   Download,
-  X
+  X,
+  Edit
 } from "lucide-react";
 import { format } from "date-fns";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { getInitials } from "@/lib/utils";
 import SupervisorReportReview from "./SupervisorReportReview";
 import StudentReportFeedback from "./StudentReportFeedback";
+import EditReportSubmission from "./EditReportSubmission";
+import NotificationBadge from "../../components/ui/notification-badge";
 
 const ReportList = ({ reports, userType, onViewReport }) => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -30,6 +33,8 @@ const ReportList = ({ reports, userType, onViewReport }) => {
   const [typeFilter, setTypeFilter] = useState("all");
   const [selectedReport, setSelectedReport] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingReport, setEditingReport] = useState(null);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   const getStatusBadge = (status) => {
     const statusConfig = {
@@ -87,6 +92,16 @@ const ReportList = ({ reports, userType, onViewReport }) => {
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setSelectedReport(null);
+  };
+
+  const handleEditReport = (report) => {
+    setEditingReport(report);
+    setIsEditModalOpen(true);
+  };
+
+  const handleEditComplete = () => {
+    setIsEditModalOpen(false);
+    setEditingReport(null);
   };
 
   if (!reports || reports.length === 0) {
@@ -210,15 +225,28 @@ const ReportList = ({ reports, userType, onViewReport }) => {
                   </div>
                   <div className="flex flex-col items-end gap-3">
                     {getStatusBadge(report.status)}
-                    <Button
-                      variant="default"
-                      size="sm"
-                      onClick={() => userType === 'supervisor' ? handleReviewReport(report) : handleViewReport(report)}
-                      className="flex items-center gap-2 px-4 shadow-sm hover:shadow-md transition-all duration-200"
-                    >
-                      <Eye className="w-4 h-4" />
-                      {userType === 'supervisor' ? 'Review' : 'View'}
-                    </Button>
+                    <div className="flex gap-2">
+                      {userType === 'student' && report.status === 'submitted' && (
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => handleEditReport(report)}
+                          className="flex items-center gap-2 px-3 shadow-sm hover:shadow-md transition-all duration-200"
+                        >
+                          <Edit className="w-4 h-4" />
+                          Edit
+                        </Button>
+                      )}
+                      <Button
+                        variant="default"
+                        size="sm"
+                        onClick={() => userType === 'supervisor' ? handleReviewReport(report) : handleViewReport(report)}
+                        className="flex items-center gap-2 px-4 shadow-sm hover:shadow-md transition-all duration-200"
+                      >
+                        <Eye className="w-4 h-4" />
+                        {userType === 'supervisor' ? 'Review' : 'View'}
+                      </Button>
+                    </div>
                   </div>
                 </div>
 
@@ -300,7 +328,13 @@ const ReportList = ({ reports, userType, onViewReport }) => {
                       )}
                       {report.studentResponse?.responseComments && (
                         <div className="flex items-center gap-2 p-3 bg-green-50 border border-green-200 rounded-lg">
-                          <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                          <NotificationBadge 
+                            count={userType === 'supervisor' && report.studentResponse?.isNew ? 1 : 0}
+                            variant="success"
+                            size="sm"
+                          >
+                            <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                          </NotificationBadge>
                           <span className="text-sm font-medium text-green-800">Student Response</span>
                         </div>
                       )}
@@ -352,6 +386,31 @@ const ReportList = ({ reports, userType, onViewReport }) => {
                 />
               )}
             </>
+          )}
+        </DialogContent>
+      </Dialog>
+
+      {/* Edit Report Modal */}
+      <Dialog open={isEditModalOpen} onOpenChange={setIsEditModalOpen}>
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader className="flex flex-row items-center justify-between">
+            <DialogTitle className="text-xl font-bold">
+              Edit Report - {editingReport?.projectId?.projectName}
+            </DialogTitle>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={handleEditComplete}
+              className="h-8 w-8 p-0"
+            >
+              <X className="h-4 w-4" />
+            </Button>
+          </DialogHeader>
+          {editingReport && (
+            <EditReportSubmission 
+              report={editingReport}
+              onEditComplete={handleEditComplete}
+            />
           )}
         </DialogContent>
       </Dialog>

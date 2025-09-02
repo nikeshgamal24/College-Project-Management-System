@@ -111,6 +111,21 @@ export const supervisorApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["AssignedProject"],
     }),
+    updateProgressLogComment: builder.mutation({
+      query: ({ id, commentId, comment }) => ({
+        url: `supervisor/supervisor/progress-log/${id}/comment/${commentId}`,
+        method: "PUT",
+        body: { comment },
+      }),
+      invalidatesTags: ["AssignedProject"],
+    }),
+    deleteProgressLogComment: builder.mutation({
+      query: ({ id, commentId }) => ({
+        url: `supervisor/supervisor/progress-log/${id}/comment/${commentId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["AssignedProject"],
+    }),
   }),
 });
 
@@ -124,6 +139,8 @@ export const {
   useGrantDefensePermissionMutation,
   useBulkVerifyProgressLogsMutation,
   useAddProgressLogCommentMutation,
+  useUpdateProgressLogCommentMutation,
+  useDeleteProgressLogCommentMutation,
   // Profile Management Hooks
   useGetSupervisorProfileQuery,
   useUpdateSupervisorProfileMutation,

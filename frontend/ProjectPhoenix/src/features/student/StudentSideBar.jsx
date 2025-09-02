@@ -12,11 +12,14 @@ import { Link, useLocation } from "react-router-dom";
 import { ROLES_LIST } from "@/lib/config";
 import { isTabActive } from "@/lib/utils";
 import CurrentClock from "../../components/CurrentClock";
+import NotificationBadge from "../../components/ui/notification-badge";
+import { useNotifications } from "../../hooks/useNotifications";
 
 function StudentSideBar() {
   const location = useLocation();
   const currentPath = location.pathname;
   const date = new Date();
+  const { notifications } = useNotifications();
 
   return (
     <div className="hidden  border-r /40 md:block">
@@ -54,7 +57,13 @@ function StudentSideBar() {
                   : "hover:text-slate-950"
               } text-primary transition-all hover:pl-4`}
             >
-              <FolderGit2 className="h-4 w-4" />
+              <NotificationBadge 
+                count={notifications.projectUpdates || 0} 
+                variant="info"
+                size="sm"
+              >
+                <FolderGit2 className="h-4 w-4" />
+              </NotificationBadge>
               My Project
             </Link>
             <Link

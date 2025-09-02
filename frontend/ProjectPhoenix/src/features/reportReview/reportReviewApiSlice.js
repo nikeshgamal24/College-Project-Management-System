@@ -46,6 +46,21 @@ export const reportReviewApiSlice = apiSlice.injectEndpoints({
       invalidatesTags: ["StudentReports"],
     }),
 
+    updateReport: builder.mutation({
+      query: ({ id, reportFile, version }) => {
+        const formData = new FormData();
+        formData.append("reportFile", reportFile);
+        if (version) formData.append("version", version);
+        
+        return {
+          url: `report-review/student/update/${id}`,
+          method: "PUT",
+          body: formData,
+        };
+      },
+      invalidatesTags: ["StudentReports", "Project"],
+    }),
+
     // Supervisor endpoints
     getReportsForReview: builder.query({
       query: ({ status, reportType } = {}) => {
@@ -103,6 +118,7 @@ export const {
   useSubmitReportForReviewMutation,
   useGetStudentReportsQuery,
   useRespondToFeedbackMutation,
+  useUpdateReportMutation,
   // Supervisor hooks
   useGetReportsForReviewQuery,
   useGetReportForReviewQuery,

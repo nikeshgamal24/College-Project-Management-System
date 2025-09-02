@@ -1046,6 +1046,125 @@ const getAllProjectLogsOfProject = async (req, res) => {
     return res.status(400);
   }
 };
+
+// Update progress log
+const updateProgressLog = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { title, description, logDate } = req.body;
+
+    if (!title || !description || !logDate) {
+      return next(new AppError('Missing required fields', 400));
+    }
+
+    const result = await transactionService.executeTransaction(async (session) => {
+      // Find the progress log and verify ownership
+      const progressLog = await ProgressLog.findOne({
+        _id: id,
+        author: req.userId,
+        approved: false // Only allow editing unapproved logs
+      }).session(session);
+
+      if (!progressLog) {
+        throw new AppError('Progress log not found or you are not authorized to edit it', 404);
+      }
+
+      // Additional security: Verify the user is still a team member of the project
+      const project = await Project.findOne({
+        _id: progressLog.projectId,
+        teamMembers: { $in: [req.userId] },
+        status: eventStatusList.active
+      }).session(session);
+
+      if (!project) {
+        throw new AppError('You are not authorized to edit this progress log', 403);
+      }
+
+      // Update the progress log
+      const updatedLog = await ProgressLog.findByIdAndUpdate(
+        id,
+        {
+          title: title.trim(),
+          description: description.trim(),
+          logDate: new Date(logDate),
+          updatedAt: new Date()
+        },
+        { 
+          new: true,
+          session 
+        }
+      ).populate([
+        { path: 'author', select: 'fullname email' },
+        { path: 'supervisorComments.commentedBy', select: 'fullname email' }
+      ]);
+
+      return updatedLog;
+    });
+
+    res.status(200).json({
+      status: 'success',
+      message: 'Progress log updated successfully',
+      data: {
+        progressLog: result
+      }
+    });
+
+  } catch (error) {
+    next(error);
+  }
+};
+
+// Delete progress log
+const deleteProgressLog = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+
+    const result = await transactionService.executeTransaction(async (session) => {
+      // Find the progress log and verify ownership
+      const progressLog = await ProgressLog.findOne({
+        _id: id,
+        author: req.userId,
+        approved: false // Only allow deleting unapproved logs
+      }).session(session);
+
+      if (!progressLog) {
+        throw new AppError('Progress log not found or you are not authorized to delete it', 404);
+      }
+
+      // Additional security: Verify the user is still a team member of the project
+      const project = await Project.findOne({
+        _id: progressLog.projectId,
+        teamMembers: { $in: [req.userId] },
+        status: eventStatusList.active
+      }).session(session);
+
+      if (!project) {
+        throw new AppError('You are not authorized to delete this progress log', 403);
+      }
+
+      // Remove progress log from project
+      await Project.findByIdAndUpdate(
+        progressLog.projectId,
+        { $pull: { progressLogs: id } },
+        { session }
+      );
+
+      // Delete the progress log
+      await ProgressLog.findByIdAndDelete(id, { session });
+
+      return { message: 'Progress log deleted successfully' };
+    });
+
+    res.status(200).json({
+      status: 'success',
+      message: 'Progress log deleted successfully',
+      data: result
+    });
+
+  } catch (error) {
+    next(error);
+  }
+};
 module.exports = {
   updateStudent,
   getAllEvents,
@@ -1058,6 +1177,8 @@ module.exports = {
   getArchiveProjectById,
   createProgressLog,
   getAllProjectLogsOfProject,
+  updateProgressLog,
+  deleteProgressLog,
   // Profile management functions
   getStudentProfile,
   updateStudentProfile,

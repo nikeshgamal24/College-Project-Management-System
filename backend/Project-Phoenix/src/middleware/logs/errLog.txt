@@ -904,3 +904,57 @@ Stack: ReferenceError: eventStatusList is not defined
     at TransactionService.executeTransaction (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/services/database/transactionService.js:29:30)
     at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
     at async submitReportForReview (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/reportReviewController.js:20:20)
+20250902	16:57:50	f98e379c-937e-44a8-82ba-5a609b18925e	CastError: Cast to ObjectId failed for value "mid_1756811550876" (type string) at path "_id" for model "ReportReview"
+Stack: CastError: Cast to ObjectId failed for value "mid_1756811550876" (type string) at path "_id" for model "ReportReview"
+    at SchemaObjectId.cast (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/mongoose/lib/schema/objectId.js:251:11)
+    at SchemaType.applySetters (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/mongoose/lib/schemaType.js:1258:12)
+    at SchemaType.castForQuery (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/mongoose/lib/schemaType.js:1682:17)
+    at cast (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/mongoose/lib/cast.js:390:32)
+    at Query.cast (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/mongoose/lib/query.js:5060:12)
+    at Query._castConditions (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/mongoose/lib/query.js:2374:10)
+    at model.Query._findOne (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/mongoose/lib/query.js:2697:8)
+    at model.Query.exec (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/mongoose/lib/query.js:4627:80)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/reportReviewController.js:378:22
+20250902	16:58:00	1d410d9a-06ff-4cb0-aac2-8f64381e613a	CastError: Cast to ObjectId failed for value "mid_1756811550876" (type string) at path "_id" for model "ReportReview"
+Stack: CastError: Cast to ObjectId failed for value "mid_1756811550876" (type string) at path "_id" for model "ReportReview"
+    at SchemaObjectId.cast (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/mongoose/lib/schema/objectId.js:251:11)
+    at SchemaType.applySetters (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/mongoose/lib/schemaType.js:1258:12)
+    at SchemaType.castForQuery (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/mongoose/lib/schemaType.js:1682:17)
+    at cast (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/mongoose/lib/cast.js:390:32)
+    at Query.cast (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/mongoose/lib/query.js:5060:12)
+    at Query._castConditions (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/mongoose/lib/query.js:2374:10)
+    at model.Query._findOne (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/mongoose/lib/query.js:2697:8)
+    at model.Query.exec (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/mongoose/lib/query.js:4627:80)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/reportReviewController.js:378:22
+20250902	17:02:41	0073e6dd-03a5-4397-8356-6f09a0d5c2c7	Error: Cannot update report that has already been reviewed
+Stack: Error: Cannot update report that has already been reviewed
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/reportReviewController.js:391:15
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async TransactionService.executeTransaction (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/services/database/transactionService.js:29:24)
+    at async updateReport (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/reportReviewController.js:376:20)
+20250902	17:04:29	24cea776-88c0-4623-a31d-610807580551	Error: Cannot update report that has already been reviewed
+Stack: Error: Cannot update report that has already been reviewed
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/reportReviewController.js:391:15
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async TransactionService.executeTransaction (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/services/database/transactionService.js:29:24)
+    at async updateReport (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/reportReviewController.js:376:20)
+20250902	17:10:10	694c7446-ae2e-4755-ab80-2df576ae68bb	CastError: Cast to ObjectId failed for value "proposal_fallback_1756812305415" (type string) at path "_id" for model "ReportReview"
+Stack: CastError: Cast to ObjectId failed for value "proposal_fallback_1756812305415" (type string) at path "_id" for model "ReportReview"
+    at SchemaObjectId.cast (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/mongoose/lib/schema/objectId.js:251:11)
+    at SchemaType.applySetters (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/mongoose/lib/schemaType.js:1258:12)
+    at SchemaType.castForQuery (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/mongoose/lib/schemaType.js:1682:17)
+    at cast (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/mongoose/lib/cast.js:390:32)
+    at Query.cast (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/mongoose/lib/query.js:5060:12)
+    at Query._castConditions (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/mongoose/lib/query.js:2374:10)
+    at model.Query._findOne (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/mongoose/lib/query.js:2697:8)
+    at model.Query.exec (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/mongoose/lib/query.js:4627:80)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/reportReviewController.js:378:22
+20250902	17:10:19	ee205d67-9a18-46ec-ad35-0478ec3a4375	Error: Cannot update report that has already been reviewed
+Stack: Error: Cannot update report that has already been reviewed
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/reportReviewController.js:391:15
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async TransactionService.executeTransaction (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/services/database/transactionService.js:29:24)
+    at async updateReport (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/reportReviewController.js:376:20)

@@ -4,11 +4,14 @@ import { Link, useLocation } from "react-router-dom";
 import { ROLES_LIST } from "@/lib/config";
 import { isTabActive } from "@/lib/utils";
 import CurrentClock from "../../components/CurrentClock";
+import NotificationBadge from "../../components/ui/notification-badge";
+import { useNotifications } from "../../hooks/useNotifications";
 
 function SupervisorSideBar() {
   const location = useLocation();
   const currentPath = location.pathname;
   const date = new Date();
+  const { notifications } = useNotifications();
 
   return (
     <div className="hidden  border-r /40 md:block">
@@ -34,7 +37,13 @@ function SupervisorSideBar() {
                   : "hover:text-slate-950"
               } text-primary transition-all hover:pl-4`}
             >
-              <Home className="h-4 w-4" />
+              <NotificationBadge 
+                count={(notifications.newStudentResponses || 0) + (notifications.newReports || 0) + (notifications.newProgressLogs || 0)} 
+                variant="default"
+                size="sm"
+              >
+                <Home className="h-4 w-4" />
+              </NotificationBadge>
               Dashboard
             </Link>
 

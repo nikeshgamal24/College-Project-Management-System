@@ -783,6 +783,17 @@ router
     supervisorController.addProgressLogComment
   );
 
+router
+  .route("/supervisor/progress-log/:id/comment/:commentId")
+  .put(
+    verifyRoles(roleList.Supervisor),
+    supervisorController.updateProgressLogComment
+  )
+  .delete(
+    verifyRoles(roleList.Supervisor),
+    supervisorController.deleteProgressLogComment
+  );
+
 
 router
   .route("/supervisors/:id")

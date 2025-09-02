@@ -28,6 +28,14 @@ router
     reportReviewController.respondToFeedback
   );
 
+router
+  .route("/student/update/:id")
+  .put(
+    verifyRoles(roleList.Student),
+    uploader.single("reportFile"),
+    reportReviewController.updateReport
+  );
+
 // Supervisor routes
 router
   .route("/supervisor/reports")

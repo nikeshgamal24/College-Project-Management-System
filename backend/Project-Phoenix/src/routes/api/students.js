@@ -75,6 +75,14 @@ router
   .route("/progress-log/:id") //get projectId for the log of the project id
   .get(verifyRoles(roleList.Student), studentController.getAllProjectLogsOfProject);
 
+router
+  .route("/progress-log/update/:id")
+  .put(verifyRoles(roleList.Student), studentController.updateProgressLog);
+
+router
+  .route("/progress-log/delete/:id")
+  .delete(verifyRoles(roleList.Student), studentController.deleteProgressLog);
+
 // Profile management routes
 router
   .route("/profile/:id")

@@ -84,6 +84,12 @@ const SupervisorProfileSettings = () => {
 
   const handleProfileUpdate = async (e) => {
     e.preventDefault();
+    
+    // Debug: Log the skillSet array being sent
+    console.log("🔍 Updating profile with skillSet:", profileData.skillSet);
+    console.log("🔍 Selected skills count:", profileData.skillSet.length);
+    console.log("🔍 Selected skills:", profileData.skillSet);
+    
     try {
       const result = await updateProfile({
         id: user._id,
@@ -322,18 +328,29 @@ const SupervisorProfileSettings = () => {
   };
 
   const handleSkillSetChange = (skill) => {
-    setProfileData(prev => ({
-      ...prev,
-      skillSet: prev.skillSet.includes(skill)
-        ? prev.skillSet.filter(s => s !== skill)
-        : [...prev.skillSet, skill],
-    }));
+    setProfileData(prev => {
+      const newSkillSet = prev.skillSet.includes(skill)
+        ? prev.skillSet.filter(s => s !== skill)  // Remove skill if already selected
+        : [...prev.skillSet, skill];              // Add skill if not selected
+      
+      // Debug: Log skill selection changes
+      console.log("🔍 Skill clicked:", skill);
+      console.log("🔍 Was selected:", prev.skillSet.includes(skill));
+      console.log("🔍 New skillSet:", newSkillSet);
+      console.log("🔍 New skillSet length:", newSkillSet.length);
+      
+      return {
+        ...prev,
+        skillSet: newSkillSet,
+      };
+    });
   };
 
   const availableSkills = [
-    "Web Development", "Mobile Development", "AI/ML", "Data Science", 
+    "Web Development", "Web Dev", "Mobile Development", "Mobile Dev", "AI/ML", "Data Science", 
     "Database", "Cloud Computing", "Cybersecurity", "DevOps",
-    "UI/UX Design", "Software Engineering", "Network Security", "IoT"
+    "UI/UX Design", "Software Engineering", "Network Security", "IoT",
+    "SQL/NoSQL", "NLP", "Education"
   ];
 
   if (profileLoading) {
@@ -443,16 +460,23 @@ const SupervisorProfileSettings = () => {
                 <div className="space-y-2">
                   <Label>Skills & Expertise</Label>
                   <div className="flex flex-wrap gap-2">
-                    {availableSkills.map((skill) => (
-                      <Badge
-                        key={skill}
-                        variant={profileData.skillSet.includes(skill) ? "default" : "outline"}
-                        className="cursor-pointer hover:bg-blue-100"
-                        onClick={() => handleSkillSetChange(skill)}
-                      >
-                        {skill}
-                      </Badge>
-                    ))}
+                    {availableSkills.map((skill) => {
+                      const isHighlighted = profileData.skillSet.includes(skill);
+                      return (
+                        <Badge
+                          key={skill}
+                          variant="outline"
+                          className={`cursor-pointer transition-colors ${
+                            isHighlighted
+                              ? "bg-slate-900 text-white border-slate-900 hover:bg-slate-700"
+                              : "bg-gray-100 text-gray-600 border-gray-200 hover:bg-gray-200"
+                          }`}
+                          onClick={() => handleSkillSetChange(skill)}
+                        >
+                          {skill}
+                        </Badge>
+                      );
+                    })}
                   </div>
                   <p className="text-sm text-gray-500">Click on skills to add/remove them from your profile</p>
                 </div>

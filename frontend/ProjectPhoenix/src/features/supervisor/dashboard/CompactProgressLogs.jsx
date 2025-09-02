@@ -16,7 +16,7 @@ import { format } from "date-fns";
 import { getInitials } from "@/lib/utils";
 import ProgressLogComments from "./ProgressLogComments";
 
-const CompactProgressLogs = ({ progressLogs, onVerify, isLoading }) => {
+const CompactProgressLogs = ({ progressLogs, onVerify, isLoading, user }) => {
   const [showAll, setShowAll] = useState(false);
   const [expandedCards, setExpandedCards] = useState(new Set());
   
@@ -155,6 +155,7 @@ const CompactProgressLogs = ({ progressLogs, onVerify, isLoading }) => {
                       <ProgressLogComments 
                         progressLog={log}
                         showInputField={false}
+                        user={user}
                         onCommentAdded={() => {
                           // RTK Query will automatically refetch due to invalidatesTags
                         }}
@@ -170,6 +171,7 @@ const CompactProgressLogs = ({ progressLogs, onVerify, isLoading }) => {
                   <ProgressLogComments 
                     progressLog={log}
                     showInputField={true}
+                    user={user}
                     onCommentAdded={() => {
                       // RTK Query will automatically refetch due to invalidatesTags
                     }}
