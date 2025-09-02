@@ -7,6 +7,10 @@ import {
 } from "../studentApiSlice";
 import Loader from "@/components/Loader";
 import ApiError from "@/components/error/ApiError";
+import StudentProgressLogComments from "./StudentProgressLogComments";
+import EditProgressLog from "./EditProgressLog";
+import DeleteProgressLog from "./DeleteProgressLog";
+import { canEditProgressLog, canDeleteProgressLog } from "@/lib/permissions";
 import { Button } from "@/components/ui/button";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { ROLES_LIST } from "@/lib/config";
@@ -43,6 +47,7 @@ import {
   CircleAlert,
   CircleCheck,
   Dot,
+  Edit,
   Footprints,
   Info,
   Loader2,
@@ -64,6 +69,7 @@ import { progress } from "framer-motion";
 
 function ProjectProgress() {
   const [open, setOpen] = useState(false);
+  const [editingLog, setEditingLog] = useState(null);
   const user = useSelector(selectCurrentUser);
   const {
     data: project,
@@ -107,7 +113,7 @@ function ProjectProgress() {
     logItems = project.data.progressLogs.map((log) => {
       return {
         dot: <DotSymbol approved={log.approved} />,
-        children: <Children progress={log} />,
+        children: <Children progress={log} user={user} />,
       };
     });
   }
@@ -267,7 +273,7 @@ function ProjectProgress() {
                     {project.data.supervisor.supervisorId.skillSet.map(
                       (skill, index) => (
                         <Badge
-                          className="mr-1 mb-1 font-normal"
+                          className="mr-1 mb-1 font-normal bg-slate-900 text-white border-slate-900 hover:bg-slate-700 transition-colors"
                           variant="outline"
                           key={index}
                         >
@@ -420,11 +426,20 @@ function ProjectProgress() {
           </form>
         </DialogContent>
       </Dialog>
+
+      {/* Edit Progress Log Dialog */}
+      {editingLog && (
+        <EditProgressLog
+          progressLog={editingLog}
+          isOpen={!!editingLog}
+          onClose={() => setEditingLog(null)}
+        />
+      )}
     </>
   );
 }
 
-const Children = ({ progress }) => {
+const Children = ({ progress, user }) => {
   return (
     <Card className={`${progress.approved ? "" : "bg-slate-100"}`}>
       <CardHeader className=" p-4 pb-1">
@@ -449,6 +464,25 @@ const Children = ({ progress }) => {
                 </TooltipProvider>
               )}
             </Badge>
+            {/* Edit and Delete buttons - only for authorized users */}
+            {canEditProgressLog(user, progress) && (
+              <div className="flex items-center gap-1">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setEditingLog(progress)}
+                  className="h-7 px-2"
+                >
+                  <Edit className="w-3 h-3" />
+                </Button>
+                <DeleteProgressLog 
+                  progressLog={progress} 
+                  onDeleted={() => {
+                    // The mutation will automatically refresh the data
+                  }}
+                />
+              </div>
+            )}
           </div>
         </div>
       </CardHeader>
@@ -462,6 +496,9 @@ const Children = ({ progress }) => {
           {format(progress.logDate, "hh:mm aa")}
         </span>
       </CardFooter>
+      
+      {/* Supervisor Comments Section */}
+      <StudentProgressLogComments progressLog={progress} />
     </Card>
   );
 };

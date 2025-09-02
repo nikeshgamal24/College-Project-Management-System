@@ -18,8 +18,8 @@ if (!process.env.CLOUD_NAME || !process.env.API_KEY || !process.env.API_SECRET) 
 
 const uploadFile = async (fileOrPath) => {
     try {
-        console.log("Uploading file to cloudinary");
-        console.log("Input:", fileOrPath);
+        console.log("🚀 Starting file upload to Cloudinary");
+        console.log("📥 Input:", fileOrPath);
         
         let filePath;
         
@@ -38,10 +38,17 @@ const uploadFile = async (fileOrPath) => {
             throw new Error('Invalid input: must be file object or path string');
         }
         
-        console.log("File path to upload:", filePath);
+        console.log("📁 File path to upload:", filePath);
         
+        // Check if file exists
+        const fs = require('fs');
+        if (!fs.existsSync(filePath)) {
+            throw new Error(`File does not exist at path: ${filePath}`);
+        }
+        
+        console.log("☁️ Uploading to Cloudinary...");
         const result = await cloudinary.uploader.upload(filePath);
-        console.log("Uploaded file to cloudinary", result);
+        console.log("✅ Successfully uploaded to Cloudinary:", result);
         
         // Check if we have a valid result with URL
         if (!result || (!result.secure_url && !result.url)) {
@@ -51,7 +58,7 @@ const uploadFile = async (fileOrPath) => {
         // Return the secure URL from the result
         const finalUrl = result.secure_url || result.url;
         console.log("Final URL:", finalUrl);
-        return finalUrl;
+        return { secure_url: finalUrl };
         
     } catch (err) {
         console.error(`error-file-upload: ${err.message}`);

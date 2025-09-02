@@ -95,6 +95,37 @@ export const supervisorApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["AssignedProject"],
     }),
+    bulkVerifyProgressLogs: builder.mutation({
+      query: (credentials) => ({
+        url: "supervisor/supervisor/progress-log/bulk-verify",
+        method: "POST",
+        body: { ...credentials },
+      }),
+      invalidatesTags: ["AssignedProject"],
+    }),
+    addProgressLogComment: builder.mutation({
+      query: (credentials) => ({
+        url: `supervisor/supervisor/progress-log/${credentials.id}/comment`,
+        method: "POST",
+        body: { comment: credentials.comment },
+      }),
+      invalidatesTags: ["AssignedProject"],
+    }),
+    updateProgressLogComment: builder.mutation({
+      query: ({ id, commentId, comment }) => ({
+        url: `supervisor/supervisor/progress-log/${id}/comment/${commentId}`,
+        method: "PUT",
+        body: { comment },
+      }),
+      invalidatesTags: ["AssignedProject"],
+    }),
+    deleteProgressLogComment: builder.mutation({
+      query: ({ id, commentId }) => ({
+        url: `supervisor/supervisor/progress-log/${id}/comment/${commentId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["AssignedProject"],
+    }),
   }),
 });
 
@@ -106,6 +137,10 @@ export const {
   useGetSupervisorAssignedProjectDetailsQuery,
   useVerifyProgressLogMutation,
   useGrantDefensePermissionMutation,
+  useBulkVerifyProgressLogsMutation,
+  useAddProgressLogCommentMutation,
+  useUpdateProgressLogCommentMutation,
+  useDeleteProgressLogCommentMutation,
   // Profile Management Hooks
   useGetSupervisorProfileQuery,
   useUpdateSupervisorProfileMutation,

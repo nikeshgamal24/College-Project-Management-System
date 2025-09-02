@@ -6,6 +6,7 @@ const verifyRoles = require("../../middleware/auth/verifyRoles");
 const { validate, validateParams, studentSchemas, paramSchemas } = require("../../middleware/validation/validation");
 const {
   uploader,
+  imageUploader,
 } = require("../../controllers/helpers/file/multerUploader");
 
 router
@@ -74,6 +75,14 @@ router
   .route("/progress-log/:id") //get projectId for the log of the project id
   .get(verifyRoles(roleList.Student), studentController.getAllProjectLogsOfProject);
 
+router
+  .route("/progress-log/update/:id")
+  .put(verifyRoles(roleList.Student), studentController.updateProgressLog);
+
+router
+  .route("/progress-log/delete/:id")
+  .delete(verifyRoles(roleList.Student), studentController.deleteProgressLog);
+
 // Profile management routes
 router
   .route("/profile/:id")
@@ -88,7 +97,7 @@ router
   .route("/profile/:id/photo")
   .put(
     verifyRoles(roleList.Student),
-    uploader.single("photo"),
+    imageUploader.single("photo"),
     studentController.updateStudentPhoto
   );
 

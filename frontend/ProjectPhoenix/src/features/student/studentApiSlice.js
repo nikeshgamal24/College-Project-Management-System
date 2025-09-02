@@ -53,6 +53,21 @@ export const studentApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["Progress", "Project"],
     }),
+    updateProgress: builder.mutation({
+      query: ({ id, ...credentials }) => ({
+        url: `/student/progress-log/update/${id}`,
+        method: "PUT",
+        body: { ...credentials },
+      }),
+      invalidatesTags: ["Progress", "Project"],
+    }),
+    deleteProgress: builder.mutation({
+      query: (id) => ({
+        url: `/student/progress-log/delete/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Progress", "Project"],
+    }),
     getArchive: builder.query({
       query: () => ({
         url: "/student/archive",
@@ -213,4 +228,6 @@ export const {
   useGetArchiveProjectQuery,
   useGetProjectProgressQuery,
   useCreateProgressMutation,
+  useUpdateProgressMutation,
+  useDeleteProgressMutation,
 } = studentApiSlice;

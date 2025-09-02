@@ -17,9 +17,12 @@ import { Calendar, CalendarClock, Cctv } from "lucide-react";
 import { getGreeting } from "@/lib/utils";
 import { DataTable } from "./ProjectDataTable";
 import { ProjectColumn } from "./ProjectColumn";
+import NotificationBadge from "../../../components/ui/notification-badge";
+import { useNotifications } from "../../../hooks/useNotifications";
 
 function SupervisorDashboard() {
   const user = useSelector(selectCurrentUser);
+  const { notifications } = useNotifications();
   const {
     data: projects,
     isLoading,

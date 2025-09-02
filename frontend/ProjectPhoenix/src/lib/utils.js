@@ -20,9 +20,17 @@ export const getRoleByValue = (value) => {
 };
 
 export const getInitials = (fullName) => {
+  if (!fullName || typeof fullName !== 'string') {
+    return '??';
+  }
+  
   const parts = fullName.split(" ");
+  if (parts.length === 0) {
+    return '??';
+  }
+  
   const firstNameInitial = parts[0].charAt(0).toUpperCase();
-  const lastNameInitial = parts[parts.length - 1].charAt(0).toUpperCase();
+  const lastNameInitial = parts.length > 1 ? parts[parts.length - 1].charAt(0).toUpperCase() : '';
   return `${firstNameInitial}${lastNameInitial}`;
 };
 

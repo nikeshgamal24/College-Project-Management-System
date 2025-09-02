@@ -32,7 +32,22 @@ const progressLogSchema = new Schema({
   approvedBy: {
     type: Schema.Types.ObjectId,
     ref: 'Supervisor',
-  }
+  },
+  supervisorComments: [{
+    comment: {
+      type: String,
+      required: true
+    },
+    commentedBy: {
+      type: Schema.Types.ObjectId,
+      ref: 'Supervisor',
+      required: true
+    },
+    commentedAt: {
+      type: Date,
+      default: Date.now
+    }
+  }]
 });
 
 const ProgressLog = mongoose.model('ProgressLog', progressLogSchema);

@@ -24,7 +24,7 @@ import {
 
 import { getInitials } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
-import { EVENT_TYPE, ROLES_LIST, getEventTypeByCode } from "@/lib/config";
+import { EVENT_TYPE, ROLES_LIST, getEventTypeByCode, getProgramByCode } from "@/lib/config";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { format } from "date-fns";
@@ -49,7 +49,9 @@ function findDefenseInfoByProjectId(defenseArray, projectId) {
 
 function ProjectInfo({ project, isLoading, isSuccess, user }) {
   const navigate = useNavigate();
-  const [open, setOpen] = useState(false);
+  const [proposalOpen, setProposalOpen] = useState(false);
+  const [midOpen, setMidOpen] = useState(false);
+  const [finalOpen, setFinalOpen] = useState(false);
   let projectContent, teamContent;
 
   if (!user.isAssociated) {
@@ -87,6 +89,23 @@ function ProjectInfo({ project, isLoading, isSuccess, user }) {
     const midDefenses = project.data.mid.defenses || [];
     const finalDefenses = project.data.final.defenses || [];
 
+    // Check all defenses (both graded and ungraded) to find scheduled defenses
+    const proposalSchedule = findDefenseInfoByProjectId(
+      proposalDefenses,
+      project.data._id
+    );
+
+    const midSchedule = findDefenseInfoByProjectId(
+      midDefenses,
+      project.data._id
+    );
+
+    const finalSchedule = findDefenseInfoByProjectId(
+      finalDefenses,
+      project.data._id
+    );
+
+    // Check if defenses are graded for status display
     const notGradedProposal = proposalDefenses.filter(
       (defense) => defense.isGraded === false
     );
@@ -99,44 +118,37 @@ function ProjectInfo({ project, isLoading, isSuccess, user }) {
       (defense) => defense.isGraded === false
     );
 
-    const proposalSchedule = findDefenseInfoByProjectId(
-      notGradedProposal,
-      project.data._id
-    );
-
-    const midSchedule = findDefenseInfoByProjectId(
-      notGradedMid,
-      project.data._id
-    );
-
-    const finalSchedule = findDefenseInfoByProjectId(
-      notGradedFinal,
-      project.data._id
-    );
-
     const members = project.data.teamMembers;
     teamContent = members.map((member) => {
       return (
-        <div key={member._id} className="flex items-center justify-between">
-          <div className="flex">
-            <div className="flex flex-row items-center gap-3">
-              <Avatar>
-                <AvatarImage src={member.photo} />
-                <AvatarFallback className="bg-slate-200">
-                  {getInitials(member.fullname)}
-                </AvatarFallback>
-              </Avatar>
-              <div className="text-sm text-slate-500">
-                <div className="text-slate-950 font-medium">
-                  {member.fullname}
-                </div>
-                <div className="text-xs">{member.email}</div>
+        <div key={member._id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg border">
+          <div className="flex items-center gap-4">
+            <Avatar className="h-12 w-12">
+              <AvatarImage src={member.photo} />
+              <AvatarFallback className="bg-slate-200">
+                {getInitials(member.fullname)}
+              </AvatarFallback>
+            </Avatar>
+            <div className="space-y-1">
+              <div className="font-semibold text-slate-900">
+                {member.fullname}
+              </div>
+              <div className="text-sm text-slate-600">{member.email}</div>
+              <div className="flex items-center gap-4 text-xs text-slate-500">
+                <span>Roll: {member.rollNumber || member.roll || "N/A"}</span>
+                <span>Batch: {member.batchNumber || "N/A"}</span>
+                <span>Program: {member.program ? getProgramByCode(member.program.toString()) : "N/A"}</span>
               </div>
             </div>
           </div>
-          <Badge variant="secondary">
-            {user.email === member.email ? "Yourself" : "Member"}
-          </Badge>
+          <div className="flex items-center gap-3">
+            <Badge variant="default" className="bg-blue-600 text-white">
+              {user.email === member.email ? "Yourself" : "Active"}
+            </Badge>
+            <div className="text-sm text-slate-500 bg-gray-200 px-3 py-1 rounded-full">
+              {member.phoneNumber || "N/A"}
+            </div>
+          </div>
         </div>
       );
     });
@@ -183,16 +195,23 @@ function ProjectInfo({ project, isLoading, isSuccess, user }) {
                 {proposalSchedule ? (
                   <HoverCard
                     openDelay={50}
-                    open={open}
-                    onOpenChange={setOpen}
+                    open={proposalOpen}
+                    onOpenChange={setProposalOpen}
                     closeDelay={50}
                   >
                     <HoverCardTrigger>
                       <Badge
-                        className="cursor-pointer flex items-center gap-1"
-                        onClick={() => setOpen(!open)}
+                        className={`cursor-pointer flex items-center gap-1 hover:bg-opacity-100 ${
+                          notGradedProposal.length > 0 
+                            ? "bg-blue-500 text-white border-blue-500" 
+                            : "bg-green-500 text-white border-green-500"
+                        }`}
+                        onClick={() => setProposalOpen(!proposalOpen)}
                       >
-                        {format(proposalSchedule.defenseDate, "PPP")}
+                        {notGradedProposal.length > 0 
+                          ? format(proposalSchedule.defenseDate, "PPP")
+                          : `Completed - ${format(proposalSchedule.defenseDate, "PPP")}`
+                        }
                         <ArrowUpRight className="w-4 h-4" />
                       </Badge>
                     </HoverCardTrigger>
@@ -216,6 +235,12 @@ function ProjectInfo({ project, isLoading, isSuccess, user }) {
                             {format(proposalSchedule.defenseDate, "PPP")}
                           </span>
                         </div>
+                        <div className="flex justify-between">
+                          <span className="text-slate-500">Status</span>{" "}
+                          <span className="text-slate-700 font-semibold">
+                            {notGradedProposal.length > 0 ? "Scheduled" : "Completed"}
+                          </span>
+                        </div>
                       </div>
                     </HoverCardContent>
                   </HoverCard>
@@ -232,16 +257,23 @@ function ProjectInfo({ project, isLoading, isSuccess, user }) {
                 {midSchedule ? (
                   <HoverCard
                     openDelay={50}
-                    open={open}
-                    onOpenChange={setOpen}
+                    open={midOpen}
+                    onOpenChange={setMidOpen}
                     closeDelay={50}
                   >
                     <HoverCardTrigger>
                       <Badge
-                        className="cursor-pointer flex items-center gap-1"
-                        onClick={() => setOpen(!open)}
+                        className={`cursor-pointer flex items-center gap-1 hover:bg-opacity-100 ${
+                          notGradedMid.length > 0 
+                            ? "bg-blue-500 text-white border-blue-500" 
+                            : "bg-green-500 text-white border-green-500"
+                        }`}
+                        onClick={() => setMidOpen(!midOpen)}
                       >
-                        {format(midSchedule.defenseDate, "PPP")}
+                        {notGradedMid.length > 0 
+                          ? format(midSchedule.defenseDate, "PPP")
+                          : `Completed - ${format(midSchedule.defenseDate, "PPP")}`
+                        }
                         <ArrowUpRight className="w-4 h-4" />
                       </Badge>
                     </HoverCardTrigger>
@@ -265,6 +297,12 @@ function ProjectInfo({ project, isLoading, isSuccess, user }) {
                             {format(midSchedule.defenseDate, "PPP")}
                           </span>
                         </div>
+                        <div className="flex justify-between">
+                          <span className="text-slate-500">Status</span>{" "}
+                          <span className="text-slate-700 font-semibold">
+                            {notGradedMid.length > 0 ? "Scheduled" : "Completed"}
+                          </span>
+                        </div>
                       </div>
                     </HoverCardContent>
                   </HoverCard>
@@ -281,16 +319,23 @@ function ProjectInfo({ project, isLoading, isSuccess, user }) {
                 {finalSchedule ? (
                   <HoverCard
                     openDelay={50}
-                    open={open}
-                    onOpenChange={setOpen}
+                    open={finalOpen}
+                    onOpenChange={setFinalOpen}
                     closeDelay={50}
                   >
                     <HoverCardTrigger>
                       <Badge
-                        className="cursor-pointer flex items-center gap-1"
-                        onClick={() => setOpen(!open)}
+                        className={`cursor-pointer flex items-center gap-1 hover:bg-opacity-100 ${
+                          notGradedFinal.length > 0 
+                            ? "bg-blue-500 text-white border-blue-500" 
+                            : "bg-green-500 text-white border-green-500"
+                        }`}
+                        onClick={() => setFinalOpen(!finalOpen)}
                       >
-                        {format(finalSchedule.defenseDate, "PPP")}
+                        {notGradedFinal.length > 0 
+                          ? format(finalSchedule.defenseDate, "PPP")
+                          : `Completed - ${format(finalSchedule.defenseDate, "PPP")}`
+                        }
                         <ArrowUpRight className="w-4 h-4" />
                       </Badge>
                     </HoverCardTrigger>
@@ -312,6 +357,12 @@ function ProjectInfo({ project, isLoading, isSuccess, user }) {
                           <span className="text-slate-500">Date</span>{" "}
                           <span className="text-slate-700 font-semibold">
                             {format(finalSchedule.defenseDate, "PPP")}
+                          </span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-slate-500">Status</span>{" "}
+                          <span className="text-slate-700 font-semibold">
+                            {notGradedFinal.length > 0 ? "Scheduled" : "Completed"}
                           </span>
                         </div>
                       </div>
@@ -384,8 +435,8 @@ function ProjectInfo({ project, isLoading, isSuccess, user }) {
               {projectContent}
             </div>
 
-            <div className="grid gap-3 mt-4  col-span-4 lg:col-span-2">
-              <div className="flex flex-col gap-3">
+            <div className="grid gap-4 mt-4  col-span-4 lg:col-span-2">
+              <div className="flex flex-col gap-4">
                 <div className=" flex items-center justify-between gap-2">
                   <div className="font-semibold ">Team Members</div>
                   <Badge variant="outline">
@@ -393,7 +444,9 @@ function ProjectInfo({ project, isLoading, isSuccess, user }) {
                   </Badge>
                 </div>
                 <Separator />
-                {teamContent}
+                <div className="space-y-3">
+                  {teamContent}
+                </div>
               </div>
             </div>
           </div>

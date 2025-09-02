@@ -764,3 +764,197 @@ Stack: Error: Invalid email or password
 20250902	09:48:53	afa3b9cd-d550-44f5-a23b-2c3666b682c3	Error: Invalid email or password
 Stack: Error: Invalid email or password
     at handleLogin (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/auth/authController.js:48:19)
+20250902	11:56:39	112e4e59-35e1-4253-9e73-addd9f569e08	Error: Maximum 5 categories allowed
+Stack: Error: Maximum 5 categories allowed
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/middleware/validation/validation.js:24:19
+    at Layer.handle [as handle_request] (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/route.js:149:13)
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/middleware/auth/verifyRoles.js:14:5
+    at Layer.handle [as handle_request] (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/layer.js:95:5)
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/index.js:284:15
+    at Function.process_params (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/index.js:346:12)
+20250902	11:59:49	35e585fa-bbf8-45ce-a54a-bae1a67c70d9	Error: File upload failed
+Stack: Error: File upload failed
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/studentController.js:784:15
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async TransactionService.executeTransaction (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/services/database/transactionService.js:29:24)
+    at async submitReport (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/studentController.js:741:20)
+20250902	12:00:06	9193d529-1fef-49d8-8802-3ce7a0a43658	Error: File upload failed
+Stack: Error: File upload failed
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/studentController.js:784:15
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async TransactionService.executeTransaction (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/services/database/transactionService.js:29:24)
+    at async submitReport (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/studentController.js:741:20)
+20250902	12:03:00	adea5467-a709-4504-a091-d4f3d0a3f7bd	Error: File upload failed
+Stack: Error: File upload failed
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/studentController.js:784:15
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async TransactionService.executeTransaction (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/services/database/transactionService.js:29:24)
+    at async submitReport (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/studentController.js:741:20)
+20250902	12:03:23	1fdf8348-9429-49e6-ae1f-04277679e5c4	Error: Invalid image file
+Stack: undefined
+20250902	12:03:53	28787372-05bf-4340-9e78-d3b52be9175b	Error: File upload failed
+Stack: Error: File upload failed
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/studentController.js:784:15
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async TransactionService.executeTransaction (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/services/database/transactionService.js:29:24)
+    at async submitReport (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/studentController.js:741:20)
+20250902	12:37:24	e0c7d2c1-ee91-476c-95ca-5726007910a9	Error: Only PDF files are allowed!
+Stack: Error: Only PDF files are allowed!
+    at fileFilter (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/helpers/file/multerUploader.js:20:16)
+    at wrappedFileFilter (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/multer/index.js:44:7)
+    at Multipart.<anonymous> (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/multer/lib/make-middleware.js:109:7)
+    at Multipart.emit (node:events:519:28)
+    at HeaderParser.cb (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/busboy/lib/types/multipart.js:358:14)
+    at HeaderParser.push (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/busboy/lib/types/multipart.js:162:20)
+    at SBMH.ssCb [as _cb] (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/busboy/lib/types/multipart.js:394:37)
+    at feed (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/streamsearch/lib/sbmh.js:219:14)
+    at SBMH.push (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/streamsearch/lib/sbmh.js:104:16)
+    at Multipart._write (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/busboy/lib/types/multipart.js:567:19)
+20250902	12:37:32	d63b4452-55bd-481f-9b7c-ebf62473bef7	Error: Only PDF files are allowed!
+Stack: Error: Only PDF files are allowed!
+    at fileFilter (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/helpers/file/multerUploader.js:20:16)
+    at wrappedFileFilter (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/multer/index.js:44:7)
+    at Multipart.<anonymous> (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/multer/lib/make-middleware.js:109:7)
+    at Multipart.emit (node:events:519:28)
+    at HeaderParser.cb (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/busboy/lib/types/multipart.js:358:14)
+    at HeaderParser.push (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/busboy/lib/types/multipart.js:162:20)
+    at SBMH.ssCb [as _cb] (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/busboy/lib/types/multipart.js:394:37)
+    at feed (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/streamsearch/lib/sbmh.js:219:14)
+    at SBMH.push (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/streamsearch/lib/sbmh.js:104:16)
+    at Multipart._write (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/busboy/lib/types/multipart.js:567:19)
+20250902	12:38:51	7725d174-a9de-44ed-918c-cee19ec2e30d	Error: Only PDF files are allowed!
+Stack: Error: Only PDF files are allowed!
+    at fileFilter (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/helpers/file/multerUploader.js:20:16)
+    at wrappedFileFilter (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/multer/index.js:44:7)
+    at Multipart.<anonymous> (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/multer/lib/make-middleware.js:109:7)
+    at Multipart.emit (node:events:519:28)
+    at HeaderParser.cb (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/busboy/lib/types/multipart.js:358:14)
+    at HeaderParser.push (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/busboy/lib/types/multipart.js:162:20)
+    at SBMH.ssCb [as _cb] (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/busboy/lib/types/multipart.js:394:37)
+    at feed (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/streamsearch/lib/sbmh.js:219:14)
+    at SBMH.push (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/streamsearch/lib/sbmh.js:104:16)
+    at Multipart._write (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/busboy/lib/types/multipart.js:567:19)
+20250902	13:21:05	c435f10b-83c2-44a2-a9dd-4196fea7d2ff	Error: Project not found or you are not a team member
+Stack: Error: Project not found or you are not a team member
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/reportReviewController.js:25:15
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async TransactionService.executeTransaction (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/services/database/transactionService.js:29:24)
+    at async submitReportForReview (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/reportReviewController.js:16:20)
+20250902	13:21:21	f96631c8-a7e1-4650-a02d-f15c00d21013	Error: Project not found or you are not a team member
+Stack: Error: Project not found or you are not a team member
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/reportReviewController.js:25:15
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async TransactionService.executeTransaction (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/services/database/transactionService.js:29:24)
+    at async submitReportForReview (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/reportReviewController.js:16:20)
+20250902	13:22:39	87489515-ae75-4d0f-abcb-69895ecdc9c3	Error: Project not found or you are not a team member
+Stack: Error: Project not found or you are not a team member
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/reportReviewController.js:28:15
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async TransactionService.executeTransaction (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/services/database/transactionService.js:29:24)
+    at async submitReportForReview (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/reportReviewController.js:19:20)
+20250902	13:26:29	576923ce-9707-4b33-bb9f-7b9faa2195c2	Error: Project not found or you are not a team member
+Stack: Error: Project not found or you are not a team member
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/reportReviewController.js:25:15
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async TransactionService.executeTransaction (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/services/database/transactionService.js:29:24)
+    at async submitReportForReview (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/reportReviewController.js:16:20)
+20250902	13:30:18	376d3701-5972-43e2-9c7c-bbc77a916b49	Error: Project not found or you are not a team member
+Stack: Error: Project not found or you are not a team member
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/reportReviewController.js:26:15
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async TransactionService.executeTransaction (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/services/database/transactionService.js:29:24)
+    at async submitReportForReview (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/reportReviewController.js:17:20)
+20250902	13:32:09	22291a73-5387-446c-a528-77c5622b565f	Error: Project not found or you are not a team member
+Stack: Error: Project not found or you are not a team member
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/reportReviewController.js:27:15
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async TransactionService.executeTransaction (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/services/database/transactionService.js:29:24)
+    at async submitReportForReview (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/reportReviewController.js:18:20)
+20250902	13:32:31	34842884-6c69-407a-b30a-85a7c44870da	Error: Project not found or you are not a team member
+Stack: Error: Project not found or you are not a team member
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/reportReviewController.js:27:15
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async TransactionService.executeTransaction (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/services/database/transactionService.js:29:24)
+    at async submitReportForReview (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/reportReviewController.js:18:20)
+20250902	13:32:48	1e59c8a4-1f34-44fd-a359-4b6be5147e5c	Error: Project not found or you are not a team member
+Stack: Error: Project not found or you are not a team member
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/reportReviewController.js:27:15
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async TransactionService.executeTransaction (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/services/database/transactionService.js:29:24)
+    at async submitReportForReview (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/reportReviewController.js:18:20)
+20250902	13:35:13	f1b19e43-c76d-46a9-becb-934283b0ca33	Error: Project not found or you are not a team member
+Stack: Error: Project not found or you are not a team member
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/reportReviewController.js:28:15
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async TransactionService.executeTransaction (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/services/database/transactionService.js:29:24)
+    at async submitReportForReview (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/reportReviewController.js:19:20)
+20250902	13:36:17	f4750bfe-0742-4059-a2ec-cb0f1077802e	Error: Project not found or you are not a team member
+Stack: Error: Project not found or you are not a team member
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/reportReviewController.js:29:15
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async TransactionService.executeTransaction (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/services/database/transactionService.js:29:24)
+    at async submitReportForReview (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/reportReviewController.js:20:20)
+20250902	13:37:22	6cb3b5c9-455a-42d0-8543-37ad33e2cb7e	ReferenceError: eventStatusList is not defined
+Stack: ReferenceError: eventStatusList is not defined
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/reportReviewController.js:25:17
+    at TransactionService.executeTransaction (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/services/database/transactionService.js:29:30)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async submitReportForReview (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/reportReviewController.js:20:20)
+20250902	16:57:50	f98e379c-937e-44a8-82ba-5a609b18925e	CastError: Cast to ObjectId failed for value "mid_1756811550876" (type string) at path "_id" for model "ReportReview"
+Stack: CastError: Cast to ObjectId failed for value "mid_1756811550876" (type string) at path "_id" for model "ReportReview"
+    at SchemaObjectId.cast (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/mongoose/lib/schema/objectId.js:251:11)
+    at SchemaType.applySetters (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/mongoose/lib/schemaType.js:1258:12)
+    at SchemaType.castForQuery (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/mongoose/lib/schemaType.js:1682:17)
+    at cast (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/mongoose/lib/cast.js:390:32)
+    at Query.cast (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/mongoose/lib/query.js:5060:12)
+    at Query._castConditions (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/mongoose/lib/query.js:2374:10)
+    at model.Query._findOne (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/mongoose/lib/query.js:2697:8)
+    at model.Query.exec (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/mongoose/lib/query.js:4627:80)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/reportReviewController.js:378:22
+20250902	16:58:00	1d410d9a-06ff-4cb0-aac2-8f64381e613a	CastError: Cast to ObjectId failed for value "mid_1756811550876" (type string) at path "_id" for model "ReportReview"
+Stack: CastError: Cast to ObjectId failed for value "mid_1756811550876" (type string) at path "_id" for model "ReportReview"
+    at SchemaObjectId.cast (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/mongoose/lib/schema/objectId.js:251:11)
+    at SchemaType.applySetters (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/mongoose/lib/schemaType.js:1258:12)
+    at SchemaType.castForQuery (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/mongoose/lib/schemaType.js:1682:17)
+    at cast (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/mongoose/lib/cast.js:390:32)
+    at Query.cast (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/mongoose/lib/query.js:5060:12)
+    at Query._castConditions (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/mongoose/lib/query.js:2374:10)
+    at model.Query._findOne (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/mongoose/lib/query.js:2697:8)
+    at model.Query.exec (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/mongoose/lib/query.js:4627:80)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/reportReviewController.js:378:22
+20250902	17:02:41	0073e6dd-03a5-4397-8356-6f09a0d5c2c7	Error: Cannot update report that has already been reviewed
+Stack: Error: Cannot update report that has already been reviewed
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/reportReviewController.js:391:15
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async TransactionService.executeTransaction (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/services/database/transactionService.js:29:24)
+    at async updateReport (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/reportReviewController.js:376:20)
+20250902	17:04:29	24cea776-88c0-4623-a31d-610807580551	Error: Cannot update report that has already been reviewed
+Stack: Error: Cannot update report that has already been reviewed
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/reportReviewController.js:391:15
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async TransactionService.executeTransaction (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/services/database/transactionService.js:29:24)
+    at async updateReport (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/reportReviewController.js:376:20)
+20250902	17:10:10	694c7446-ae2e-4755-ab80-2df576ae68bb	CastError: Cast to ObjectId failed for value "proposal_fallback_1756812305415" (type string) at path "_id" for model "ReportReview"
+Stack: CastError: Cast to ObjectId failed for value "proposal_fallback_1756812305415" (type string) at path "_id" for model "ReportReview"
+    at SchemaObjectId.cast (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/mongoose/lib/schema/objectId.js:251:11)
+    at SchemaType.applySetters (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/mongoose/lib/schemaType.js:1258:12)
+    at SchemaType.castForQuery (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/mongoose/lib/schemaType.js:1682:17)
+    at cast (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/mongoose/lib/cast.js:390:32)
+    at Query.cast (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/mongoose/lib/query.js:5060:12)
+    at Query._castConditions (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/mongoose/lib/query.js:2374:10)
+    at model.Query._findOne (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/mongoose/lib/query.js:2697:8)
+    at model.Query.exec (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/mongoose/lib/query.js:4627:80)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/reportReviewController.js:378:22
+20250902	17:10:19	ee205d67-9a18-46ec-ad35-0478ec3a4375	Error: Cannot update report that has already been reviewed
+Stack: Error: Cannot update report that has already been reviewed
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/reportReviewController.js:391:15
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async TransactionService.executeTransaction (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/services/database/transactionService.js:29:24)
+    at async updateReport (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/reportReviewController.js:376:20)

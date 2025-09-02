@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useGetArchiveProjectQuery } from "../studentApiSlice";
 import Loader from "@/components/Loader";
 import ApiError from "@/components/error/ApiError";
+import StudentProgressLogComments from "../project/StudentProgressLogComments";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -154,6 +155,9 @@ const ProgressLogItem = ({ progress }) => {
           {safeFormatDate(progress.logDate, "hh:mm aa")}
         </span>
       </div>
+      
+      {/* Supervisor Comments Section */}
+      <StudentProgressLogComments progressLog={progress} />
     </Card>
   );
 };
@@ -799,7 +803,7 @@ function ProjectDetails() {
                           <div className="flex flex-wrap gap-1">
                             {projectData.supervisor.supervisorId.skillSet.map((skill, index) => (
                               <Badge
-                                className="mr-1 mb-1 font-normal"
+                                className="mr-1 mb-1 font-normal bg-slate-900 text-white border-slate-900 hover:bg-slate-700 transition-colors"
                                 variant="outline"
                                 key={index}
                               >

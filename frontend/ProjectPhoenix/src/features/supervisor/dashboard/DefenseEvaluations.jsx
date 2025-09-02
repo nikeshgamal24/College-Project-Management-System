@@ -5,8 +5,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { ArrowUpRight, BookCheck, Calendar, Clock, Timer } from "lucide-react";
-import { Timeline } from "antd";
+import { Badge } from "@/components/ui/badge";
+import { ArrowUpRight, BookCheck, Calendar, User, ChevronDown } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -16,7 +16,8 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { format } from "date-fns";
-import { Separator } from "@/components/ui/separator";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { getInitials } from "@/lib/utils";
 
 const proposalJudgementConfig = {
   "00": "Accepted",
@@ -71,212 +72,123 @@ function DefenseEvaluation({ project }) {
   const mid = groupDefenses(midEvaluations);
   const final = groupDefenses(finalEvaluations);
 
-  const proposalItems = proposal.map((proposalEval, index) => {
-    const judgement = proposalEval[0].projectEvaluation.judgement;
-    let color =
-      judgement === "00" || judgement === "01" ? "#22c55e" : "#ef4444";
 
-    return {
-      color: color,
-      children: (
-        <Dialog>
-          <DialogTrigger asChild>
-            <Card key={index} className="cursor-pointer">
-              <CardContent className="p-2">
-                <div className="group flex items-start justify-between">
-                  <div className="flex flex-col gap-1">
-                    <div className="font-semibold text-sm text-slate-700">
-                      {proposalJudgementConfig[judgement]}
+  const getStatusBadge = (status) => {
+    const statusConfig = {
+      "Accepted": { variant: "default", className: "bg-green-100 text-green-800 border-green-200" },
+      "Accepted Conditionally": { variant: "default", className: "bg-yellow-100 text-yellow-800 border-yellow-200" },
+      "Progress Satisfactory": { variant: "default", className: "bg-green-100 text-green-800 border-green-200" },
+      "Progress Seen": { variant: "default", className: "bg-gray-100 text-gray-800 border-gray-200" },
+      "Progress Not Satisfactory": { variant: "default", className: "bg-red-100 text-red-800 border-red-200" },
+      "Re-Defense": { variant: "default", className: "bg-orange-100 text-orange-800 border-orange-200" },
+      "Re-Demo": { variant: "default", className: "bg-orange-100 text-orange-800 border-orange-200" },
+      "Re-Defend": { variant: "default", className: "bg-orange-100 text-orange-800 border-orange-200" },
+      "Rejected": { variant: "default", className: "bg-red-100 text-red-800 border-red-200" },
+      "Absent": { variant: "default", className: "bg-gray-100 text-gray-800 border-gray-200" },
+    };
+    
+    const config = statusConfig[status] || statusConfig["Absent"];
+    return (
+      <Badge variant="outline" className={config.className}>
+        {status}
+      </Badge>
+    );
+  };
+
+  const EvaluationCard = ({ evaluation, type }) => {
+    const judgement = evaluation[0].projectEvaluation.judgement;
+    let status;
+    
+    if (type === 'proposal') {
+      status = proposalJudgementConfig[judgement];
+    } else if (type === 'mid') {
+      status = midJudgementConfig[judgement];
+    } else {
+      status = finalJudgementConfig[judgement];
+    }
+
+    return (
+      <Dialog>
+        <DialogTrigger asChild>
+          <Card className="cursor-pointer hover:shadow-md transition-shadow border-l-4 border-l-blue-500">
+            <CardContent className="p-4">
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  {getStatusBadge(status)}
+                  <ArrowUpRight className="w-4 h-4 text-gray-400 hover:text-gray-600 transition-colors" />
+                </div>
+                
+                <div className="flex items-center gap-2 text-sm text-gray-600">
+                  <Calendar className="w-4 h-4" />
+                  <span>{format(evaluation[0].createdAt, "MMMM do, yyyy")}</span>
+                </div>
+                
+                <div className="space-y-2">
+                  {evaluation.map((evaluationItem, index) => (
+                    <div key={index} className="flex items-center gap-2 p-2 bg-blue-50 rounded-lg border border-blue-200">
+                      <Avatar className="w-6 h-6">
+                        <AvatarImage src={evaluationItem.evaluator.photo} />
+                        <AvatarFallback className="text-xs">
+                          {getInitials(evaluationItem.evaluator.fullname)}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-medium text-gray-900 truncate">
+                          {evaluationItem.evaluator.fullname}
+                        </p>
+                        <p className="text-xs text-gray-500 truncate">
+                          {evaluationItem.evaluator.designation}
+                        </p>
+                      </div>
                     </div>
-                    <div className="flex items-center text-xs">
-                      <Calendar className="text-slate-500 w-4 h-4 mr-1" />
-                      {format(proposalEval[0].createdAt, "PPP")}
-                    </div>
-                  </div>
+                  ))}
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </DialogTrigger>
+        <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Evaluation Details - {type.charAt(0).toUpperCase() + type.slice(1)} Defense</DialogTitle>
+            <DialogDescription>
+              Detailed feedback and comments from evaluators
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="space-y-6 pt-4">
+            {evaluation.map((evaluationItem, index) => (
+              <div key={evaluationItem._id} className="space-y-3">
+                <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+                  <Avatar className="w-10 h-10">
+                    <AvatarImage src={evaluationItem.evaluator.photo} />
+                    <AvatarFallback>
+                      {getInitials(evaluationItem.evaluator.fullname)}
+                    </AvatarFallback>
+                  </Avatar>
                   <div>
-                    <ArrowUpRight className="w-5 h-5 text-slate-700 group-hover:translate-x-[2px] group-hover:-translate-y-[2px] transition-all" />
+                    <p className="font-semibold text-gray-900">{evaluationItem.evaluator.fullname}</p>
+                    <p className="text-sm text-gray-600">
+                      {evaluationItem.evaluator.designation}, {evaluationItem.evaluator.institution}
+                    </p>
                   </div>
                 </div>
-              </CardContent>
-            </Card>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Comments and Feedback</DialogTitle>
-            </DialogHeader>
-
-            <div className="text-slate-700 pt-4">
-              <>
-                {proposalEval.map((evaluation) => {
-                  return (
-                    <div
-                      key={evaluation._id}
-                      className="flex gap-2 flex-col mb-4"
-                    >
-                      <div className="flex items-center text-sm justify-between text-slate-700 font-semibold">
-                        {evaluation.evaluator.fullname}
-
-                        <span className="text-xs text-slate-500">
-                          {evaluation.evaluator.designation},{" "}
-                          {evaluation.evaluator.institution}
-                        </span>
-                      </div>
-                      <div className="p-4 border rounded-md text-sm text-slate-600">
-                        <div
-                          className="no-tailwind"
-                          dangerouslySetInnerHTML={{
-                            __html: evaluation.projectEvaluation.feedback,
-                          }}
-                        ></div>
-                      </div>
-                    </div>
-                  );
-                })}
-              </>
-            </div>
-          </DialogContent>
-        </Dialog>
-      ),
-    };
-  });
-
-  const midItems = mid.map((midEval, index) => {
-    const judgement = midEval[0].projectEvaluation.judgement;
-    let color =
-      judgement === "10" || judgement === "11" ? "#22c55e" : "#ef4444";
-
-    return {
-      color: color,
-      children: (
-        <Dialog>
-          <DialogTrigger asChild>
-            <Card key={index} className="cursor-pointer">
-              <CardContent className="p-2">
-                <div className="group flex items-start justify-between">
-                  <div className="flex flex-col gap-1">
-                    <div className="font-semibold text-sm text-slate-700">
-                      {midJudgementConfig[judgement]}
-                    </div>
-                    <div className="flex items-center text-xs">
-                      <Calendar className="text-slate-500 w-4 h-4 mr-1" />
-                      {format(midEval[0].createdAt, "PPP")}
-                    </div>
-                  </div>
-                  <div>
-                    <ArrowUpRight className="w-5 h-5 text-slate-700 group-hover:translate-x-[2px] group-hover:-translate-y-[2px] transition-all" />
-                  </div>
+                
+                <div className="p-4 border rounded-lg">
+                  <div
+                    className="prose max-w-none text-sm text-gray-700"
+                    dangerouslySetInnerHTML={{
+                      __html: evaluationItem.projectEvaluation.feedback,
+                    }}
+                  />
                 </div>
-              </CardContent>
-            </Card>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Comments and Feedback</DialogTitle>
-            </DialogHeader>
+              </div>
+            ))}
+          </div>
+        </DialogContent>
+      </Dialog>
+    );
+  };
 
-            <div className="text-slate-700 pt-4">
-              <>
-                {midEval.map((evaluation) => {
-                  return (
-                    <div
-                      key={evaluation._id}
-                      className="flex gap-2 flex-col mb-4"
-                    >
-                      <div className="flex items-center justify-between text-sm text-slate-700 font-semibold">
-                        {evaluation.evaluator.fullname}
-
-                        <span className="text-xs font-normal">
-                          {evaluation.evaluator.designation},{" "}
-                          {evaluation.evaluator.institution}
-                        </span>
-                      </div>
-                      <div className="p-4 border rounded-md text-sm text-slate-600">
-                        <div
-                          className="no-tailwind"
-                          dangerouslySetInnerHTML={{
-                            __html: evaluation.projectEvaluation.feedback,
-                          }}
-                        ></div>
-                      </div>
-                    </div>
-                  );
-                })}
-              </>
-            </div>
-          </DialogContent>
-        </Dialog>
-      ),
-    };
-  });
-
-  const finalItems = final.map((finalEval, index) => {
-    const judgement = finalEval[0].projectEvaluation.judgement;
-    let color =
-      judgement === "20" || judgement === "21" ? "#22c55e" : "#ef4444";
-
-    return {
-      color: color,
-      children: (
-        <Dialog>
-          <DialogTrigger asChild>
-            <Card key={index} className="cursor-pointer">
-              <CardContent className="p-2">
-                <div className="group flex items-start justify-between">
-                  <div className="flex flex-col gap-1">
-                    <div className="font-semibold text-sm text-slate-700">
-                      {finalJudgementConfig[judgement]}
-                    </div>
-                    <div className="flex items-center text-xs">
-                      <Calendar className="text-slate-500 w-4 h-4 mr-1" />
-                      {format(finalEval[0].createdAt, "PPP")}
-                    </div>
-                  </div>
-                  <div>
-                    <ArrowUpRight className="w-5 h-5 text-slate-700 group-hover:translate-x-[2px] group-hover:-translate-y-[2px] transition-all" />
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Comments and Feedback</DialogTitle>
-            </DialogHeader>
-
-            <div className="text-slate-700 pt-4">
-              <>
-                {finalEval.map((evaluation) => {
-                  return (
-                    <div
-                      key={evaluation._id}
-                      className="flex gap-1 flex-col mb-4"
-                    >
-                      <div className="flex items-center text-sm justify-between text-slate-700 font-semibold">
-                        {evaluation.evaluator.fullname}
-
-                        <span className="text-xs font-normal">
-                          {evaluation.evaluator.designation},{" "}
-                          {evaluation.evaluator.institution}
-                        </span>
-                      </div>
-                      <div className="p-4 border rounded-md text-sm text-slate-600">
-                        <div
-                          className="no-tailwind"
-                          dangerouslySetInnerHTML={{
-                            __html: evaluation.projectEvaluation.feedback,
-                          }}
-                        ></div>
-                      </div>
-                    </div>
-                  );
-                })}
-              </>
-            </div>
-          </DialogContent>
-        </Dialog>
-      ),
-    };
-  });
   return (
     <Card>
       <CardHeader className="flex flex-row rounded-t-md border-b py-4 bg-slate-100 justify-between items-center">
@@ -286,53 +198,69 @@ function DefenseEvaluation({ project }) {
             Project evaluations from defenses
           </CardDescription>
         </div>
-
         <BookCheck className="text-slate-500" />
       </CardHeader>
-      <CardContent className="pt-4">
-        <div>
-          <div className="text-slate-700 font-semibold ">Proposal</div>
-          <Separator className="my-2 mb-6" />
-
-          <div>
-            {proposal.length > 0 ? (
-              <Timeline className="ml-4 my-4" items={proposalItems} />
-            ) : (
-              <div className="flex text-xs items-center justify-center p-4">
-                No Evaluations
-              </div>
-            )}
-          </div>
-        </div>
-        {project.data.event.mid.defense && (
-          <div>
-            <div className="text-slate-700 font-semibold ">Mid Term</div>
-            <Separator className="my-2 mb-6" />
-
-            <div>
-              {mid.length > 0 ? (
-                <Timeline className="ml-4 my-4" items={midItems} />
+      
+      <CardContent className="p-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {/* Proposal Column */}
+          <div className="space-y-4">
+            <div className="flex items-center gap-2">
+              <h3 className="font-semibold text-gray-900">Proposal</h3>
+              <ChevronDown className="w-4 h-4 text-gray-400" />
+            </div>
+            <div className="space-y-3">
+              {proposal.length > 0 ? (
+                proposal.map((evaluation, index) => (
+                  <EvaluationCard key={index} evaluation={evaluation} type="proposal" />
+                ))
               ) : (
-                <div className="flex text-xs items-center justify-center p-4">
-                  No Evaluations
+                <div className="text-center py-8 text-gray-500">
+                  <User className="w-8 h-8 mx-auto mb-2 opacity-50" />
+                  <p className="text-sm">No evaluations yet</p>
                 </div>
               )}
             </div>
           </div>
-        )}
 
-        <div>
-          <div className="text-slate-700 font-semibold ">Final</div>
-          <Separator className="my-2 mb-6" />
+          {/* Mid Term Column */}
+          <div className="space-y-4">
+            <div className="flex items-center gap-2">
+              <h3 className="font-semibold text-gray-900">Mid Term</h3>
+              <ChevronDown className="w-4 h-4 text-gray-400" />
+            </div>
+            <div className="space-y-3">
+              {project.data.event.mid.defense && mid.length > 0 ? (
+                mid.map((evaluation, index) => (
+                  <EvaluationCard key={index} evaluation={evaluation} type="mid" />
+                ))
+              ) : (
+                <div className="text-center py-8 text-gray-500">
+                  <User className="w-8 h-8 mx-auto mb-2 opacity-50" />
+                  <p className="text-sm">No evaluations yet</p>
+                </div>
+              )}
+            </div>
+          </div>
 
-          <div>
-            {final.length > 0 ? (
-              <Timeline className="ml-4 my-4" items={finalItems} />
-            ) : (
-              <div className="flex text-xs items-center justify-center p-4">
-                No Evaluations
-              </div>
-            )}
+          {/* Final Column */}
+          <div className="space-y-4">
+            <div className="flex items-center gap-2">
+              <h3 className="font-semibold text-gray-900">Final</h3>
+              <ChevronDown className="w-4 h-4 text-gray-400" />
+            </div>
+            <div className="space-y-3">
+              {final.length > 0 ? (
+                final.map((evaluation, index) => (
+                  <EvaluationCard key={index} evaluation={evaluation} type="final" />
+                ))
+              ) : (
+                <div className="text-center py-8 text-gray-500">
+                  <User className="w-8 h-8 mx-auto mb-2 opacity-50" />
+                  <p className="text-sm">No evaluations yet</p>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </CardContent>

@@ -1,4 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { selectCurrentUser } from "@/features/auth/authSlice";
 import {
   useGetSupervisorAssignedProjectDetailsQuery,
   useGrantDefensePermissionMutation,
@@ -6,6 +8,12 @@ import {
 } from "../supervisorApiSlice";
 import ApiError from "@/components/error/ApiError";
 import Loader from "@/components/Loader";
+import BulkProgressLogOperations from "./BulkProgressLogOperations";
+import ProgressLogComments from "./ProgressLogComments";
+import CompactProgressLogs from "./CompactProgressLogs";
+import { SupervisorReportDashboard } from "../../reportReview";
+import NotificationBadge from "../../../components/ui/notification-badge";
+import { useNotifications } from "../../../hooks/useNotifications";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -23,6 +31,7 @@ import {
   ChevronLeft,
   CircleAlert,
   CircleCheck,
+  FileText,
   GitGraph,
   Info,
   Loader2,
@@ -42,6 +51,7 @@ import {
 } from "@/components/ui/tooltip";
 import { Timeline } from "antd";
 import DefenseEvaluation from "./DefenseEvaluations";
+
 import { toast } from "@/components/ui/use-toast";
 import { useState } from "react";
 import {
@@ -58,6 +68,8 @@ import {
 
 function SupervisorProjectDetails() {
   const { id } = useParams();
+  const user = useSelector(selectCurrentUser);
+  const { notifications } = useNotifications();
   const {
     data: project,
     isLoading,
@@ -65,7 +77,28 @@ function SupervisorProjectDetails() {
     isError,
     error,
   } = useGetSupervisorAssignedProjectDetailsQuery(id);
+  const [verifyProgressLog, { isLoading: isVerifying }] = useVerifyProgressLogMutation();
   const navigate = useNavigate();
+
+  const handleVerifyProgressLog = async (logId) => {
+    try {
+      await verifyProgressLog({
+        id: logId,
+        approvedDate: new Date(),
+      }).unwrap();
+      
+      toast({
+        title: "Log Verified",
+        description: "Progress log has been verified successfully",
+      });
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Verification Failed",
+        description: error?.data?.message || "Could not verify progress log",
+      });
+    }
+  };
 
   let content, logItems, unverifiedLogs;
 
@@ -291,6 +324,16 @@ function SupervisorProjectDetails() {
                 </div>
               </CardContent>
             </Card>
+            {/* Bulk Operations */}
+            {unverifiedLogs && unverifiedLogs.length > 0 && (
+              <BulkProgressLogOperations 
+                unverifiedLogs={unverifiedLogs}
+                onOperationComplete={() => {
+                  // RTK Query will automatically refetch due to invalidatesTags
+                }}
+              />
+            )}
+
             <Card>
               <CardHeader className="flex flex-row bg-slate-100 rounded-t-md border-b py-4 justify-between items-center">
                 <div>
@@ -303,15 +346,18 @@ function SupervisorProjectDetails() {
                 <GitGraph className="text-slate-500" />
               </CardHeader>
 
-              <CardContent className="text-sm pl-8 pt-4  mt-6">
-                {logItems.length > 0 && <Timeline items={logItems} />}
-                {logItems.length === 0 && (
-                  <div className="h-[140px] flex items-center justify-center font-semibold text-slate-700 text-lg">
-                    No Progress Logged!
-                  </div>
-                )}
+              <CardContent className="p-4">
+                <CompactProgressLogs 
+                  progressLogs={project?.data?.progressLogs || []}
+                  onVerify={handleVerifyProgressLog}
+                  isLoading={isVerifying}
+                  user={user}
+                />
               </CardContent>
             </Card>
+
+            {/* Defense Evaluations Section - Below Progress Log */}
+            <DefenseEvaluation project={project} />
           </div>
           <div className="grid  auto-rows-max items-start gap-4 md:gap-6 lg:col-span-2 xl:col-span-1">
             <Card>
@@ -426,7 +472,32 @@ function SupervisorProjectDetails() {
               </CardContent>
             </Card>
 
-            <DefenseEvaluation project={project} />
+            {/* Report Review Section */}
+            <Card>
+              <CardHeader className="flex flex-row bg-slate-100 rounded-t-md border-b py-4 justify-between items-center">
+                <div>
+                  <div className="flex items-center gap-2">
+                    <CardTitle className="text-lg">Report Review</CardTitle>
+                    <NotificationBadge 
+                      count={(notifications.newStudentResponses || 0) + (notifications.newReports || 0)} 
+                      variant="default"
+                      size="sm"
+                    >
+                      <div></div>
+                    </NotificationBadge>
+                  </div>
+                  <CardDescription className="text-xs">
+                    Review and provide feedback on student reports
+                  </CardDescription>
+                </div>
+                <FileText className="text-slate-500" />
+              </CardHeader>
+              <CardContent className="p-6">
+                <SupervisorReportDashboard />
+              </CardContent>
+            </Card>
+
+
           </div>
         </main>
       </>
@@ -521,7 +592,12 @@ const Children = ({ progress }) => {
                         <Info className="w-4 h-4" />
                       </TooltipTrigger>
                       <TooltipContent>
-                        <p>{format(progress.approvedDate, "PPP")}</p>
+                        <p>
+                          {progress.approvedDate && !isNaN(new Date(progress.approvedDate).getTime()) 
+                            ? format(progress.approvedDate, "PPP")
+                            : "Not approved"
+                          }
+                        </p>
                       </TooltipContent>
                     </Tooltip>
                   </TooltipProvider>
@@ -537,10 +613,22 @@ const Children = ({ progress }) => {
       <CardFooter className="text-slate-500 border-t text-xs p-4 py-2 flex items-center justify-between">
         <span>{progress.author.fullname}</span>
         <span>
-          {format(progress.logDate, "PP")},{" "}
-          {format(progress.logDate, "hh:mm aa")}
+          {progress.logDate && !isNaN(new Date(progress.logDate).getTime()) 
+            ? `${format(progress.logDate, "PP")}, ${format(progress.logDate, "hh:mm aa")}`
+            : "Invalid date"
+          }
         </span>
       </CardFooter>
+      
+      {/* Comments Section - Show for all logs but hide input for verified ones */}
+      <ProgressLogComments 
+        progressLog={progress}
+        showInputField={!progress.approved}
+        user={user}
+        onCommentAdded={() => {
+          // RTK Query will automatically refetch due to invalidatesTags
+        }}
+      />
     </Card>
   );
 };
