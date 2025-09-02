@@ -7,7 +7,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { ROLES_LIST } from "@/lib/config";
-import { Cctv, FolderGit2, Home, Menu, Origami, Package } from "lucide-react";
+import { Cctv, FolderGit2, Home, Menu, Origami, Package, Settings } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { isTabActive } from "@/lib/utils";
 
@@ -57,6 +57,20 @@ function SupervisorMobileSideBar() {
             >
               <Package className="h-5 w-5" />
               Archive
+            </Link>
+          </SheetClose>
+
+          <SheetClose asChild>
+            <Link
+              to={`/${ROLES_LIST.supervisor}/settings`}
+              className={`mx-[-0.65rem]  flex items-center ${
+                isTabActive(currentPath, "settings")
+                  ? "bg-slate-950 text-white"
+                  : ""
+              }  gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground`}
+            >
+              <Settings className="h-5 w-5" />
+              Settings
             </Link>
           </SheetClose>
         </nav>

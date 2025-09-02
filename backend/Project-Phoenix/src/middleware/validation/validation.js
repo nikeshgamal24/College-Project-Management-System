@@ -427,6 +427,91 @@ const eventSchemas = {
   })
 };
 
+// Supervisor-specific validation schemas
+const supervisorSchemas = {
+  // Profile update validation
+  updateProfile: Joi.object({
+    fullname: Joi.string()
+      .min(2)
+      .max(100)
+      .pattern(/^[a-zA-Z\s]+$/)
+      .messages({
+        'string.min': 'Full name must be at least 2 characters long',
+        'string.max': 'Full name cannot exceed 100 characters',
+        'string.pattern.base': 'Full name can only contain letters and spaces'
+      }),
+    phoneNumber: Joi.string()
+      .pattern(/^[0-9]{10,15}$/)
+      .messages({
+        'string.pattern.base': 'Phone number must be 10-15 digits'
+      }),
+    designation: Joi.string()
+      .min(2)
+      .max(100)
+      .messages({
+        'string.min': 'Designation must be at least 2 characters long',
+        'string.max': 'Designation cannot exceed 100 characters'
+      }),
+    institution: Joi.string()
+      .min(2)
+      .max(200)
+      .messages({
+        'string.min': 'Institution must be at least 2 characters long',
+        'string.max': 'Institution cannot exceed 200 characters'
+      }),
+    skillSet: Joi.array()
+      .items(Joi.string().min(1).max(50))
+      .max(20)
+      .messages({
+        'array.max': 'Maximum 20 skills allowed',
+        'string.min': 'Skill must be at least 1 character long',
+        'string.max': 'Skill cannot exceed 50 characters'
+      })
+  }).min(1).messages({
+    'object.min': 'At least one field must be provided for update'
+  }),
+
+  // Request password change OTP validation
+  requestPasswordChangeOTP: Joi.object({
+    currentPassword: Joi.string()
+      .min(8)
+      .required()
+      .messages({
+        'string.min': 'Current password must be at least 8 characters long',
+        'any.required': 'Current password is required'
+      }),
+    newPassword: Joi.string()
+      .min(8)
+      .pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/)
+      .required()
+      .messages({
+        'string.min': 'New password must be at least 8 characters long',
+        'string.pattern.base': 'New password must contain at least one uppercase letter, one lowercase letter, one number, and one special character',
+        'any.required': 'New password is required'
+      }),
+    confirmPassword: Joi.string()
+      .valid(Joi.ref('newPassword'))
+      .required()
+      .messages({
+        'any.only': 'Confirm password must match new password',
+        'any.required': 'Confirm password is required'
+      })
+  }),
+
+  // Change password with OTP validation
+  changePasswordWithOTP: Joi.object({
+    newPassword: Joi.string()
+      .min(8)
+      .pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/)
+      .required()
+      .messages({
+        'string.min': 'New password must be at least 8 characters long',
+        'string.pattern.base': 'New password must contain at least one uppercase letter, one lowercase letter, one number, and one special character',
+        'any.required': 'New password is required'
+      })
+  })
+};
+
 // Parameter validation
 const paramSchemas = {
   objectId: Joi.object({
@@ -482,5 +567,6 @@ module.exports = {
   authSchemas,
   studentSchemas,
   eventSchemas,
-  paramSchemas
+  paramSchemas,
+  supervisorSchemas
 };

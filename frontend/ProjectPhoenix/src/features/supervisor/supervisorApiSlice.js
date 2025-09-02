@@ -28,6 +28,50 @@ export const supervisorApiSlice = apiSlice.injectEndpoints({
       }),
     }),
 
+    // Profile Management Endpoints
+    getSupervisorProfile: builder.query({
+      query: (id) => ({
+        url: `supervisor/supervisors/${id}`,
+        method: "GET",
+      }),
+      providesTags: ["SupervisorProfile"],
+    }),
+    
+    updateSupervisorProfile: builder.mutation({
+      query: (credentials) => ({
+        url: `supervisor/supervisors/${credentials.id}`,
+        method: "PUT",
+        body: { ...credentials.data },
+      }),
+      invalidatesTags: ["SupervisorProfile"],
+    }),
+    
+    updateSupervisorPhoto: builder.mutation({
+      query: (credentials) => ({
+        url: `supervisor/supervisors/${credentials.id}/photo`,
+        method: "PUT",
+        body: credentials.data,
+      }),
+      invalidatesTags: ["SupervisorProfile"],
+    }),
+
+    // Password Management Endpoints
+    requestSupervisorPasswordChangeOTP: builder.mutation({
+      query: ({ id, currentPassword, newPassword, confirmPassword }) => ({
+        url: `supervisor/profile/${id}/password/request-otp`,
+        method: "POST",
+        body: { currentPassword, newPassword, confirmPassword },
+      }),
+    }),
+    
+    changeSupervisorPasswordWithOTP: builder.mutation({
+      query: ({ id, otp, newPassword }) => ({
+        url: `supervisor/profile/${id}/password/${otp}`,
+        method: "PUT",
+        body: { newPassword },
+      }),
+    }),
+
     updateSupervisor: builder.mutation({
       query: (credentials) => ({
         url: `supervisor/supervisors/${credentials.id}`,
@@ -62,4 +106,11 @@ export const {
   useGetSupervisorAssignedProjectDetailsQuery,
   useVerifyProgressLogMutation,
   useGrantDefensePermissionMutation,
+  // Profile Management Hooks
+  useGetSupervisorProfileQuery,
+  useUpdateSupervisorProfileMutation,
+  useUpdateSupervisorPhotoMutation,
+  // Password Management Hooks
+  useRequestSupervisorPasswordChangeOTPMutation,
+  useChangeSupervisorPasswordWithOTPMutation,
 } = supervisorApiSlice;
