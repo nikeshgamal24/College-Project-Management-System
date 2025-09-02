@@ -838,3 +838,69 @@ Stack: Error: Only PDF files are allowed!
     at feed (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/streamsearch/lib/sbmh.js:219:14)
     at SBMH.push (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/streamsearch/lib/sbmh.js:104:16)
     at Multipart._write (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/busboy/lib/types/multipart.js:567:19)
+20250902	13:21:05	c435f10b-83c2-44a2-a9dd-4196fea7d2ff	Error: Project not found or you are not a team member
+Stack: Error: Project not found or you are not a team member
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/reportReviewController.js:25:15
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async TransactionService.executeTransaction (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/services/database/transactionService.js:29:24)
+    at async submitReportForReview (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/reportReviewController.js:16:20)
+20250902	13:21:21	f96631c8-a7e1-4650-a02d-f15c00d21013	Error: Project not found or you are not a team member
+Stack: Error: Project not found or you are not a team member
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/reportReviewController.js:25:15
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async TransactionService.executeTransaction (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/services/database/transactionService.js:29:24)
+    at async submitReportForReview (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/reportReviewController.js:16:20)
+20250902	13:22:39	87489515-ae75-4d0f-abcb-69895ecdc9c3	Error: Project not found or you are not a team member
+Stack: Error: Project not found or you are not a team member
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/reportReviewController.js:28:15
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async TransactionService.executeTransaction (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/services/database/transactionService.js:29:24)
+    at async submitReportForReview (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/reportReviewController.js:19:20)
+20250902	13:26:29	576923ce-9707-4b33-bb9f-7b9faa2195c2	Error: Project not found or you are not a team member
+Stack: Error: Project not found or you are not a team member
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/reportReviewController.js:25:15
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async TransactionService.executeTransaction (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/services/database/transactionService.js:29:24)
+    at async submitReportForReview (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/reportReviewController.js:16:20)
+20250902	13:30:18	376d3701-5972-43e2-9c7c-bbc77a916b49	Error: Project not found or you are not a team member
+Stack: Error: Project not found or you are not a team member
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/reportReviewController.js:26:15
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async TransactionService.executeTransaction (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/services/database/transactionService.js:29:24)
+    at async submitReportForReview (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/reportReviewController.js:17:20)
+20250902	13:32:09	22291a73-5387-446c-a528-77c5622b565f	Error: Project not found or you are not a team member
+Stack: Error: Project not found or you are not a team member
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/reportReviewController.js:27:15
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async TransactionService.executeTransaction (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/services/database/transactionService.js:29:24)
+    at async submitReportForReview (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/reportReviewController.js:18:20)
+20250902	13:32:31	34842884-6c69-407a-b30a-85a7c44870da	Error: Project not found or you are not a team member
+Stack: Error: Project not found or you are not a team member
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/reportReviewController.js:27:15
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async TransactionService.executeTransaction (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/services/database/transactionService.js:29:24)
+    at async submitReportForReview (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/reportReviewController.js:18:20)
+20250902	13:32:48	1e59c8a4-1f34-44fd-a359-4b6be5147e5c	Error: Project not found or you are not a team member
+Stack: Error: Project not found or you are not a team member
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/reportReviewController.js:27:15
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async TransactionService.executeTransaction (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/services/database/transactionService.js:29:24)
+    at async submitReportForReview (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/reportReviewController.js:18:20)
+20250902	13:35:13	f1b19e43-c76d-46a9-becb-934283b0ca33	Error: Project not found or you are not a team member
+Stack: Error: Project not found or you are not a team member
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/reportReviewController.js:28:15
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async TransactionService.executeTransaction (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/services/database/transactionService.js:29:24)
+    at async submitReportForReview (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/reportReviewController.js:19:20)
+20250902	13:36:17	f4750bfe-0742-4059-a2ec-cb0f1077802e	Error: Project not found or you are not a team member
+Stack: Error: Project not found or you are not a team member
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/reportReviewController.js:29:15
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async TransactionService.executeTransaction (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/services/database/transactionService.js:29:24)
+    at async submitReportForReview (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/reportReviewController.js:20:20)
+20250902	13:37:22	6cb3b5c9-455a-42d0-8543-37ad33e2cb7e	ReferenceError: eventStatusList is not defined
+Stack: ReferenceError: eventStatusList is not defined
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/reportReviewController.js:25:17
+    at TransactionService.executeTransaction (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/services/database/transactionService.js:29:30)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async submitReportForReview (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/reportReviewController.js:20:20)

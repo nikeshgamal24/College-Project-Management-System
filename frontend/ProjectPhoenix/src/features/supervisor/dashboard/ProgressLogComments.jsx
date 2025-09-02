@@ -11,7 +11,7 @@ import { useAddProgressLogCommentMutation } from "../supervisorApiSlice";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { getInitials } from "@/lib/utils";
 
-const ProgressLogComments = ({ progressLog }) => {
+const ProgressLogComments = ({ progressLog, showInputField = true }) => {
   const [comment, setComment] = useState("");
   const [isAddingComment, setIsAddingComment] = useState(false);
   const [addProgressLogComment, { isLoading }] = useAddProgressLogCommentMutation();
@@ -70,31 +70,33 @@ const ProgressLogComments = ({ progressLog }) => {
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
-        {/* Add Comment Section */}
-        <div className="space-y-3">
-          <Textarea
-            placeholder="Add a comment about this progress log..."
-            value={comment}
-            onChange={(e) => setComment(e.target.value)}
-            className="min-h-[80px] resize-none"
-            disabled={isLoading}
-          />
-          <div className="flex justify-end">
-            <Button
-              size="sm"
-              onClick={handleAddComment}
-              disabled={isLoading || !comment.trim() || isAddingComment}
-              className="flex items-center gap-2"
-            >
-              {isLoading || isAddingComment ? (
-                <Loader2 className="w-4 h-4 animate-spin" />
-              ) : (
-                <Send className="w-4 h-4" />
-              )}
-              Add Comment
-            </Button>
+        {/* Add Comment Section - Only show if showInputField is true */}
+        {showInputField && (
+          <div className="space-y-3">
+            <Textarea
+              placeholder="Add a comment about this progress log..."
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
+              className="min-h-[80px] resize-none"
+              disabled={isLoading}
+            />
+            <div className="flex justify-end">
+              <Button
+                size="sm"
+                onClick={handleAddComment}
+                disabled={isLoading || !comment.trim() || isAddingComment}
+                className="flex items-center gap-2"
+              >
+                {isLoading || isAddingComment ? (
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                ) : (
+                  <Send className="w-4 h-4" />
+                )}
+                Add Comment
+              </Button>
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Comments List */}
         {comments.length > 0 && (
@@ -137,7 +139,9 @@ const ProgressLogComments = ({ progressLog }) => {
           <div className="text-center py-6 text-slate-500">
             <MessageSquare className="w-8 h-8 mx-auto mb-2 opacity-50" />
             <p className="text-sm">No comments yet</p>
-            <p className="text-xs">Add the first comment to provide feedback</p>
+            {showInputField && (
+              <p className="text-xs">Add the first comment to provide feedback</p>
+            )}
           </div>
         )}
       </CardContent>

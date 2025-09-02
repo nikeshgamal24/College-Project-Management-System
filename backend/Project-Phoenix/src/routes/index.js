@@ -38,5 +38,6 @@ router.use("/api/event", require("./api/events"));
 router.use("/api/evaluator", require("./api/evaluators"));
 router.use("/api/student", require("./api/students"));
 router.use("/api/supervisor", require("./api/supervisors"));
+router.use("/api/report-review", require("./api/reportReview"));
 
 module.exports = router;

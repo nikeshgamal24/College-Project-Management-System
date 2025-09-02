@@ -40,6 +40,7 @@ import { motion } from "framer-motion";
 import ProjectEvaluations from "./ProjectEvaluations";
 import Loader from "@/components/Loader";
 import ApiError from "@/components/error/ApiError";
+import { StudentReportDashboard } from "../../reportReview";
 
 const renderer = ({ hours, minutes, seconds, completed }) => {
   const formatTime = (time) => time.toString().padStart(2, "0");
@@ -132,6 +133,22 @@ function StudentProject() {
               isSuccess={isSuccess}
             />
           </div>
+
+          {/* Report Review Section */}
+          <Card>
+            <CardHeader className="flex flex-row bg-slate-100 rounded-t-md border-b py-4 justify-between items-center">
+              <div>
+                <CardTitle className="text-xl">Report Review</CardTitle>
+                <CardDescription className="text-xs">
+                  Submit reports for supervisor review and track feedback
+                </CardDescription>
+              </div>
+              <BookCheck className="text-slate-500" />
+            </CardHeader>
+            <CardContent className="p-6">
+              <StudentReportDashboard project={project.data} />
+            </CardContent>
+          </Card>
 
           <Card>
             <CardHeader className="flex flex-row bg-slate-100 rounded-t-md border-b py-4 justify-between items-center">
