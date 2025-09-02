@@ -7,6 +7,7 @@ import {
 } from "../studentApiSlice";
 import Loader from "@/components/Loader";
 import ApiError from "@/components/error/ApiError";
+import StudentProgressLogComments from "./StudentProgressLogComments";
 import { Button } from "@/components/ui/button";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { ROLES_LIST } from "@/lib/config";
@@ -462,6 +463,9 @@ const Children = ({ progress }) => {
           {format(progress.logDate, "hh:mm aa")}
         </span>
       </CardFooter>
+      
+      {/* Supervisor Comments Section */}
+      <StudentProgressLogComments progressLog={progress} />
     </Card>
   );
 };

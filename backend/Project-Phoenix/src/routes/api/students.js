@@ -6,6 +6,7 @@ const verifyRoles = require("../../middleware/auth/verifyRoles");
 const { validate, validateParams, studentSchemas, paramSchemas } = require("../../middleware/validation/validation");
 const {
   uploader,
+  imageUploader,
 } = require("../../controllers/helpers/file/multerUploader");
 
 router
@@ -88,7 +89,7 @@ router
   .route("/profile/:id/photo")
   .put(
     verifyRoles(roleList.Student),
-    uploader.single("photo"),
+    imageUploader.single("photo"),
     studentController.updateStudentPhoto
   );
 

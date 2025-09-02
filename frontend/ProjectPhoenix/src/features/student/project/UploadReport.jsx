@@ -102,7 +102,7 @@ function UploadReport({ disabled }) {
         <FileUp className="w-12 h-12 " />
         {fileToUpload ? (
           <>
-            <p className="text-lg font-semibold">{fileToUpload.path}</p>
+            <p className="text-lg font-semibold">{fileToUpload.name}</p>
             <p className="text-xs text-center text-slate-500 mb-2">
               Your project will be rejected in the defense if incorrect report
               is submited. <br />

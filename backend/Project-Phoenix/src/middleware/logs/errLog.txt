@@ -764,3 +764,77 @@ Stack: Error: Invalid email or password
 20250902	09:48:53	afa3b9cd-d550-44f5-a23b-2c3666b682c3	Error: Invalid email or password
 Stack: Error: Invalid email or password
     at handleLogin (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/auth/authController.js:48:19)
+20250902	11:56:39	112e4e59-35e1-4253-9e73-addd9f569e08	Error: Maximum 5 categories allowed
+Stack: Error: Maximum 5 categories allowed
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/middleware/validation/validation.js:24:19
+    at Layer.handle [as handle_request] (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/route.js:149:13)
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/middleware/auth/verifyRoles.js:14:5
+    at Layer.handle [as handle_request] (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/layer.js:95:5)
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/index.js:284:15
+    at Function.process_params (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/index.js:346:12)
+20250902	11:59:49	35e585fa-bbf8-45ce-a54a-bae1a67c70d9	Error: File upload failed
+Stack: Error: File upload failed
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/studentController.js:784:15
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async TransactionService.executeTransaction (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/services/database/transactionService.js:29:24)
+    at async submitReport (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/studentController.js:741:20)
+20250902	12:00:06	9193d529-1fef-49d8-8802-3ce7a0a43658	Error: File upload failed
+Stack: Error: File upload failed
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/studentController.js:784:15
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async TransactionService.executeTransaction (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/services/database/transactionService.js:29:24)
+    at async submitReport (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/studentController.js:741:20)
+20250902	12:03:00	adea5467-a709-4504-a091-d4f3d0a3f7bd	Error: File upload failed
+Stack: Error: File upload failed
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/studentController.js:784:15
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async TransactionService.executeTransaction (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/services/database/transactionService.js:29:24)
+    at async submitReport (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/studentController.js:741:20)
+20250902	12:03:23	1fdf8348-9429-49e6-ae1f-04277679e5c4	Error: Invalid image file
+Stack: undefined
+20250902	12:03:53	28787372-05bf-4340-9e78-d3b52be9175b	Error: File upload failed
+Stack: Error: File upload failed
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/studentController.js:784:15
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async TransactionService.executeTransaction (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/services/database/transactionService.js:29:24)
+    at async submitReport (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/studentController.js:741:20)
+20250902	12:37:24	e0c7d2c1-ee91-476c-95ca-5726007910a9	Error: Only PDF files are allowed!
+Stack: Error: Only PDF files are allowed!
+    at fileFilter (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/helpers/file/multerUploader.js:20:16)
+    at wrappedFileFilter (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/multer/index.js:44:7)
+    at Multipart.<anonymous> (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/multer/lib/make-middleware.js:109:7)
+    at Multipart.emit (node:events:519:28)
+    at HeaderParser.cb (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/busboy/lib/types/multipart.js:358:14)
+    at HeaderParser.push (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/busboy/lib/types/multipart.js:162:20)
+    at SBMH.ssCb [as _cb] (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/busboy/lib/types/multipart.js:394:37)
+    at feed (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/streamsearch/lib/sbmh.js:219:14)
+    at SBMH.push (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/streamsearch/lib/sbmh.js:104:16)
+    at Multipart._write (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/busboy/lib/types/multipart.js:567:19)
+20250902	12:37:32	d63b4452-55bd-481f-9b7c-ebf62473bef7	Error: Only PDF files are allowed!
+Stack: Error: Only PDF files are allowed!
+    at fileFilter (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/helpers/file/multerUploader.js:20:16)
+    at wrappedFileFilter (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/multer/index.js:44:7)
+    at Multipart.<anonymous> (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/multer/lib/make-middleware.js:109:7)
+    at Multipart.emit (node:events:519:28)
+    at HeaderParser.cb (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/busboy/lib/types/multipart.js:358:14)
+    at HeaderParser.push (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/busboy/lib/types/multipart.js:162:20)
+    at SBMH.ssCb [as _cb] (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/busboy/lib/types/multipart.js:394:37)
+    at feed (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/streamsearch/lib/sbmh.js:219:14)
+    at SBMH.push (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/streamsearch/lib/sbmh.js:104:16)
+    at Multipart._write (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/busboy/lib/types/multipart.js:567:19)
+20250902	12:38:51	7725d174-a9de-44ed-918c-cee19ec2e30d	Error: Only PDF files are allowed!
+Stack: Error: Only PDF files are allowed!
+    at fileFilter (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/helpers/file/multerUploader.js:20:16)
+    at wrappedFileFilter (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/multer/index.js:44:7)
+    at Multipart.<anonymous> (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/multer/lib/make-middleware.js:109:7)
+    at Multipart.emit (node:events:519:28)
+    at HeaderParser.cb (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/busboy/lib/types/multipart.js:358:14)
+    at HeaderParser.push (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/busboy/lib/types/multipart.js:162:20)
+    at SBMH.ssCb [as _cb] (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/busboy/lib/types/multipart.js:394:37)
+    at feed (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/streamsearch/lib/sbmh.js:219:14)
+    at SBMH.push (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/streamsearch/lib/sbmh.js:104:16)
+    at Multipart._write (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/busboy/lib/types/multipart.js:567:19)

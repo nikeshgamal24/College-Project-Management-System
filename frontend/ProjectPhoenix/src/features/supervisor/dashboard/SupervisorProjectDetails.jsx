@@ -6,6 +6,8 @@ import {
 } from "../supervisorApiSlice";
 import ApiError from "@/components/error/ApiError";
 import Loader from "@/components/Loader";
+import BulkProgressLogOperations from "./BulkProgressLogOperations";
+import ProgressLogComments from "./ProgressLogComments";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -291,6 +293,16 @@ function SupervisorProjectDetails() {
                 </div>
               </CardContent>
             </Card>
+            {/* Bulk Operations */}
+            {unverifiedLogs && unverifiedLogs.length > 0 && (
+              <BulkProgressLogOperations 
+                unverifiedLogs={unverifiedLogs}
+                onOperationComplete={() => {
+                  // RTK Query will automatically refetch due to invalidatesTags
+                }}
+              />
+            )}
+
             <Card>
               <CardHeader className="flex flex-row bg-slate-100 rounded-t-md border-b py-4 justify-between items-center">
                 <div>
@@ -541,6 +553,14 @@ const Children = ({ progress }) => {
           {format(progress.logDate, "hh:mm aa")}
         </span>
       </CardFooter>
+      
+      {/* Comments Section */}
+      <ProgressLogComments 
+        progressLog={progress}
+        onCommentAdded={() => {
+          // RTK Query will automatically refetch due to invalidatesTags
+        }}
+      />
     </Card>
   );
 };

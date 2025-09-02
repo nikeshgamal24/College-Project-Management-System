@@ -7,7 +7,7 @@ const verifyRoles = require("../../middleware/auth/verifyRoles");
 const { validate, validateParams, supervisorSchemas, paramSchemas } = require("../../middleware/validation/validation");
 
 // Configure multer for file uploads
-const upload = multer({
+const imageUploader = multer({
   storage: multer.diskStorage({
     destination: function (req, file, cb) {
       cb(null, 'uploads/supervisors/');
@@ -768,28 +768,22 @@ router
     supervisorController.progressLogApprovalGrant
   );
 
-/**
- * @openapi
- * '/api/supervisor/supervisors/{id}':
- *   get:
- *     tags:
- *       - Supervisor API
- *     summary: Get supervisor profile
- *     parameters:
- *       - name: id
- *         in: path
- *         description: ID of supervisor
- *         required: true
- *         schema:
- *           type: string
- *     responses:
- *       '200':
- *         description: OK
- *       400:
- *         description: Bad Request
- *       404:
- *         description: Not Found
- */
+
+router
+  .route("/supervisor/progress-log/bulk-verify")
+  .post(
+    verifyRoles(roleList.Supervisor),
+    supervisorController.bulkVerifyProgressLogs
+  );
+
+router
+  .route("/supervisor/progress-log/:id/comment")
+  .post(
+    verifyRoles(roleList.Supervisor),
+    supervisorController.addProgressLogComment
+  );
+
+
 router
   .route("/supervisors/:id")
   .get(
@@ -797,33 +791,11 @@ router
     supervisorController.getSupervisorProfile
   );
 
-/**
- * @openapi
- * '/api/supervisor/supervisors/{id}/photo':
- *   put:
- *     tags:
- *       - Supervisor API
- *     summary: Update supervisor photo
- *     parameters:
- *       - name: id
- *         in: path
- *         description: ID of supervisor
- *         required: true
- *         schema:
- *           type: string
- *     responses:
- *       '200':
- *         description: OK
- *       400:
- *         description: Bad Request
- *       404:
- *         description: Not Found
- */
 router
   .route("/supervisors/:id/photo")
   .put(
     verifyRoles(roleList.Supervisor),
-    upload.single('photo'),
+    imageUploader.single('photo'),
     supervisorController.updateSupervisorPhoto
   );
 

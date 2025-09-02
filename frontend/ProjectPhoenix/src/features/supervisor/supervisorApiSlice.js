@@ -95,6 +95,22 @@ export const supervisorApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["AssignedProject"],
     }),
+    bulkVerifyProgressLogs: builder.mutation({
+      query: (credentials) => ({
+        url: "supervisor/supervisor/progress-log/bulk-verify",
+        method: "POST",
+        body: { ...credentials },
+      }),
+      invalidatesTags: ["AssignedProject"],
+    }),
+    addProgressLogComment: builder.mutation({
+      query: (credentials) => ({
+        url: `supervisor/supervisor/progress-log/${credentials.id}/comment`,
+        method: "POST",
+        body: { comment: credentials.comment },
+      }),
+      invalidatesTags: ["AssignedProject"],
+    }),
   }),
 });
 
@@ -106,6 +122,8 @@ export const {
   useGetSupervisorAssignedProjectDetailsQuery,
   useVerifyProgressLogMutation,
   useGrantDefensePermissionMutation,
+  useBulkVerifyProgressLogsMutation,
+  useAddProgressLogCommentMutation,
   // Profile Management Hooks
   useGetSupervisorProfileQuery,
   useUpdateSupervisorProfileMutation,

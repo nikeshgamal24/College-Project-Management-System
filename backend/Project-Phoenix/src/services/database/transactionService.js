@@ -9,7 +9,7 @@ class TransactionService {
     const session = await mongoose.startSession();
     
     const {
-      retries = 3,
+      retries = 5,
       retryDelay = 100,
       readConcern = 'majority',
       writeConcern = { w: 'majority', j: true },

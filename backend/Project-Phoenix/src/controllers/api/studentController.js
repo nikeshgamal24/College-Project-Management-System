@@ -184,7 +184,8 @@ const updateStudentPhoto = async (req, res) => {
     }
 
     // Upload photo to cloud storage
-    const photoUrl = await uploadFile(req.file);
+    const uploadResult = await uploadFile(req.file);
+    const photoUrl = uploadResult.secure_url;
 
     // Update student photo
     const student = await Student.findByIdAndUpdate(
@@ -657,7 +658,13 @@ const getProjectById = async (req, res) => {
   try {
     const populateOptions = [
       { path: "teamMembers" },
-      { path: "progressLogs", populate: { path: "author" } },
+      { 
+        path: "progressLogs", 
+        populate: [
+          { path: "author" },
+          { path: "supervisorComments.commentedBy", select: "-OTP -refreshToken -password" }
+        ]
+      },
       { path: "supervisor", populate: { path: "supervisorId" } },
       { path: "event" },
       {
@@ -779,9 +786,13 @@ const submitReport = async (req, res, next) => {
       }
 
       // Upload file to cloudinary
+      console.log("📁 File received for upload:", req.file);
       const upload = await uploadFile(req.file.path);
+      console.log("☁️ Upload result:", upload);
+      
       if (!upload?.secure_url) {
-        throw new AppError('File upload failed', 500);
+        console.error("❌ Upload failed - no secure_url in result:", upload);
+        throw new AppError('File upload failed - no secure URL returned', 500);
       }
 
       // Update project with report details
@@ -886,7 +897,13 @@ const getArchiveProjectById = async (req, res) => {
     console.log("Current user ID:", req.userId);
     const populateOptions = [
       { path: "teamMembers", select: "-password -OTP -refreshToken" },
-      { path: "progressLogs", populate: { path: "author", select: "-password -OTP -refreshToken" } },
+      { 
+        path: "progressLogs", 
+        populate: [
+          { path: "author", select: "-password -OTP -refreshToken" },
+          { path: "supervisorComments.commentedBy", select: "-OTP -refreshToken -password" }
+        ]
+      },
       { path: "supervisor", populate: { path: "supervisorId", select: "-password -OTP -refreshToken" } },
       { path: "event" },
       {
