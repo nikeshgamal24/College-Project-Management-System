@@ -9,6 +9,7 @@ import { ConfigProvider, Steps } from "antd";
 import {
   ArchiveRestore,
   BookCheck,
+  Calendar,
   ExternalLink,
   FileText,
   Footprints,
@@ -33,6 +34,8 @@ import { Link } from "react-router-dom";
 import NotificationBadge from "../../../components/ui/notification-badge";
 import { useNotifications } from "../../../hooks/useNotifications";
 import EditReportSubmission from "../../reportReview/EditReportSubmission";
+import MeetingScheduler from "../../meetings/components/MeetingScheduler";
+import MeetingCalendar from "../../meetings/components/MeetingCalendar";
 import {
   EVENT_TYPE,
   PROGRESS_STATUS,
@@ -736,6 +739,35 @@ function StudentProject() {
             </CardContent>
           </Card>
           <ProjectEvaluations project={project} />
+
+          {/* Meeting Management Section */}
+          <Card>
+            <CardHeader className="flex flex-row bg-slate-100 rounded-t-md border-b py-3 justify-between items-center">
+              <div>
+                <CardTitle className="text-lg flex items-center gap-2">
+                  <Calendar className="w-4 h-4" />
+                  Meeting Management
+                </CardTitle>
+                <CardDescription className="text-xs">
+                  Schedule and manage meetings with your supervisor
+                </CardDescription>
+              </div>
+              <MeetingScheduler
+                supervisorId={project.data.supervisor.supervisorId._id}
+                studentId={user._id}
+                projectId={project.data._id}
+                trigger={
+                  <Button size="sm" className="flex items-center gap-2 text-xs h-8">
+                    <Calendar className="w-3 h-3" />
+                    Request Meeting
+                  </Button>
+                }
+              />
+            </CardHeader>
+            <CardContent className="p-3">
+              <MeetingCalendar userId={user._id} userRole="student" />
+            </CardContent>
+          </Card>
         </div>
 
         {/* Edit Report Modal */}

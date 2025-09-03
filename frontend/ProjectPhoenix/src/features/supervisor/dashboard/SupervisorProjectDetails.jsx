@@ -14,6 +14,9 @@ import CompactProgressLogs from "./CompactProgressLogs";
 import { SupervisorReportDashboard } from "../../reportReview";
 import NotificationBadge from "../../../components/ui/notification-badge";
 import { useNotifications } from "../../../hooks/useNotifications";
+import MeetingScheduler from "../../meetings/components/MeetingScheduler";
+import MeetingCalendar from "../../meetings/components/MeetingCalendar";
+import MeetingList from "../../meetings/components/MeetingList";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -26,6 +29,7 @@ import {
 } from "@/components/ui/card";
 import {
   ArrowUpRight,
+  Calendar,
   Cctv,
   CheckCheck,
   ChevronLeft,
@@ -334,29 +338,34 @@ function SupervisorProjectDetails() {
               />
             )}
 
+            {/* Progress Log Section - Moved to right column */}
+
+            {/* Report Review Dashboard - Moved below Progress Log */}
             <Card>
               <CardHeader className="flex flex-row bg-slate-100 rounded-t-md border-b py-4 justify-between items-center">
                 <div>
-                  <CardTitle className="text-lg">Progress Log</CardTitle>
-
+                  <div className="flex items-center gap-2">
+                    <CardTitle className="text-lg">Report Review</CardTitle>
+                    <NotificationBadge 
+                      count={(notifications.newStudentResponses || 0) + (notifications.newReports || 0)} 
+                      variant="default"
+                      size="sm"
+                    >
+                      <div></div>
+                    </NotificationBadge>
+                  </div>
                   <CardDescription className="text-xs">
-                    Log of the progress achieved by the members
+                    Review and provide feedback on student reports
                   </CardDescription>
                 </div>
-                <GitGraph className="text-slate-500" />
+                <FileText className="text-slate-500" />
               </CardHeader>
-
-              <CardContent className="p-4">
-                <CompactProgressLogs 
-                  progressLogs={project?.data?.progressLogs || []}
-                  onVerify={handleVerifyProgressLog}
-                  isLoading={isVerifying}
-                  user={user}
-                />
+              <CardContent className="p-6">
+                <SupervisorReportDashboard />
               </CardContent>
             </Card>
 
-            {/* Defense Evaluations Section - Below Progress Log */}
+            {/* Defense Evaluations Section */}
             <DefenseEvaluation project={project} />
           </div>
           <div className="grid  auto-rows-max items-start gap-4 md:gap-6 lg:col-span-2 xl:col-span-1">
@@ -472,28 +481,53 @@ function SupervisorProjectDetails() {
               </CardContent>
             </Card>
 
-            {/* Report Review Section */}
+            {/* Progress Log Section - Moved to right column above Meeting Management */}
             <Card>
               <CardHeader className="flex flex-row bg-slate-100 rounded-t-md border-b py-4 justify-between items-center">
                 <div>
-                  <div className="flex items-center gap-2">
-                    <CardTitle className="text-lg">Report Review</CardTitle>
-                    <NotificationBadge 
-                      count={(notifications.newStudentResponses || 0) + (notifications.newReports || 0)} 
-                      variant="default"
-                      size="sm"
-                    >
-                      <div></div>
-                    </NotificationBadge>
-                  </div>
+                  <CardTitle className="text-lg">Progress Log</CardTitle>
                   <CardDescription className="text-xs">
-                    Review and provide feedback on student reports
+                    Log of the progress achieved by the members
                   </CardDescription>
                 </div>
-                <FileText className="text-slate-500" />
+                <GitGraph className="text-slate-500" />
               </CardHeader>
-              <CardContent className="p-6">
-                <SupervisorReportDashboard />
+              <CardContent className="p-4">
+                <CompactProgressLogs 
+                  progressLogs={project?.data?.progressLogs || []}
+                  onVerify={handleVerifyProgressLog}
+                  isLoading={isVerifying}
+                  user={user}
+                />
+              </CardContent>
+            </Card>
+
+            {/* Compact Meeting Management Section - Moved to Right Column */}
+            <Card>
+              <CardHeader className="flex flex-row bg-slate-100 rounded-t-md border-b py-3 justify-between items-center">
+                <div>
+                  <CardTitle className="text-lg flex items-center gap-2">
+                    <Calendar className="w-4 h-4" />
+                    Meeting Management
+                  </CardTitle>
+                  <CardDescription className="text-xs">
+                    Schedule and manage meetings with students
+                  </CardDescription>
+                </div>
+                <MeetingScheduler
+                  supervisorId={user._id}
+                  studentId={project.data.teamMembers[0]._id}
+                  projectId={project.data._id}
+                  trigger={
+                    <Button size="sm" className="flex items-center gap-2 text-xs h-8">
+                      <Calendar className="w-3 h-3" />
+                      Schedule Meeting
+                    </Button>
+                  }
+                />
+              </CardHeader>
+              <CardContent className="p-3">
+                <MeetingCalendar userId={user._id} userRole="supervisor" />
               </CardContent>
             </Card>
 
@@ -545,12 +579,12 @@ const Children = ({ progress }) => {
     <Card>
       <CardHeader className=" p-4 pb-1">
         <div className="text-slate-800 font-semibold flex items-center justify-between">
-          <span>{progress.title}</span>
+          <span className="text-lg font-semibold">{progress.title}</span>
           <div className="flex items-center gap-2">
             {!progress.approved && !isLoading && (
               <AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                 <AlertDialogTrigger asChild>
-                  <Button size="sm" classNname="text-xs">
+                  <Button size="sm" className="text-sm">
                     Verifiy <CheckCheck className="w-4 h-4 ml-1" />
                   </Button>
                 </AlertDialogTrigger>
@@ -573,7 +607,7 @@ const Children = ({ progress }) => {
               </AlertDialog>
             )}
             {!progress.approved && isLoading && (
-              <Button size="sm" classNname="text-xs" disabled>
+              <Button size="sm" className="text-sm" disabled>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 Verifiying..
               </Button>
@@ -581,7 +615,7 @@ const Children = ({ progress }) => {
 
             {progress.approved && (
               <Badge
-                className="flex items-center gap-1 py-1"
+                className="flex items-center gap-1 py-1 text-sm"
                 variant="secondary"
               >
                 Verified
@@ -607,11 +641,11 @@ const Children = ({ progress }) => {
           </div>
         </div>
       </CardHeader>
-      <CardContent className="p-4 pt-1 text-slate-600">
+      <CardContent className="p-4 pt-1 text-slate-600 text-base">
         {progress.description}
       </CardContent>
-      <CardFooter className="text-slate-500 border-t text-xs p-4 py-2 flex items-center justify-between">
-        <span>{progress.author.fullname}</span>
+      <CardFooter className="text-slate-500 border-t text-sm p-4 py-2 flex items-center justify-between">
+        <span className="font-medium">{progress.author.fullname}</span>
         <span>
           {progress.logDate && !isNaN(new Date(progress.logDate).getTime()) 
             ? `${format(progress.logDate, "PP")}, ${format(progress.logDate, "hh:mm aa")}`

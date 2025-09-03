@@ -36,6 +36,13 @@ router
     reportReviewController.updateReport
   );
 
+router
+  .route("/student/delete/:id")
+  .delete(
+    verifyRoles(roleList.Student),
+    reportReviewController.deleteReport
+  );
+
 // Supervisor routes
 router
   .route("/supervisor/reports")

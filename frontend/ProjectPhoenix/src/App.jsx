@@ -21,6 +21,7 @@ import SupervisorLayout from "./components/layouts/SupervisorLayout";
 import DefenseLayout from "./components/layouts/DefenseLayout";
 // Import useEffect only - we'll handle Capacitor conditionally
 import { useEffect } from "react";
+import { Toaster } from "sonner";
 
 const router = createBrowserRouter([
   {
@@ -93,6 +94,7 @@ export default function App() {
   return (
     <Provider store={store}>
       <RouterProvider router={router} />
+      <Toaster position="top-right" richColors />
     </Provider>
   );
 }

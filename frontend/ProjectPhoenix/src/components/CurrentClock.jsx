@@ -29,10 +29,13 @@ const options = { month: "long", day: "numeric", year: "numeric" };
 function CurrentClock({ dateObject }) {
   const [date, setDate] = useState(new Date());
 
-  const fullDate = date.toLocaleDateString("en-US", options);
-  const hours = date.getHours();
-  const day = date.toLocaleDateString("en-US", { weekday: "long" });
-  const minutes = date.getMinutes();
+  // Use dateObject if provided, otherwise use current date
+  const displayDate = dateObject || date;
+  
+  const fullDate = displayDate.toLocaleDateString("en-US", options);
+  const hours = displayDate.getHours();
+  const day = displayDate.toLocaleDateString("en-US", { weekday: "long" });
+  const minutes = displayDate.getMinutes();
   const meridiem = hours >= 12 ? "PM" : "AM";
   const displayHours = hours % 12 || 12;
   const formattedTime = `${displayHours}:${minutes
