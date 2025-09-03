@@ -283,13 +283,24 @@ const updateReportStatus = async (req, res, next) => {
   }
 };
 
-// Get student's submitted reports
+// Get student's submitted reports (including reports from all team members)
 const getStudentReports = async (req, res, next) => {
   try {
     const { projectId, reportType } = req.query;
 
+    // If projectId is provided, get all team members from that project
+    let teamMemberIds = [req.userId]; // Include current user by default
+    
+    if (projectId) {
+      const project = await Project.findById(projectId);
+      if (project && project.teamMembers) {
+        // Include all team members from the project
+        teamMemberIds = project.teamMembers.map(member => member.toString());
+      }
+    }
+
     const query = {
-      submittedBy: req.userId,
+      submittedBy: { $in: teamMemberIds },
       isActive: true
     };
 
@@ -302,7 +313,7 @@ const getStudentReports = async (req, res, next) => {
     }
 
     const reports = await ReportReview.find(query)
-      .populate('projectId', 'projectName projectCode')
+      .populate('projectId', 'projectName projectCode teamMembers')
       .populate('submittedBy', 'fullname email rollNumber photo')
       .populate('supervisorFeedback.reviewedBy', 'fullname email')
       .populate('supervisorFeedback.sectionFeedback.commentedBy', 'fullname email')
@@ -374,15 +385,25 @@ const updateReport = async (req, res, next) => {
     }
 
     const result = await transactionService.executeTransaction(async (session) => {
-      // Find the report and verify ownership
+      // Find the report and verify team membership
       const report = await ReportReview.findById(id).session(session);
 
       if (!report) {
         throw new AppError('Report not found', 404);
       }
 
-      // Verify student owns this report
-      if (report.submittedBy.toString() !== req.userId.toString()) {
+      // Get the project to verify team membership
+      const project = await Project.findById(report.projectId).session(session);
+      if (!project) {
+        throw new AppError('Project not found', 404);
+      }
+
+      // Verify user is a team member of the project
+      const isTeamMember = project.teamMembers.some(member => 
+        member.toString() === req.userId.toString()
+      );
+
+      if (!isTeamMember) {
         throw new AppError('You are not authorized to update this report', 403);
       }
 
@@ -409,6 +430,9 @@ const updateReport = async (req, res, next) => {
         report.version = version;
       }
 
+      // Update the submitter to the current user (who is updating the report)
+      report.submittedBy = req.userId;
+      report.submittedAt = new Date(); // Update submission time to current time
       report.updatedAt = new Date();
 
       await report.save({ session });
@@ -435,6 +459,58 @@ const updateReport = async (req, res, next) => {
   }
 };
 
+// Delete a report (only team members can delete)
+const deleteReport = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+
+    const result = await transactionService.executeTransaction(async (session) => {
+      // Find the report and verify team membership
+      const report = await ReportReview.findById(id).session(session);
+
+      if (!report) {
+        throw new AppError('Report not found', 404);
+      }
+
+      // Get the project to verify team membership
+      const project = await Project.findById(report.projectId).session(session);
+      if (!project) {
+        throw new AppError('Project not found', 404);
+      }
+
+      // Verify user is a team member of the project
+      const isTeamMember = project.teamMembers.some(member => 
+        member.toString() === req.userId.toString()
+      );
+
+      if (!isTeamMember) {
+        throw new AppError('You are not authorized to delete this report', 403);
+      }
+
+      // Only allow deletion if report is not yet reviewed
+      if (report.status !== 'submitted') {
+        throw new AppError('Cannot delete report that has already been reviewed', 400);
+      }
+
+      // Soft delete by setting isActive to false
+      report.isActive = false;
+      report.updatedAt = new Date();
+      await report.save({ session });
+
+      return report;
+    });
+
+    res.status(200).json({
+      status: 'success',
+      message: 'Report deleted successfully',
+      data: result
+    });
+
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   submitReportForReview,
   getReportsForReview,
@@ -444,5 +520,6 @@ module.exports = {
   updateReportStatus,
   getStudentReports,
   respondToFeedback,
-  updateReport
+  updateReport,
+  deleteReport
 };

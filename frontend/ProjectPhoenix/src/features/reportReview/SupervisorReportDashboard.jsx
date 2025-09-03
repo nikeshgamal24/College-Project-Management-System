@@ -62,87 +62,87 @@ const SupervisorReportDashboard = () => {
   };
 
   return (
-    <div className="space-y-6">
-      {/* Enhanced Header */}
+    <div className="space-y-4">
+      {/* Compact Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h3 className="text-xl font-bold text-gray-900">Report Review Dashboard</h3>
-          <p className="text-sm text-gray-600 mt-1">Review and provide feedback on student reports</p>
+          <h3 className="text-lg font-semibold text-gray-900">Report Review Dashboard</h3>
+          <p className="text-xs text-gray-600">Review and provide feedback on student reports</p>
         </div>
         <div className="flex items-center gap-2">
-          <Badge variant="outline" className="flex items-center gap-1">
+          <Badge variant="outline" className="flex items-center gap-1 text-xs">
             <Eye className="h-3 w-3" />
             {stats.total} Reports
           </Badge>
         </div>
       </div>
 
-      {/* Fixed Statistics Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-        <Card className="hover:shadow-lg transition-all duration-200 border-l-4 border-l-gray-500">
-          <CardContent className="p-4">
-            <div className="flex flex-col items-center text-center space-y-2">
-              <div className="p-3 bg-gray-100 rounded-full">
-                <FileText className="h-6 w-6 text-gray-600" />
+      {/* Compact Statistics Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+        <Card className="hover:shadow-md transition-all duration-200 border-l-4 border-l-gray-500">
+          <CardContent className="p-3">
+            <div className="flex flex-col items-center text-center space-y-1">
+              <div className="p-2 bg-gray-100 rounded-full">
+                <FileText className="h-4 w-4 text-gray-600" />
               </div>
               <div>
-                <p className="text-3xl font-bold text-gray-900">{stats.total}</p>
+                <p className="text-2xl font-bold text-gray-900">{stats.total}</p>
                 <p className="text-xs text-gray-600 font-medium">Total Reports</p>
               </div>
             </div>
           </CardContent>
         </Card>
         
-        <Card className="hover:shadow-lg transition-all duration-200 border-l-4 border-l-blue-500">
-          <CardContent className="p-4">
-            <div className="flex flex-col items-center text-center space-y-2">
-              <div className="p-3 bg-blue-100 rounded-full">
-                <Clock className="h-6 w-6 text-blue-600" />
+        <Card className="hover:shadow-md transition-all duration-200 border-l-4 border-l-blue-500">
+          <CardContent className="p-3">
+            <div className="flex flex-col items-center text-center space-y-1">
+              <div className="p-2 bg-blue-100 rounded-full">
+                <Clock className="h-4 w-4 text-blue-600" />
               </div>
               <div>
-                <p className="text-3xl font-bold text-blue-600">{stats.submitted}</p>
+                <p className="text-2xl font-bold text-blue-600">{stats.submitted}</p>
                 <p className="text-xs text-gray-600 font-medium">Submitted</p>
               </div>
             </div>
           </CardContent>
         </Card>
         
-        <Card className="hover:shadow-lg transition-all duration-200 border-l-4 border-l-yellow-500">
-          <CardContent className="p-4">
-            <div className="flex flex-col items-center text-center space-y-2">
-              <div className="p-3 bg-yellow-100 rounded-full">
-                <Eye className="h-6 w-6 text-yellow-600" />
+        <Card className="hover:shadow-md transition-all duration-200 border-l-4 border-l-yellow-500">
+          <CardContent className="p-3">
+            <div className="flex flex-col items-center text-center space-y-1">
+              <div className="p-2 bg-yellow-100 rounded-full">
+                <Eye className="h-4 w-4 text-yellow-600" />
               </div>
               <div>
-                <p className="text-3xl font-bold text-yellow-600">{stats.underReview}</p>
+                <p className="text-2xl font-bold text-yellow-600">{stats.underReview}</p>
                 <p className="text-xs text-gray-600 font-medium">Under Review</p>
               </div>
             </div>
           </CardContent>
         </Card>
         
-        <Card className="hover:shadow-lg transition-all duration-200 border-l-4 border-l-green-500">
-          <CardContent className="p-4">
-            <div className="flex flex-col items-center text-center space-y-2">
-              <div className="p-3 bg-green-100 rounded-full">
-                <CheckCircle className="h-6 w-6 text-green-600" />
+        <Card className="hover:shadow-md transition-all duration-200 border-l-4 border-l-green-500">
+          <CardContent className="p-3">
+            <div className="flex flex-col items-center text-center space-y-1">
+              <div className="p-2 bg-green-100 rounded-full">
+                <CheckCircle className="h-4 w-4 text-green-600" />
               </div>
               <div>
-                <p className="text-3xl font-bold text-green-600">{stats.approved}</p>
+                <p className="text-2xl font-bold text-green-600">{stats.approved}</p>
                 <p className="text-xs text-gray-600 font-medium">Approved</p>
               </div>
             </div>
           </CardContent>
         </Card>
         
-        <Card className="hover:shadow-lg transition-all duration-200 border-l-4 border-l-red-500">
-          <CardContent className="p-4">
-            <div className="flex flex-col items-center text-center space-y-2">
-              <div className="p-3 bg-red-100 rounded-full">
-                <AlertCircle className="h-6 w-6 text-red-600" />
+        <Card className="hover:shadow-md transition-all duration-200 border-l-4 border-l-red-500">
+          <CardContent className="p-3">
+            <div className="flex flex-col items-center text-center space-y-1">
+              <div className="p-2 bg-red-100 rounded-full">
+                <AlertCircle className="h-4 w-4 text-red-600" />
               </div>
               <div>
-                <p className="text-3xl font-bold text-red-600">{stats.needsRevision}</p>
+                <p className="text-2xl font-bold text-red-600">{stats.needsRevision}</p>
                 <p className="text-xs text-gray-600 font-medium">Needs Revision</p>
               </div>
             </div>
@@ -151,21 +151,21 @@ const SupervisorReportDashboard = () => {
       </div>
 
       {/* Main Content */}
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-3">
         <TabsList>
-          <TabsTrigger value="list" className="flex items-center gap-2">
+          <TabsTrigger value="list" className="flex items-center gap-2 text-sm">
             <FileText className="w-4 h-4" />
             Reports for Review ({reports.length})
           </TabsTrigger>
           {selectedReport && (
-            <TabsTrigger value="review" className="flex items-center gap-2">
+            <TabsTrigger value="review" className="flex items-center gap-2 text-sm">
               <MessageSquare className="w-4 h-4" />
               Review Report
             </TabsTrigger>
           )}
         </TabsList>
 
-        <TabsContent value="list" className="space-y-4">
+        <TabsContent value="list" className="space-y-3">
           <ReportList
             reports={reports}
             userType="supervisor"
@@ -174,13 +174,13 @@ const SupervisorReportDashboard = () => {
         </TabsContent>
 
         {selectedReport && (
-          <TabsContent value="review" className="space-y-4">
+          <TabsContent value="review" className="space-y-3">
             <SupervisorReportReview
               reportId={selectedReport._id}
             />
             <div className="flex justify-end">
               <button
-                className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
+                className="px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
                 onClick={() => {
                   setSelectedReport(null);
                   setActiveTab("list");

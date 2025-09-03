@@ -39,14 +39,14 @@ const CompactProgressLogs = ({ progressLogs, onVerify, isLoading, user }) => {
   const getStatusBadge = (approved) => {
     if (approved) {
       return (
-        <Badge variant="default" className="bg-green-100 text-green-800 border-green-200">
+        <Badge variant="default" className="bg-green-100 text-green-800 border-green-200 hover:bg-green-200 hover:text-green-900 transition-colors duration-200">
           <CheckCircle className="w-3 h-3 mr-1" />
           Verified
         </Badge>
       );
     }
     return (
-      <Badge variant="secondary" className="bg-yellow-100 text-yellow-800 border-yellow-200">
+      <Badge variant="secondary" className="bg-yellow-100 text-yellow-800 border-yellow-200 hover:bg-yellow-200 hover:text-yellow-900 transition-colors duration-200">
         <Clock className="w-3 h-3 mr-1" />
         Pending
       </Badge>
@@ -69,7 +69,7 @@ const CompactProgressLogs = ({ progressLogs, onVerify, isLoading, user }) => {
         const isExpanded = expandedCards.has(log._id);
         
         return (
-          <Card key={log._id} className="border-l-4 border-l-blue-500 cursor-pointer hover:shadow-md transition-all duration-300 ease-in-out">
+          <Card key={log._id} className="border-l-4 border-l-blue-500 cursor-pointer hover:shadow-md hover:bg-gray-50 transition-all duration-300 ease-in-out">
             <CardContent 
               className="p-4 transition-all duration-300 ease-in-out"
               onClick={() => toggleCardExpansion(log._id)}

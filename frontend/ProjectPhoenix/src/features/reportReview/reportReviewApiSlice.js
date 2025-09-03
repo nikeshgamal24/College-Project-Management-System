@@ -61,6 +61,14 @@ export const reportReviewApiSlice = apiSlice.injectEndpoints({
       invalidatesTags: ["StudentReports", "Project"],
     }),
 
+    deleteReport: builder.mutation({
+      query: (id) => ({
+        url: `report-review/student/delete/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["StudentReports", "Project"],
+    }),
+
     // Supervisor endpoints
     getReportsForReview: builder.query({
       query: ({ status, reportType } = {}) => {
@@ -119,6 +127,7 @@ export const {
   useGetStudentReportsQuery,
   useRespondToFeedbackMutation,
   useUpdateReportMutation,
+  useDeleteReportMutation,
   // Supervisor hooks
   useGetReportsForReviewQuery,
   useGetReportForReviewQuery,

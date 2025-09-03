@@ -17,7 +17,9 @@ import {
   Clock,
   Download,
   X,
-  Edit
+  Edit,
+  ChevronDown,
+  ChevronUp
 } from "lucide-react";
 import { format } from "date-fns";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -35,6 +37,7 @@ const ReportList = ({ reports, userType, onViewReport }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingReport, setEditingReport] = useState(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [showFilters, setShowFilters] = useState(false);
 
   const getStatusBadge = (status) => {
     const statusConfig = {
@@ -120,87 +123,116 @@ const ReportList = ({ reports, userType, onViewReport }) => {
   }
 
   return (
-    <div className="space-y-6">
-      {/* Enhanced Search and Filter Section */}
-      <Card className="border-l-4 border-l-indigo-500">
-        <CardHeader className="pb-4">
-          <CardTitle className="flex items-center gap-2 text-lg">
-            <Filter className="w-5 h-5 text-indigo-600" />
-            Search & Filter Reports
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          {/* Search Bar */}
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-            <Input
-              placeholder="Search by project name, student name, or report type..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-12 h-12 text-base"
-            />
+    <div className="space-y-4">
+      {/* Compact Search and Filter Section */}
+      <Card 
+        className={`border-l-4 border-l-indigo-500 cursor-pointer transition-all duration-300 hover:shadow-md ${
+          showFilters ? 'shadow-sm' : ''
+        }`}
+        onClick={() => setShowFilters(!showFilters)}
+      >
+        <CardHeader className="pb-3">
+          <div className="flex items-center justify-between">
+            <CardTitle className="flex items-center gap-2 text-base">
+              <Filter className="w-4 h-4 text-indigo-600" />
+              Search & Filter Reports
+            </CardTitle>
+            <div className="flex items-center gap-2 text-sm text-gray-600 transition-transform duration-300">
+              {showFilters ? (
+                <>
+                  <ChevronUp className="w-4 h-4" />
+                  Hide Filters
+                </>
+              ) : (
+                <>
+                  <ChevronDown className="w-4 h-4" />
+                  Show Filters
+                </>
+              )}
+            </div>
           </div>
-          
-          {/* Filter Row */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-700">Filter by Status</label>
-              <Select value={statusFilter} onValueChange={setStatusFilter}>
-                <SelectTrigger className="h-10">
-                  <SelectValue placeholder="All Status" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">📊 All Status</SelectItem>
-                  <SelectItem value="submitted">⏰ Submitted</SelectItem>
-                  <SelectItem value="under_review">👁️ Under Review</SelectItem>
-                  <SelectItem value="approved">✅ Approved</SelectItem>
-                  <SelectItem value="needs_revision">⚠️ Needs Revision</SelectItem>
-                  <SelectItem value="rejected">❌ Rejected</SelectItem>
-                </SelectContent>
-              </Select>
+        </CardHeader>
+        
+        <div 
+          className={`overflow-hidden transition-all duration-300 ease-in-out ${
+            showFilters ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+          }`}
+        >
+          <CardContent className="space-y-3">
+            {/* Search Bar */}
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+              <Input
+                placeholder="Search by project name, student name, or report type..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-10 h-10 text-sm"
+                onClick={(e) => e.stopPropagation()}
+              />
             </div>
             
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-700">Filter by Type</label>
-              <Select value={typeFilter} onValueChange={setTypeFilter}>
-                <SelectTrigger className="h-10">
-                  <SelectValue placeholder="All Types" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">📄 All Types</SelectItem>
-                  <SelectItem value="proposal">📋 Proposal</SelectItem>
-                  <SelectItem value="mid">📊 Mid-Term</SelectItem>
-                  <SelectItem value="final">📑 Final</SelectItem>
-                </SelectContent>
-              </Select>
+            {/* Filter Row */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <div className="space-y-1">
+                <label className="text-xs font-medium text-gray-700">Filter by Status</label>
+                <Select value={statusFilter} onValueChange={setStatusFilter}>
+                  <SelectTrigger className="h-9" onClick={(e) => e.stopPropagation()}>
+                    <SelectValue placeholder="All Status" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">📊 All Status</SelectItem>
+                    <SelectItem value="submitted">⏰ Submitted</SelectItem>
+                    <SelectItem value="under_review">👁️ Under Review</SelectItem>
+                    <SelectItem value="approved">✅ Approved</SelectItem>
+                    <SelectItem value="needs_revision">⚠️ Needs Revision</SelectItem>
+                    <SelectItem value="rejected">❌ Rejected</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              
+              <div className="space-y-1">
+                <label className="text-xs font-medium text-gray-700">Filter by Type</label>
+                <Select value={typeFilter} onValueChange={setTypeFilter}>
+                  <SelectTrigger className="h-9" onClick={(e) => e.stopPropagation()}>
+                    <SelectValue placeholder="All Types" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">📄 All Types</SelectItem>
+                    <SelectItem value="proposal">📋 Proposal</SelectItem>
+                    <SelectItem value="mid">📊 Mid-Term</SelectItem>
+                    <SelectItem value="final">📑 Final</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
-          </div>
-          
-          {/* Results Summary */}
-          <div className="flex items-center justify-between pt-2 border-t">
-            <p className="text-sm text-gray-600">
-              Showing <span className="font-medium text-gray-900">{filteredReports.length}</span> of <span className="font-medium text-gray-900">{reports.length}</span> reports
-            </p>
-            {(searchTerm || statusFilter !== 'all' || typeFilter !== 'all') && (
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => {
-                  setSearchTerm('');
-                  setStatusFilter('all');
-                  setTypeFilter('all');
-                }}
-                className="text-xs"
-              >
-                Clear Filters
-              </Button>
-            )}
-          </div>
-        </CardContent>
+            
+            {/* Results Summary */}
+            <div className="flex items-center justify-between pt-2 border-t">
+              <p className="text-xs text-gray-600">
+                Showing <span className="font-medium text-gray-900">{filteredReports.length}</span> of <span className="font-medium text-gray-900">{reports.length}</span> reports
+              </p>
+              {(searchTerm || statusFilter !== 'all' || typeFilter !== 'all') && (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setSearchTerm('');
+                    setStatusFilter('all');
+                    setTypeFilter('all');
+                  }}
+                  className="text-xs h-7"
+                >
+                  Clear Filters
+                </Button>
+              )}
+            </div>
+          </CardContent>
+        </div>
       </Card>
 
-      {/* Enhanced Reports List */}
-      <div className="space-y-4">
+      {/* Compact Reports List */}
+      <div className="space-y-3">
         {filteredReports.map((report) => (
           <Card key={report._id} className="hover:shadow-lg transition-all duration-300 border-l-4 border-l-transparent hover:border-l-blue-500 group">
             <CardContent className="p-4">
@@ -241,9 +273,9 @@ const ReportList = ({ reports, userType, onViewReport }) => {
                         variant="default"
                         size="sm"
                         onClick={() => userType === 'supervisor' ? handleReviewReport(report) : handleViewReport(report)}
-                        className="flex items-center gap-2 px-4 shadow-sm hover:shadow-md transition-all duration-200"
+                        className="flex items-center gap-2 px-3 py-1.5 text-xs shadow-sm hover:shadow-md transition-all duration-200"
                       >
-                        <Eye className="w-4 h-4" />
+                        <Eye className="w-3 h-3" />
                         {userType === 'supervisor' ? 'Review' : 'View'}
                       </Button>
                     </div>
