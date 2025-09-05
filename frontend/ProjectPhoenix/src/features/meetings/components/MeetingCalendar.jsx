@@ -268,7 +268,7 @@ const MeetingCalendar = ({ userId, userRole }) => {
                       <div className={`${getMeetingStatusColor(meeting.status)} px-2 py-1 rounded-full text-xs font-medium hover:shadow-sm transition-all duration-200`}>
                         {meeting.status}
                       </div>
-                      {(userRole === 'supervisor' || userRole === 'student') && (
+                      {userRole === 'supervisor' && (
                         <div className="flex items-center gap-1">
                           <Button 
                             variant="ghost" 

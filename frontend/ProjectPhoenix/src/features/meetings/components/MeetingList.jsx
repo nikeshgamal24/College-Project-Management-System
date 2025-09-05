@@ -121,6 +121,8 @@ const MeetingList = ({ userId, userRole, filters = {} }) => {
 
   // Check if meeting can be edited
   const canEditMeeting = (meeting) => {
+    // Only supervisors and admins can edit meetings after they are created
+    if (userRole === 'student') return false;
     if (meeting.status === 'completed' || meeting.status === 'cancelled') return false;
     if (isPast(new Date(meeting.scheduledDate))) return false;
     return true;
@@ -128,6 +130,8 @@ const MeetingList = ({ userId, userRole, filters = {} }) => {
 
   // Check if meeting can be cancelled
   const canCancelMeeting = (meeting) => {
+    // Only supervisors and admins can cancel meetings after they are created
+    if (userRole === 'student') return false;
     if (meeting.status === 'completed' || meeting.status === 'cancelled') return false;
     return true;
   };

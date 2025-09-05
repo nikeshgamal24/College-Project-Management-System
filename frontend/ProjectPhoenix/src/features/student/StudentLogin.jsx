@@ -142,7 +142,7 @@ function StudentLogin() {
                       {...register("email", {
                         required: "Email is required",
                         pattern: {
-                          value: /^[a-zA-Z0-9._%+-]+\.(\d{6})@ncit\.edu\.np$/,
+                          // value: /^[a-zA-Z0-9._%+-]+\.(\d{6})@ncit\.edu\.np$/,
                           message: "Invalid email address",
                         },
                       })}

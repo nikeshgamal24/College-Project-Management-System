@@ -12,6 +12,7 @@ const cookieParser = require("cookie-parser");
 const credentials = require("./src/middleware/security/credentials");
 const mongoose = require("mongoose");
 const connectDB = require("./src/config/database");
+const meetingCronService = require("./src/services/meeting/meetingCronService");
 // const { swaggerDocs } = require("./src/config/swagger");
 
 // Configuration
@@ -61,6 +62,19 @@ connectDB().catch(err => {
   console.error('Failed to connect to MongoDB:', err);
   process.exit(1);
 });
+
+// Start meeting cron service (optional)
+try {
+  if (NODE_ENV === 'production' || process.env.ENABLE_CRON === 'true') {
+    meetingCronService.start();
+    console.log('Meeting cron service started');
+  } else {
+    console.log('Meeting cron service disabled (set ENABLE_CRON=true to enable)');
+  }
+} catch (error) {
+  console.warn('Warning: Meeting cron service failed to start:', error.message);
+  console.log('Server will continue without automatic meeting status updates');
+}
 
 
 // Security middleware (should be early in the middleware stack)
