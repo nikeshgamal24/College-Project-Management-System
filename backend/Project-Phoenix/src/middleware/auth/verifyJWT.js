@@ -5,16 +5,33 @@ const Student = require("../../models/user/Student");
 const Supervisor = require("../../models/user/Supervisor");
 const Admin = require("../../models/user/Admin");
 const Evaluator = require("../../models/user/Evaluator");
-
+ 
 const verifyJWT = (req, res, next) => {
   const authHeader = req.headers.authorization || req.headers.Authorization;
-  if (!authHeader?.startsWith("Bearer ")) return res.sendStatus(401); // Unauthorized
+  console.log('Headers:', req.headers.authorization);
+  console.log('Headers:', req.headers.Authorization);
+  console.log('Auth header:', authHeader);
+  if (!authHeader?.startsWith("Bearer ")) {
+    return res.status(401).json({
+      success: false,
+      message: 'Unauthorized - No token provided',
+      status: 'fail'
+    });
+  }
 
   const token = authHeader.split(" ")[1];
 
+  console.log('Token:', token);
+  console.log('Access token secret:', process.env.ACCESS_TOKEN_SECRET);
   // Verify the token
   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, async (err, decoded) => {
-    if (err) return res.sendStatus(403); // 403 --> Invalid token
+    if (err) {
+      return res.status(403).json({
+        success: false,
+        message: 'Forbidden - Invalid token',
+        status: 'fail'
+      });
+    }
 
     let freshUser;
     const email = decoded.UserInfo.email;
@@ -30,18 +47,37 @@ const verifyJWT = (req, res, next) => {
       } else if (role.includes(roleList.Evaluator)) {
         freshUser = await Evaluator.findOne({ email }).exec();
       } else {
-        return res.sendStatus(400); // Bad request if role doesn't match
+        return res.status(400).json({
+          success: false,
+          message: 'Bad request - Invalid role',
+          status: 'fail'
+        });
       }
 
-      if (!freshUser) return res.sendStatus(404); // Not found if no user is found
+      if (!freshUser) {
+        return res.status(404).json({
+          success: false,
+          message: 'User not found',
+          status: 'fail'
+        });
+      }
 
       req.email = email;
       req.role = role;
       req.userId = freshUser._id;
+      req.user = {
+        userId: freshUser._id,
+        userRole: role
+      };
+      console.log('JWT verified successfully');
       next();
     } catch (error) {
       console.error(error);
-      return res.sendStatus(500); // Internal server error
+      return res.status(500).json({
+        success: false,
+        message: 'Internal server error',
+        status: 'error'
+      });
     }
   });
 };

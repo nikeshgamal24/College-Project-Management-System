@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { format, isToday, isTomorrow, isYesterday, isPast, isFuture } from 'date-fns';
-import { Calendar, Clock, MapPin, Video, Users, MoreHorizontal, Edit, Trash2, X } from 'lucide-react';
+import { Calendar, Clock, MapPin, Video, Users, MoreHorizontal, Edit, Trash2, X, Bell } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -12,6 +12,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useGetMeetingsQuery, useUpdateMeetingMutation, useCancelMeetingMutation } from '../meetingApiSlice';
 import { toast } from 'sonner';
+import ReminderSettings from './ReminderSettings';
 
 const MEETING_TYPE_ICONS = {
   progress_review: '📊',
@@ -33,6 +34,8 @@ const MeetingList = ({ userId, userRole, filters = {} }) => {
   const [editingMeeting, setEditingMeeting] = useState(null);
   const [cancellingMeeting, setCancellingMeeting] = useState(null);
   const [cancelReason, setCancelReason] = useState('');
+  const [showReminderSettings, setShowReminderSettings] = useState(false);
+  const [selectedMeetingForReminder, setSelectedMeetingForReminder] = useState(null);
 
   // Helper function to safely convert date strings to Date objects
   const safeDate = (dateString) => {
@@ -121,6 +124,8 @@ const MeetingList = ({ userId, userRole, filters = {} }) => {
 
   // Check if meeting can be edited
   const canEditMeeting = (meeting) => {
+    // Only supervisors and admins can edit meetings after they are created
+    if (userRole === 'student') return false;
     if (meeting.status === 'completed' || meeting.status === 'cancelled') return false;
     if (isPast(new Date(meeting.scheduledDate))) return false;
     return true;
@@ -128,6 +133,8 @@ const MeetingList = ({ userId, userRole, filters = {} }) => {
 
   // Check if meeting can be cancelled
   const canCancelMeeting = (meeting) => {
+    // Only supervisors and admins can cancel meetings after they are created
+    if (userRole === 'student') return false;
     if (meeting.status === 'completed' || meeting.status === 'cancelled') return false;
     return true;
   };
@@ -147,6 +154,72 @@ const MeetingList = ({ userId, userRole, filters = {} }) => {
 
   return (
     <div className="space-y-4">
+      {/* Reminder Management Section */}
+      <Card className="border border-gray-200 shadow-sm">
+        <CardHeader className="pb-3 bg-gray-50/50 border-b border-gray-100">
+          <div className="flex items-center justify-between">
+            <div>
+              <CardTitle className="flex items-center gap-2 text-base font-semibold text-gray-800">
+                <Bell className="w-4 h-4 text-green-600" />
+                Meeting Reminders
+              </CardTitle>
+              <p className="text-xs text-gray-600 mt-1">
+                Set reminders for your upcoming meetings
+              </p>
+            </div>
+            <div className="text-sm text-gray-500">
+              {meetingsList.length} meeting{meetingsList.length !== 1 ? 's' : ''} found
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent className="p-4">
+          {meetingsList.length > 0 ? (
+            <div className="space-y-2">
+              <p className="text-sm text-gray-600 mb-3">
+                Click on any meeting below to set reminders
+              </p>
+              <div className="grid gap-2">
+                {meetingsList.slice(0, 3).map(meeting => (
+                  <div key={meeting._id} className="flex items-center justify-between bg-white border border-gray-200 rounded-lg px-3 py-2">
+                    <div className="flex items-center gap-3">
+                      <span className="text-sm font-medium text-gray-900">{meeting.title}</span>
+                      <span className="text-xs text-gray-500">
+                        {format(safeDate(meeting.scheduledDate), 'MMM do, h:mm a')}
+                      </span>
+                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${getMeetingStatusColor(meeting.status)}`}>
+                        {meeting.status}
+                      </span>
+                    </div>
+                    <Button
+                      onClick={() => {
+                        setSelectedMeetingForReminder(meeting);
+                        setShowReminderSettings(true);
+                      }}
+                      variant="outline"
+                      size="sm"
+                      className="h-7 px-3 text-xs"
+                    >
+                      <Bell className="w-3 h-3 mr-1" />
+                      Set Reminder
+                    </Button>
+                  </div>
+                ))}
+                {meetingsList.length > 3 && (
+                  <div className="text-xs text-gray-500 text-center py-2">
+                    And {meetingsList.length - 3} more meetings...
+                  </div>
+                )}
+              </div>
+            </div>
+          ) : (
+            <div className="text-center py-4 text-sm text-gray-500">
+              <Bell className="w-8 h-8 mx-auto mb-2 text-gray-400" />
+              <p>No meetings found to set reminders</p>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
       {meetingsList.length === 0 ? (
         <Card>
           <CardContent className="text-center py-8">
@@ -441,6 +514,41 @@ const MeetingList = ({ userId, userRole, filters = {} }) => {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      {/* Reminder Settings Dialog */}
+      {showReminderSettings && selectedMeetingForReminder && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+            <div className="p-6">
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-xl font-semibold text-gray-900">
+                  Set Reminders for "{selectedMeetingForReminder.title}"
+                </h2>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => {
+                    setShowReminderSettings(false);
+                    setSelectedMeetingForReminder(null);
+                  }}
+                  className="h-8 w-8 p-0"
+                >
+                  ✕
+                </Button>
+              </div>
+              <ReminderSettings
+                meeting={selectedMeetingForReminder}
+                userRole={userRole}
+                onReminderUpdate={() => {
+                  setShowReminderSettings(false);
+                  setSelectedMeetingForReminder(null);
+                  // The query will automatically refetch due to invalidatesTags
+                }}
+              />
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

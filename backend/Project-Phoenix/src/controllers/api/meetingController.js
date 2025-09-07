@@ -6,6 +6,7 @@ const { AppError } = require('../../middleware/errorHandler');
 const transactionService = require('../../services/database/transactionService');
 const eventStatusList = require('../../config/constants/eventStatusList');
 const { sendMailToUser } = require('../helpers/email/sendMailToUser');
+const MeetingNotificationService = require('../../services/email/meetingNotificationService');
 const roleList = require('../../config/constants/roles');
 
 // Create a new meeting
@@ -123,7 +124,7 @@ const createMeeting = async (req, res, next) => {
         history: [{
           action: 'created',
           performedBy: req.userId,
-                      performedByModel: userRoleString,
+          performedByModel: roleList.userRoleString,
           details: `Meeting created by ${userRoleString} for all team members`
         }]
       };
@@ -149,13 +150,19 @@ const createMeeting = async (req, res, next) => {
         { path: 'project', select: 'projectName' }
       ]);
 
-      // Send email notifications (temporarily disabled)
-      // try {
-      //   await sendMeetingNotifications(meeting, 'created');
-      // } catch (emailError) {
-      //   console.error('Email notification failed:', emailError);
-      //   // Don't fail the meeting creation if email fails
-      // }
+      // Send email notifications
+      try {
+        // Send meeting request notification to supervisor
+        await MeetingNotificationService.sendMeetingRequestNotification(
+          meeting,
+          studentId,
+          projectId
+        );
+        console.log('Meeting request notification sent to supervisor');
+      } catch (emailError) {
+        console.error('Email notification failed:', emailError);
+        // Don't fail the meeting creation if email fails
+      }
 
       return meeting;
     });
@@ -274,12 +281,12 @@ const updateMeeting = async (req, res, next) => {
       }
 
       // Check if user has permission to update this meeting
+      // Only supervisors and admins can edit meetings after they are created
       const canUpdate = userRole == roleList.Admin ||
-        (userRole == roleList.Student && meeting.student.some(s => s.toString() === userId.toString())) ||
         (userRole == roleList.Supervisor && meeting.supervisor.toString() === userId.toString());
 
       if (!canUpdate) {
-        throw new AppError('Permission denied to update this meeting', 403);
+        throw new AppError('Only supervisors can edit meetings after they are created', 403);
       }
 
       // Check if meeting can be updated (not completed or cancelled)
@@ -334,12 +341,19 @@ const updateMeeting = async (req, res, next) => {
         { path: 'project', select: 'projectName' }
       ]);
 
-      // Send email notifications (temporarily disabled)
-      // try {
-      //   await sendMeetingNotifications(meeting, 'updated');
-      // } catch (emailError) {
-      //   console.error('Email notification failed:', emailError);
-      // }
+      // Send email notifications
+      try {
+        // Send meeting update notification to all team members
+        await MeetingNotificationService.sendMeetingUpdateNotification(
+          meeting,
+          meeting.project,
+          `Meeting details updated by ${userRole}`
+        );
+        console.log('Meeting update notification sent to team members');
+      } catch (emailError) {
+        console.error('Email notification failed:', emailError);
+        // Don't fail the meeting update if email fails
+      }
 
       return meeting;
     });
@@ -370,12 +384,12 @@ const cancelMeeting = async (req, res, next) => {
       }
 
       // Check if user has permission to cancel this meeting
+      // Only supervisors and admins can cancel meetings after they are created
       const canCancel = userRole == roleList.Admin ||
-        (userRole == roleList.Student && meeting.student.some(s => s.toString() === userId)) ||
         (userRole == roleList.Supervisor && meeting.supervisor.toString() === userId);
 
       if (!canCancel) {
-        throw new AppError('Permission denied to cancel this meeting', 403);
+        throw new AppError('Only supervisors can cancel meetings after they are created', 403);
       }
 
       // Check if meeting can be cancelled
@@ -394,12 +408,19 @@ const cancelMeeting = async (req, res, next) => {
 
       await meeting.save({ session });
 
-      // Send email notifications (temporarily disabled)
-      // try {
-      //   await sendMeetingNotifications(meeting, 'cancelled', reason);
-      // } catch (emailError) {
-      //   console.error('Email notification failed:', emailError);
-      // }
+      // Send email notifications
+      try {
+        // Send meeting cancellation notification to all team members
+        await MeetingNotificationService.sendMeetingCancellationNotification(
+          meeting,
+          meeting.project,
+          reason || 'No reason provided'
+        );
+        console.log('Meeting cancellation notification sent to team members');
+      } catch (emailError) {
+        console.error('Email notification failed:', emailError);
+        // Don't fail the meeting cancellation if email fails
+      }
 
       return meeting;
     });
@@ -429,12 +450,12 @@ const deleteMeeting = async (req, res, next) => {
       }
 
       // Check if user has permission to delete this meeting
+      // Only supervisors and admins can delete meetings after they are created
       const canDelete = userRole == roleList.Admin ||
-        (userRole == roleList.Student && meeting.student.some(s => s.toString() === userId.toString())) ||
         (userRole == roleList.Supervisor && meeting.supervisor.toString() === userId.toString());
 
       if (!canDelete) {
-        throw new AppError('You do not have permission to delete this meeting', 403);
+        throw new AppError('Only supervisors can delete meetings after they are created', 403);
       }
 
       // Delete the meeting
@@ -650,6 +671,19 @@ const approveMeetingRequest = async (req, res, next) => {
     meeting.approvedAt = new Date();
 
     await meeting.save();
+
+    // Send email notifications
+    try {
+      // Send meeting confirmation notification to all team members
+      await MeetingNotificationService.sendMeetingConfirmationNotification(
+        meeting,
+        meeting.project
+      );
+      console.log('Meeting confirmation notification sent to team members');
+    } catch (emailError) {
+      console.error('Email notification failed:', emailError);
+      // Don't fail the approval if email fails
+    }
 
     res.status(200).json({
       success: true,
