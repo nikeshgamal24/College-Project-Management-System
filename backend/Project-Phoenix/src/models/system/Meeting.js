@@ -220,23 +220,73 @@ const meetingSchema = new mongoose.Schema({
         default: Date.now
     },
 
+    // Reminder Settings
+    reminders: {
+        general: {
+            enabled: {
+                type: Boolean,
+                default: false
+            },
+            timeBefore: {
+                type: Number, // minutes before meeting
+                min: 5,
+                max: 1440 // max 24 hours
+            },
+            setBy: {
+                type: mongoose.Schema.Types.ObjectId,
+                refPath: 'reminders.general.setByModel'
+            },
+            setByModel: {
+                type: String,
+                enum: ['Student', 'Supervisor', 'Admin']
+            },
+            setAt: {
+                type: Date,
+                default: Date.now
+            }
+        },
+        personal: {
+            enabled: {
+                type: Boolean,
+                default: false
+            },
+            timeBefore: {
+                type: Number, // minutes before meeting
+                min: 5,
+                max: 1440 // max 24 hours
+            },
+            setBy: {
+                type: mongoose.Schema.Types.ObjectId,
+                refPath: 'reminders.personal.setByModel'
+            },
+            setByModel: {
+                type: String,
+                enum: ['Student', 'Supervisor', 'Admin']
+            },
+            setAt: {
+                type: Date,
+                default: Date.now
+            }
+        }
+    },
+
     // Meeting History
     history: [{
         action: {
             type: String,
-            enum: ['created', 'rescheduled', 'cancelled', 'completed', 'notes_updated']
+            enum: ['created', 'rescheduled', 'cancelled', 'completed', 'notes_updated', 'reminder_set', 'reminder_updated']
         },
         timestamp: {
             type: Date,
             default: Date.now
         },
         performedBy: {
-            type: mongoose.Schema.Types.ObjectId,
+            type: mongoose.Schema.Types.ObjectId,   
             refPath: 'history.performedByModel'
         },
         performedByModel: {
             type: String,
-            enum: [roleList.Student, roleList.Supervisor, roleList.Admin]
+            enum: [roleList.Student, roleList.Supervisor, roleList.Admin,'System']
         },
         details: String
     }]

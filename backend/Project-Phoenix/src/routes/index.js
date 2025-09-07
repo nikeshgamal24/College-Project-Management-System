@@ -41,5 +41,6 @@ router.use("/api/supervisor", require("./api/supervisors"));
 router.use("/api/report-review", require("./api/reportReview"));
 router.use("/api/meetings", require("./api/meetings"));
 router.use("/api/meeting-status", require("./api/meetingStatus"));
+router.use("/api/reminders", require("./api/reminder"));
 
 module.exports = router;
