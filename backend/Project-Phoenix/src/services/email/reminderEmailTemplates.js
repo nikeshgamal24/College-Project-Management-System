@@ -21,7 +21,6 @@ const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:3000';
 const getGeneralReminderTemplate = (meeting, project, reminderType = 'general') => {
   const meetingDate = new Date(meeting.scheduledDate);
   const reminderTime = new Date(meetingDate.getTime() - (meeting.reminders.general.timeBefore * 60000));
-  console.log('Project details getGeneralReminderTemplate:', project);
   
   return {
     subject: `🔔 General Reminder: ${meeting.title}`,

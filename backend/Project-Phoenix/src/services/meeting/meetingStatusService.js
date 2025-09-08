@@ -24,24 +24,23 @@ class MeetingStatusService {
       let newStatus = meeting.status;
       let action = '';
 
+
       // Determine new status based on current time
-      if (meeting.status === 'scheduled' && currentTime >= reminderTime && currentTime < meetingStartTime) {
-        // 5 minutes before meeting - send reminder and mark as in_progress
+      if (meeting.status === 'scheduled' && currentTime >= reminderTime) {
+        // 5 minutes before meeting OR during meeting - send reminder and mark as in_progress
         newStatus = 'in_progress';
-        action = 'meeting_starting';
+        action = 'created';
         statusChanged = true;
       } else if (meeting.status === 'in_progress' && currentTime >= completionTime) {
         // 15 minutes after meeting end - mark as completed
         newStatus = 'completed';
-        action = 'meeting_completed';
-        statusChanged = true;
-      } else if (meeting.status === 'completed' && currentTime >= archiveTime) {
-        // 24 hours after completion - archive the meeting
-        newStatus = 'archived';
-        action = 'meeting_archived';
+        action = 'completed';
         statusChanged = true;
       }
-
+      
+      // Note: No automatic archiving - completed meetings stay completed
+      // Archived status is not available in the Meeting model enum
+      
       // Update meeting if status changed
       if (statusChanged) {
         const oldStatus = meeting.status;
@@ -50,7 +49,7 @@ class MeetingStatusService {
         // Add to history
         meeting.history.push({
           action: action,
-          performedBy: 'system',
+          performedBy: null, // System action, no specific user
           performedByModel: 'System',
           details: `Meeting status automatically updated from ${oldStatus} to ${newStatus}`,
           timestamp: currentTime
