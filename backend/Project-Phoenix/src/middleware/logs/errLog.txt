@@ -3606,3 +3606,211 @@ Stack: Error: Supervisor ID, Student ID, Project ID, and date are required
     at next (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/index.js:280:10)
     at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/middleware/auth/verifyJWT.js:73:7
     at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+20250910	12:39:57	b2f0e005-57e4-43ba-9bf6-1e2465a5d10b	Error: Supervisor ID, Student ID, Project ID, and date are required
+Stack: Error: Supervisor ID, Student ID, Project ID, and date are required
+    at getAvailableSlots (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/meetingController.js:482:13)
+    at Layer.handle [as handle_request] (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/layer.js:95:5)
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/index.js:284:15
+    at Function.process_params (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/index.js:346:12)
+    at next (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/index.js:280:10)
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/middleware/auth/verifyJWT.js:73:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+20250910	13:06:30	8b2f427a-dca0-4834-9285-c7f3b6f01bf6	Error: "title" must not have leading or trailing whitespace, "content" must not have leading or trailing whitespace, "expiresAt" must be a valid date
+Stack: Error: "title" must not have leading or trailing whitespace, "content" must not have leading or trailing whitespace, "expiresAt" must be a valid date
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/middleware/validation/validation.js:24:19
+    at Layer.handle [as handle_request] (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/route.js:149:13)
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/middleware/auth/verifyRoles.js:14:5
+    at Layer.handle [as handle_request] (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/layer.js:95:5)
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/index.js:284:15
+    at Function.process_params (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/index.js:346:12)
+20250910	13:25:38	9b1332bf-bfe4-4baf-9f1c-2c1ea87a1856	Create notice error: Notice validation failed: publishedBy: Published by is required
+20250910	13:29:12	3f9ca84e-0a46-4927-891f-f4de8713a352	Create notice error: Notice validation failed: publishedBy: Published by is required
+20250910	13:56:04	73c673c2-48ca-4c8d-bf50-501b460cdd40	Error: Invalid email or password
+Stack: Error: Invalid email or password
+    at handleLogin (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/auth/authController.js:41:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+20250910	13:56:09	0325802b-21da-4312-b338-d4312ed6f4bb	Error: Invalid email or password
+Stack: Error: Invalid email or password
+    at handleLogin (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/auth/authController.js:41:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+20250910	13:56:14	69842ef3-ecf1-43b3-8f42-86e7b45bbccc	Error: Invalid email or password
+Stack: Error: Invalid email or password
+    at handleLogin (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/auth/authController.js:41:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+20250910	13:56:27	cb756b48-b71f-4afa-ab77-180dabc4fc4f	Error: Invalid email or password
+Stack: Error: Invalid email or password
+    at handleLogin (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/auth/authController.js:41:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+20250910	13:56:36	6d630a50-1dd9-4ffa-bf45-988844f7a127	Error: Invalid email or password
+Stack: Error: Invalid email or password
+    at handleLogin (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/auth/authController.js:41:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+20250910	13:57:37	757553d2-c8b7-482c-93b6-873d7fb0979c	Error: Invalid email or password
+Stack: Error: Invalid email or password
+    at handleLogin (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/auth/authController.js:41:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+20250910	13:57:39	ad200cd5-a3ca-4f03-9c71-802e3b9c8295	Error: Invalid email or password
+Stack: Error: Invalid email or password
+    at handleLogin (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/auth/authController.js:41:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+20250910	13:57:40	fd9b88f9-ea3e-456c-8fe1-33ac308d315b	Error: Invalid email or password
+Stack: Error: Invalid email or password
+    at handleLogin (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/auth/authController.js:41:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+20250910	13:57:40	7b228769-96f6-4afb-a8e1-0006a2d48f11	Error: Invalid email or password
+Stack: Error: Invalid email or password
+    at handleLogin (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/auth/authController.js:41:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+20250910	13:57:40	4d8b95a3-d608-4256-bee7-202773b02663	Error: Invalid email or password
+Stack: Error: Invalid email or password
+    at handleLogin (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/auth/authController.js:41:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+20250910	14:01:23	24d1108d-5eb3-4106-8698-88b8f9733cbc	Error: Invalid email or password
+Stack: Error: Invalid email or password
+    at handleLogin (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/auth/authController.js:41:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+20250910	14:04:08	0656a5e1-edc2-4829-b718-289d16ce0f9c	Error: Invalid email or password
+Stack: Error: Invalid email or password
+    at handleLogin (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/auth/authController.js:41:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+20250910	14:10:25	d92227b4-a57b-4a93-8f9e-1e525eee2a3a	Error: Invalid email or password
+Stack: Error: Invalid email or password
+    at handleLogin (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/auth/authController.js:41:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+20250910	14:13:46	d6ad84c8-1c0d-4791-8dbc-af24eea242dd	Error: Invalid email or password
+Stack: Error: Invalid email or password
+    at handleLogin (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/auth/authController.js:41:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+20250910	14:18:36	d0d65b67-d97f-4269-b6e6-cb3f04394ac0	Error: Invalid email or password
+Stack: Error: Invalid email or password
+    at handleLogin (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/auth/authController.js:41:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+20250910	14:27:39	ba069c6a-66ae-4388-bb1f-92f5eedbe4b8	Error: Invalid email or password
+Stack: Error: Invalid email or password
+    at handleLogin (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/auth/authController.js:43:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+20250910	14:28:22	8324a84f-edac-460f-b32e-5730a29579fd	Error: Invalid email or password
+Stack: Error: Invalid email or password
+    at handleLogin (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/auth/authController.js:45:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+20250910	14:30:10	991cc5aa-de78-43c4-8811-0e92ee4ada85	Error: Invalid email or password
+Stack: Error: Invalid email or password
+    at handleLogin (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/auth/authController.js:45:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+20250910	14:33:10	eaf9c2ac-c9ae-4f6b-a8d9-48e476dcdaef	Error: Supervisor ID, Student ID, Project ID, and date are required
+Stack: Error: Supervisor ID, Student ID, Project ID, and date are required
+    at getAvailableSlots (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/meetingController.js:482:13)
+    at Layer.handle [as handle_request] (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/layer.js:95:5)
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/index.js:284:15
+    at Function.process_params (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/index.js:346:12)
+    at next (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/index.js:280:10)
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/middleware/auth/verifyJWT.js:87:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+20250910	15:02:36	e98b211a-fd1f-4cb4-8870-fb787b49949f	Error: Password must be at least 8 characters long
+Stack: Error: Password must be at least 8 characters long
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/middleware/validation/validation.js:19:19
+    at Layer.handle [as handle_request] (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/layer.js:95:5)
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/index.js:284:15
+    at Function.process_params (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/index.js:346:12)
+    at next (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/index.js:280:10)
+    at Function.handle (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/index.js:175:3)
+    at router (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/index.js:47:12)
+20250910	15:07:22	c7dd2857-138c-422c-bc01-b7fb265136a0	Error: Invalid email or password
+Stack: Error: Invalid email or password
+    at handleLogin (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/auth/authController.js:45:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+20250910	15:07:22	3b5bcfb6-a00e-414d-b087-50cfa107e988	Error: Invalid email or password
+Stack: Error: Invalid email or password
+    at handleLogin (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/auth/authController.js:45:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+20250910	15:07:47	8297c4c2-7744-4cb7-9e73-59435b682f13	Error: Supervisor ID, Student ID, Project ID, and date are required
+Stack: Error: Supervisor ID, Student ID, Project ID, and date are required
+    at getAvailableSlots (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/meetingController.js:482:13)
+    at Layer.handle [as handle_request] (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/layer.js:95:5)
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/index.js:284:15
+    at Function.process_params (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/index.js:346:12)
+    at next (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/index.js:280:10)
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/middleware/auth/verifyJWT.js:87:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+20250910	16:57:48	740dba13-f9c2-4b5c-8543-263ec4181e0b	Error: Notice content must be at least 10 characters long
+Stack: Error: Notice content must be at least 10 characters long
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/middleware/validation/validation.js:19:19
+    at Layer.handle [as handle_request] (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/route.js:149:13)
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/routes/api/notices.js:70:5
+    at Layer.handle [as handle_request] (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/route.js:149:13)
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/middleware/auth/verifyRoles.js:14:5
+    at Layer.handle [as handle_request] (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/route.js:119:3)
+20250910	17:03:45	1780c078-14ab-4160-a283-b82f290e248a	Error: Supervisor ID, Student ID, Project ID, and date are required
+Stack: Error: Supervisor ID, Student ID, Project ID, and date are required
+    at getAvailableSlots (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/meetingController.js:482:13)
+    at Layer.handle [as handle_request] (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/layer.js:95:5)
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/index.js:284:15
+    at Function.process_params (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/index.js:346:12)
+    at next (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/index.js:280:10)
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/middleware/auth/verifyJWT.js:87:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+20250910	17:03:53	4ea24b40-0f1f-4714-8333-e7f3bda186ea	Error: Supervisor ID, Student ID, Project ID, and date are required
+Stack: Error: Supervisor ID, Student ID, Project ID, and date are required
+    at getAvailableSlots (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/meetingController.js:482:13)
+    at Layer.handle [as handle_request] (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/layer.js:95:5)
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/index.js:284:15
+    at Function.process_params (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/index.js:346:12)
+    at next (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/index.js:280:10)
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/middleware/auth/verifyJWT.js:87:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+20250910	17:12:31	1edd4193-c2c0-4c38-84c5-6b9268678c4b	Error: Supervisor ID, Student ID, Project ID, and date are required
+Stack: Error: Supervisor ID, Student ID, Project ID, and date are required
+    at getAvailableSlots (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/meetingController.js:482:13)
+    at Layer.handle [as handle_request] (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/layer.js:95:5)
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/index.js:284:15
+    at Function.process_params (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/index.js:346:12)
+    at next (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/index.js:280:10)
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/middleware/auth/verifyJWT.js:87:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+20250910	17:17:13	da99e078-9859-4d77-8088-d5f076e237ca	Error: Supervisor ID, Student ID, Project ID, and date are required
+Stack: Error: Supervisor ID, Student ID, Project ID, and date are required
+    at getAvailableSlots (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/meetingController.js:482:13)
+    at Layer.handle [as handle_request] (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/layer.js:95:5)
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/index.js:284:15
+    at Function.process_params (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/index.js:346:12)
+    at next (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/index.js:280:10)
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/middleware/auth/verifyJWT.js:87:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+20250910	17:40:47	f491d4bf-84e8-46cf-ac95-d96354fc3c70	Get notices error: status is not defined
+20250910	17:40:49	7a5be093-66af-4886-8fa7-26cc46c143bd	Get notices error: status is not defined
+20250910	18:20:57	37438e2b-e3f5-47c0-9f4f-7512f03118c0	Update notice error: Invalid target audience values: Admin
+20250910	18:21:07	a2a4f0b7-e3e3-456c-81a9-82f1fcf8cd13	Update notice error: Invalid target audience values: Admin
+20250910	18:21:18	0834f9db-0109-493b-a6e5-ca63a052ed17	Update notice error: Invalid target audience values: Admin
+20250910	18:21:56	351e1dd2-8358-4fa4-9144-bf9e1bb0ab4c	Update notice error: Invalid target audience values: Admin

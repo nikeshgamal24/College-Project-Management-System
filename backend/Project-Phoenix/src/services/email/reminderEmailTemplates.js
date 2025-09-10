@@ -6,8 +6,9 @@
 const getRoleString = (role) => {
   const roleMap = {
     2001: 'Student',
-    2002: 'Supervisor', 
-    2003: 'Admin'
+    1984: 'Supervisor', 
+    5150: 'Admin',
+    4334: 'Evaluator'
   };
   return roleMap[role] || 'User';
 };

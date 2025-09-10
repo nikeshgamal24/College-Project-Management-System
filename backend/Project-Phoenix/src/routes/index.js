@@ -5,7 +5,7 @@ const verifyJWT = require("../middleware/auth/verifyJWT");
 
 // Rate limiting
 const authLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
+  windowMs: 5 * 60 * 1000, // 15 minutes
   max: 5, // limit each IP to 5 login requests per windowMs
   message: {
     error: "Too many login attempts, please try again later."
@@ -42,5 +42,7 @@ router.use("/api/report-review", require("./api/reportReview"));
 router.use("/api/meetings", require("./api/meetings"));
 router.use("/api/meeting-status", require("./api/meetingStatus"));
 router.use("/api/reminders", require("./api/reminder"));
+router.use("/api/notices", require("./api/notices"));
+router.use("/api/notices", require("./api/noticeUpload"));
 
 module.exports = router;

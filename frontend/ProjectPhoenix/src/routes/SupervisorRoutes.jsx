@@ -2,6 +2,7 @@ import Error from "@/components/error/Error";
 import SupervisorDashboard from "@/features/supervisor/dashboard/SupervisorDashboard";
 import SupervisorArchive from "@/features/supervisor/archive/SupervisorArchive";
 import SupervisorProfileSettings from "@/features/supervisor/settings/SupervisorProfileSettings";
+import SupervisorNotices from "@/features/supervisor/notices/SupervisorNotices";
 
 import { Navigate } from "react-router-dom";
 import SupervisorProjectDetails from "@/features/supervisor/dashboard/SupervisorProjectDetails";
@@ -36,6 +37,11 @@ const SupervisorRoutes = [
   {
     path: "settings",
     element: <SupervisorProfileSettings />,
+    errorElement: <Error />,
+  },
+  {
+    path: "notices",
+    element: <SupervisorNotices />,
     errorElement: <Error />,
   },
 ];

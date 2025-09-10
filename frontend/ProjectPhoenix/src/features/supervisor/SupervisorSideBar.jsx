@@ -1,4 +1,4 @@
-import { FolderGit2, Home, Origami, Package, Route, Settings } from "lucide-react";
+import { FolderGit2, Home, Origami, Package, Route, Settings, Bell } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 
 import { ROLES_LIST } from "@/lib/config";
@@ -57,6 +57,18 @@ function SupervisorSideBar() {
             >
               <Package className="h-4 w-4" />
               Archive
+            </Link>
+
+            <Link
+              to={`/${ROLES_LIST.supervisor}/notices`}
+              className={`flex items-center gap-3 rounded-md  px-3 py-2.5 ${
+                isTabActive(currentPath, "notices")
+                  ? "bg-slate-950 text-white"
+                  : "hover:text-slate-950"
+              } text-primary transition-all hover:pl-4`}
+            >
+              <Bell className="h-4 w-4" />
+              Notices
             </Link>
             
             <Link

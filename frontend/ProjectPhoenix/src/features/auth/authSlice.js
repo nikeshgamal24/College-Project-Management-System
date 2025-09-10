@@ -9,17 +9,25 @@ const authSlice = createSlice({
       
       // Add debugging to see what's coming in
       console.log("setCredentials payload:", action.payload);
+      console.log("setCredentials data:", data);
       
       // Handle both direct data and nested data structures
       if (data?.data?.user && data?.data?.accessToken) {
+        console.log("Using nested data structure");
         state.user = data.data.user;
         state.token = data.data.accessToken;
       } else if (data?.user && data?.accessToken) {
+        console.log("Using direct data structure");
         state.user = data.user;
         state.token = data.accessToken;
       } else if (action.payload?.user && action.payload?.accessToken) {
+        console.log("Using payload structure");
         state.user = action.payload.user;
         state.token = action.payload.accessToken;
+      } else {
+        console.log("No matching data structure found");
+        console.log("Available keys in data:", data ? Object.keys(data) : "data is null/undefined");
+        console.log("Available keys in payload:", Object.keys(action.payload));
       }
       
       console.log("Updated state.user:", state.user);

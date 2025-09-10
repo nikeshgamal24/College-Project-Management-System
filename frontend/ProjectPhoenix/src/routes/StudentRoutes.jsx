@@ -4,6 +4,7 @@ import ProjectDetails from "@/features/student/archive/ProjectDetails";
 import StudentGuidelines from "@/features/student/StudentGuidelines";
 import StudentProject from "@/features/student/project/StudentProject";
 import StudentProfileSettings from "@/features/student/settings/StudentProfileSettings";
+import StudentNotices from "@/features/student/notices/StudentNotices";
 
 import { Navigate } from "react-router-dom";
 import Error from "@/components/error/Error";
@@ -49,6 +50,11 @@ const StudentRoutes = [
   {
     path: "coverpage",
     element: <StudentCoverpage />,
+    errorElement: <Error />,
+  },
+  {
+    path: "notices",
+    element: <StudentNotices />,
     errorElement: <Error />,
   },
   {

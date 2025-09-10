@@ -22,10 +22,19 @@ import {
 import { Link, useLocation } from "react-router-dom";
 import { isTabActive } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
+import { useGetNoticesQuery } from "@/api/noticeApiSlice";
 
 function AdminMobileSideBar() {
   const location = useLocation();
   const currentPath = location.pathname;
+
+  // Fetch notice count for mobile sidebar
+  const { data: noticesData } = useGetNoticesQuery({
+    page: 1,
+    limit: 1, // We only need the count, so limit to 1
+  });
+  
+  const noticeCount = noticesData?.pagination?.totalItems || 0;
 
   return (
     <Sheet>
@@ -184,9 +193,13 @@ function AdminMobileSideBar() {
               Notices
               <Badge
                 variant="secondary"
-                className="ml-auto flex shrink-0 items-center justify-center rounded-full"
+                className={`ml-auto flex shrink-0 items-center justify-center rounded-full ${
+                  isTabActive(currentPath, "notices")
+                    ? "bg-slate-700 text-white"
+                    : "bg-slate-200 text-slate-800"
+                }`}
               >
-                16
+                {noticeCount}
               </Badge>
             </Link>
           </SheetClose>

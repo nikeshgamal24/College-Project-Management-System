@@ -4,11 +4,6 @@ const { AppError } = require('../errorHandler');
 // Validation middleware factory
 const validate = (schema) => {
   return (req, res, next) => {
-    console.log("🔍 VALIDATION MIDDLEWARE HIT");
-    console.log("🔍 Schema:", schema.describe().keys);
-    console.log("🔍 Request body:", req.body);
-    console.log("🔍 Request body type:", typeof req.body);
-    console.log("🔍 Request body keys:", Object.keys(req.body || {}));
     
     const { error } = schema.validate(req.body, {
       abortEarly: false,

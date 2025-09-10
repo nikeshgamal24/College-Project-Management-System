@@ -14,11 +14,20 @@ import { Link, useLocation } from "react-router-dom";
 import { ROLES_LIST } from "@/lib/config";
 import { isTabActive } from "@/lib/utils";
 import CurrentClock from "../../components/CurrentClock";
+import { useGetNoticesQuery } from "@/api/noticeApiSlice";
 
 function AdminSideBar() {
   const location = useLocation();
   const currentPath = location.pathname;
   const date = new Date();
+
+  // Fetch notice count for sidebar
+  const { data: noticesData } = useGetNoticesQuery({
+    page: 1,
+    limit: 1, // We only need the count, so limit to 1
+  });
+  
+  const noticeCount = noticesData?.pagination?.totalItems || 0;
 
   return (
     <div className="hidden  border-r /40 md:block">
@@ -142,6 +151,15 @@ function AdminSideBar() {
             >
               <Megaphone className="h-4 w-4" />
               Notices
+              {noticeCount > 0 && (
+                <span className={`ml-auto text-xs px-2 py-1 rounded-full ${
+                  isTabActive(currentPath, "notices")
+                    ? "bg-slate-700 text-white"
+                    : "bg-slate-200 text-slate-800"
+                }`}>
+                  {noticeCount}
+                </span>
+              )}
             </Link>
           </nav>
         </div>

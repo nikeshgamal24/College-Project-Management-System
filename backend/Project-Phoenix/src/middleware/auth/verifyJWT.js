@@ -7,11 +7,27 @@ const Admin = require("../../models/user/Admin");
 const Evaluator = require("../../models/user/Evaluator");
  
 const verifyJWT = (req, res, next) => {
-  const authHeader = req.headers.authorization || req.headers.Authorization;
-  console.log('Headers:', req.headers.authorization);
-  console.log('Headers:', req.headers.Authorization);
-  console.log('Auth header:', authHeader);
-  if (!authHeader?.startsWith("Bearer ")) {
+  // Check for token in Authorization header first
+  let authHeader = req.headers.authorization || req.headers.Authorization;
+  let token = null;
+
+  if (authHeader?.startsWith("Bearer ")) {
+    token = authHeader.split(" ")[1];
+  } else {
+    // Check for token in cookies
+    const cookies = req.cookies;
+    if (cookies && cookies.accessToken) {
+      token = cookies.accessToken;
+    }
+  }
+
+  // console.log('Headers:', req.headers.authorization);
+  // console.log('Headers:', req.headers.Authorization);
+  // console.log('Auth header:', authHeader);
+  // console.log('Cookies:', req.cookies);
+  // console.log('Token from cookies:', req.cookies?.accessToken);
+  
+  if (!token) {
     return res.status(401).json({
       success: false,
       message: 'Unauthorized - No token provided',
@@ -19,10 +35,8 @@ const verifyJWT = (req, res, next) => {
     });
   }
 
-  const token = authHeader.split(" ")[1];
-
-  console.log('Token:', token);
-  console.log('Access token secret:', process.env.ACCESS_TOKEN_SECRET);
+  // console.log('Token:', token);
+  // console.log('Access token secret:', process.env.ACCESS_TOKEN_SECRET);
   // Verify the token
   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, async (err, decoded) => {
     if (err) {

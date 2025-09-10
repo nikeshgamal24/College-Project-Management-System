@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import SupervisorEventsTimeline from "./SupervisorEventsTimeline";
+import NoticeBoard from "@/components/NoticeBoard";
 import { Calendar, CalendarClock, Cctv } from "lucide-react";
 import { getGreeting } from "@/lib/utils";
 import { DataTable } from "./ProjectDataTable";
@@ -82,6 +83,7 @@ function SupervisorDashboard() {
             </Card>
           </div>
           <div className="grid auto-rows-max items-start gap-4 md:gap-6 lg:col-span-2 xl:col-span-1">
+            <NoticeBoard userRole="Supervisor" limit={3} />
             <Card>
               <CardHeader className="flex flex-row bg-slate-100 rounded-t-md border-b py-4 justify-between items-center">
                 <div>
