@@ -24,7 +24,6 @@ class ReminderNotificationService {
         .populate('supervisor.supervisorId')
         .lean();
 
-        console.log('Project details sent to sendGeneralReminderNotification:', project);
       if (!project) {
         throw new Error('Project not found');
       }

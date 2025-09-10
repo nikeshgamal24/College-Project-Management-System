@@ -61,7 +61,8 @@ function SupervisorLogin() {
       }
 
       if (!userData.error) {
-        dispatch(setCredentials({ ...userData }));
+        console.log("Supervisor Login - userData:", userData);
+        dispatch(setCredentials({ data: userData.data }));
         reset();
         navigate(from, { replace: true });
       }

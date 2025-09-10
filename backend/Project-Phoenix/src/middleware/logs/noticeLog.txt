@@ -1,0 +1,18 @@
+20250910	13:33:39	1a4ac0e2-c9c3-46a8-99d8-3c0fb39bb583	nikesh.191624@ncit.edu.np created a new notice: Project Defense Notice
+20250910	13:34:04	860caf11-8a5c-46c6-aa75-c8b5831e80e4	nikesh.191624@ncit.edu.np published notice: Project Defense Notice
+20250910	13:35:17	bc2d99f3-b9c2-4845-b412-bb8662150e4e	nikesh.191624@ncit.edu.np created a new notice: Proposal Defense Notice
+20250910	13:35:22	f0a10c33-125b-46e4-8064-36575436f5a1	nikesh.191624@ncit.edu.np published notice: Proposal Defense Notice
+20250910	13:36:31	c6083fe1-09a9-4ec2-a0d2-376385c09b09	nikesh.191624@ncit.edu.np archived notice: Proposal Defense Notice
+20250910	13:36:50	d0f96e24-cf31-4e3e-8623-5e030f0f2071	nikesh.191624@ncit.edu.np updated notice: Proposal Defense Notice
+20250910	16:58:20	9723d2ab-429e-4544-a231-07bc86a0362d	nikesh.191624@ncit.edu.np created a new notice: asdfasdfasd
+20250910	16:58:30	69a69314-7a35-475c-8ec8-34bfdfad78c8	nikesh.191624@ncit.edu.np published notice: asdfasdfasd
+20250910	17:12:16	ff14f04f-a28a-4385-911f-4fc200e66634	nikesh.191624@ncit.edu.np updated notice: Proposal Report Submission Notice
+20250910	17:15:59	13e9c9a9-c053-4f1c-b522-ca2a00230ec0	nikesh.191624@ncit.edu.np updated notice: Proposal Report Submission Notice
+20250910	17:41:45	da9548c3-896e-4726-93eb-2e8f6321f66a	nikesh.191624@ncit.edu.np updated notice: Proposal Report Submission Notice
+20250910	18:05:46	051a4b4d-04e7-4f9b-890b-1192d19386c9	nikesh.191624@ncit.edu.np updated notice: Project Defense Notice
+20250910	18:17:39	7db041bf-f657-4d08-9634-a02c46b9b866	nikesh.191624@ncit.edu.np updated notice: Project Defense Notice
+20250910	18:23:35	50a1921d-2321-4d8f-bb7a-629a883f5966	nikesh.191624@ncit.edu.np updated notice: Project Defense Notice
+20250910	18:24:13	12fd1944-e5c8-4fcb-950d-2559eaecbe6e	nikesh.191624@ncit.edu.np updated notice: Project Defense Notice
+20250910	18:29:20	476ffa59-dbd0-46d3-a9b6-53639e5ecff6	nikesh.191624@ncit.edu.np updated notice: Project Defense Notice
+20250910	18:29:50	b9777662-21bf-40a1-8c5b-e339df39a899	nikesh.191624@ncit.edu.np updated notice: Project Defense Notice
+20250910	18:30:02	0b4de7c4-6aa0-4036-8927-0527df11fafb	nikesh.191624@ncit.edu.np updated notice: Project Defense Notice

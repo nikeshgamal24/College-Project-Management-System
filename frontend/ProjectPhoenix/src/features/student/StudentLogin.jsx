@@ -70,7 +70,8 @@ function StudentLogin() {
       }
 
       if (!userData.error) {
-        dispatch(setCredentials({ ...userData }));
+        console.log("Student Login - userData:", userData);
+        dispatch(setCredentials({ data: userData.data }));
         reset();
         navigate(from, { replace: true });
       }

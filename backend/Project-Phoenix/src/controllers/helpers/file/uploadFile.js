@@ -21,33 +21,63 @@ const uploadFile = async (fileOrPath) => {
         console.log("🚀 Starting file upload to Cloudinary");
         console.log("📥 Input:", fileOrPath);
         
-        let filePath;
+        let uploadOptions = {};
         
-        // Handle both file object and direct path string
+        // Handle both file object (from memory storage) and direct path string
         if (typeof fileOrPath === 'string') {
-            // Direct path string provided
-            filePath = fileOrPath;
+            // Direct path string provided (disk storage)
+            console.log("📁 File path to upload:", fileOrPath);
+            
+            // Check if file exists
+            const fs = require('fs');
+            if (!fs.existsSync(fileOrPath)) {
+                throw new Error(`File does not exist at path: ${fileOrPath}`);
+            }
+            
+            uploadOptions = { resource_type: "auto" };
         } else if (fileOrPath && typeof fileOrPath === 'object') {
             // File object provided (from Multer)
-            filePath = fileOrPath.path || fileOrPath.filepath;
-            
-            if (!filePath) {
-                throw new Error('File path not found in file object');
+            if (fileOrPath.buffer) {
+                // Memory storage - upload from buffer
+                console.log("📦 Uploading from buffer (memory storage)");
+                uploadOptions = {
+                    resource_type: "auto",
+                    folder: "notices", // Optional: organize files in Cloudinary
+                };
+            } else if (fileOrPath.path || fileOrPath.filepath) {
+                // Disk storage - upload from file path
+                const filePath = fileOrPath.path || fileOrPath.filepath;
+                console.log("📁 File path to upload:", filePath);
+                
+                // Check if file exists
+                const fs = require('fs');
+                if (!fs.existsSync(filePath)) {
+                    throw new Error(`File does not exist at path: ${filePath}`);
+                }
+                
+                uploadOptions = { resource_type: "auto" };
+            } else {
+                throw new Error('File object must have either buffer or path property');
             }
         } else {
             throw new Error('Invalid input: must be file object or path string');
         }
         
-        console.log("📁 File path to upload:", filePath);
+        console.log("☁️ Uploading to Cloudinary...");
+        let result;
         
-        // Check if file exists
-        const fs = require('fs');
-        if (!fs.existsSync(filePath)) {
-            throw new Error(`File does not exist at path: ${filePath}`);
+        if (fileOrPath && fileOrPath.buffer) {
+            // Upload from buffer (memory storage)
+            result = await cloudinary.uploader.upload(
+                `data:${fileOrPath.mimetype};base64,${fileOrPath.buffer.toString('base64')}`,
+                uploadOptions
+            );
+        } else {
+            // Upload from file path (disk storage)
+            const filePath = typeof fileOrPath === 'string' ? fileOrPath : (fileOrPath.path || fileOrPath.filepath);
+            result = await cloudinary.uploader.upload(filePath, uploadOptions);
         }
         
-        console.log("☁️ Uploading to Cloudinary...");
-        const result = await cloudinary.uploader.upload(filePath);
         console.log("✅ Successfully uploaded to Cloudinary:", result);
         
         // Check if we have a valid result with URL

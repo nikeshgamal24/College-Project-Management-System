@@ -49,7 +49,8 @@ function DefenseLogin() {
         }
       }
       if (!userData.error) {
-        dispatch(setCredentials({ ...userData }));
+        console.log("Defense Login - userData:", userData);
+        dispatch(setCredentials({ data: userData.data }));
         reset();
         navigate(from, { replace: true });
       }

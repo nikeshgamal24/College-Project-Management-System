@@ -30,18 +30,22 @@ const handleLogin = async (req, res, next) => {
     if (!UserModel) {
       return next(new AppError('Invalid role specified', 400));
     }
-
+console.log("🚀 ~ handleLogin ~ UserModel:", UserModel)
+    console.log("🚀 ~ handleLogin ~ Email:", email)
+    console.log("🚀 ~ handleLogin ~ Role:", role)
     // Find user by email and role
     const foundUser = await UserModel.findOne({
       email: email.toLowerCase(),
       role: { $in: [role] },
     }).select('+password').exec();
+    
+    console.log("🚀 ~ handleLogin ~ foundUser:", foundUser)
 
     if (!foundUser) {
       return next(new AppError('Invalid email or password', 401));
     }
 
-        // Verify password using bcrypt.compare
+    // Verify password using bcrypt.compare
     const isPasswordValid = await bcrypt.compare(password, foundUser.password);
     console.log("🚀 ~ handleLogin ~ isPasswordValid:", isPasswordValid);
     if (!isPasswordValid) {
@@ -63,12 +67,24 @@ const handleLogin = async (req, res, next) => {
       process.env.REFRESH_TOKEN_EXPIRATION_TIME
     );
 
+
+    console.log("🚀 ~ handleEvaluatorLogin ~ refreshToken:", refreshToken)
+    console.log("🚀 ~ handleEvaluatorLogin ~ accessToken:", accessToken)
+
     // Save refresh token and update user
     foundUser.refreshToken = refreshToken;
     await foundUser.save();
 
     // Set refresh token in cookie
     tokenService.setCookie(res, refreshToken);
+
+    // Set access token in cookie
+    res.cookie('accessToken', accessToken, {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'None',
+      maxAge: 15 * 60 * 1000, // 15 minutes (matches access token expiration)
+    });
 
     // Prepare user response (exclude sensitive data)
     const userResponse = foundUser.toObject();
@@ -150,10 +166,18 @@ const handleEvaluatorLogin = async (req, res, next) => {
     // Set refresh token in cookie
     tokenService.setCookie(res, refreshToken);
 
+    // Set access token in cookie
+    res.cookie('accessToken', accessToken, {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'None',
+      maxAge: 15 * 60 * 1000, // 15 minutes (matches access token expiration)
+    });
+
     // Prepare user response (exclude sensitive data)
     const userResponse = foundUser.toObject();
     delete userResponse.refreshToken;
-    
+
     // Remove access codes from defense objects
     if (userResponse.defense) {
       userResponse.defense.forEach(defenseObj => {

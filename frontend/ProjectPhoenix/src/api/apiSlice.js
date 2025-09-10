@@ -7,8 +7,13 @@ const baseQuery = fetchBaseQuery({
   credentials: "include",
   prepareHeaders: (headers, { getState }) => {
     const token = getState().auth.token;
+    console.log("API Slice - Current token from state:", token);
+    console.log("API Slice - Full auth state:", getState().auth);
     if (token) {
       headers.set("authorization", `Bearer ${token}`);
+      console.log("API Slice - Authorization header set:", `Bearer ${token}`);
+    } else {
+      console.log("API Slice - No token found in state");
     }
     return headers;
   },

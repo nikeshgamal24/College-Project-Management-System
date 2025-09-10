@@ -1,7 +1,7 @@
 import AdminDashboard from "@/features/admin/dashboard/AdminDashboard";
 import AdminEvaluators from "@/features/admin/evaluators/AdminEvaluators";
 
-import AdminNotices from "@/features/admin/AdminNotices";
+import AdminNotices from "@/features/admin/notices/AdminNotices";
 import AdminProjects from "@/features/admin/projects/AdminProjects";
 import AdminStudents from "@/features/admin/students/AdminStudents";
 import AdminSupervisors from "@/features/admin/supervisors/AdminSupervisors";

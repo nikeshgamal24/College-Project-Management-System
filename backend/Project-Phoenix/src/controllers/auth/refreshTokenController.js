@@ -9,7 +9,7 @@ const Evaluator = require("../../models/user/Evaluator");
 const handleRefreshToken = async (req, res) => {
   try {
     const cookies = req.cookies;
-    
+
     if (!cookies?.jwt) return res.sendStatus(401); //Unauthorized
     // console.log("inside refresh middleware");
     // console.log(refreshToken);
