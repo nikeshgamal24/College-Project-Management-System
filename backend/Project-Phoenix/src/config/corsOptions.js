@@ -1,15 +1,55 @@
 const allowedOrigins = require("./allowedOrigins");
 
+// More permissive CORS for production
 const corsOptions = {
   origin: (origin, callback) => {
-    if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not Allowed by CORS"));
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    
+    // Check if origin is in allowed origins
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      return callback(null, true);
     }
+    
+    // In development, allow localhost with any port
+    if (process.env.NODE_ENV === 'development' && origin.includes('localhost')) {
+      return callback(null, true);
+    }
+    
+    // In production, allow Vercel domains and college-project-management domains
+    if (process.env.NODE_ENV === 'production') {
+      if (origin.includes('vercel.app') || 
+          origin.includes('college-project-management') ||
+          origin.includes('project-phoenix')) {
+        return callback(null, true);
+      }
+    }
+    
+    // Log the blocked origin for debugging
+    console.log('CORS blocked origin:', origin);
+    console.log('Allowed origins:', allowedOrigins);
+    console.log('NODE_ENV:', process.env.NODE_ENV);
+    
+    callback(new Error("Not Allowed by CORS"));
   },
   credentials: true, // Allow cookies to be sent
   optionsSuccessStatus: 200,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin'],
 };
 
-module.exports = corsOptions;
+// Fallback CORS for production if the above fails
+const fallbackCorsOptions = {
+  origin: true, // Allow all origins in production
+  credentials: true,
+  optionsSuccessStatus: 200,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin'],
+};
+
+// Use fallback CORS in production if CORS_STRICT is not set
+const finalCorsOptions = process.env.NODE_ENV === 'production' && !process.env.CORS_STRICT 
+  ? fallbackCorsOptions 
+  : corsOptions;
+
+module.exports = finalCorsOptions;
