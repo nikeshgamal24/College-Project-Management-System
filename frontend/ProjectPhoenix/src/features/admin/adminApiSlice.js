@@ -172,6 +172,48 @@ export const adminApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["Defenses", "Events"],
     }),
+    // ==================== ADMIN PROFILE MANAGEMENT ====================
+    getAdminProfile: builder.query({
+      query: (id) => ({
+        url: `/admin/profile/${id}`,
+        method: "GET",
+      }),
+      providesTags: ["AdminProfile"],
+    }),
+    updateAdminProfile: builder.mutation({
+      query: ({ id, data }) => ({
+        url: `/admin/profile/${id}`,
+        method: "PUT",
+        body: data,
+      }),
+      invalidatesTags: ["AdminProfile"],
+    }),
+    updateAdminPhoto: builder.mutation({
+      query: ({ id, photo }) => {
+        const formData = new FormData();
+        formData.append("photo", photo);
+        return {
+          url: `/admin/profile/${id}/photo`,
+          method: "PUT",
+          body: formData,
+        };
+      },
+      invalidatesTags: ["AdminProfile"],
+    }),
+    requestAdminPasswordChangeOTP: builder.mutation({
+      query: ({ id, currentPassword, newPassword, confirmPassword }) => ({
+        url: `/admin/profile/${id}/password/request-otp`,
+        method: "POST",
+        body: { currentPassword, newPassword, confirmPassword },
+      }),
+    }),
+    changeAdminPassword: builder.mutation({
+      query: ({ id, otp, newPassword }) => ({
+        url: `/admin/profile/${id}/password/${otp}`,
+        method: "PUT",
+        body: { newPassword },
+      }),
+    }),
   }),
 });
 
@@ -201,4 +243,10 @@ export const {
   useResendNotificationMutation,
   useGetDefenseEvaluatorsQuery,
   useUpdateDefenseTimeMutation,
+  // Admin profile management hooks
+  useGetAdminProfileQuery,
+  useUpdateAdminProfileMutation,
+  useUpdateAdminPhotoMutation,
+  useRequestAdminPasswordChangeOTPMutation,
+  useChangeAdminPasswordMutation,
 } = adminApiSlice;

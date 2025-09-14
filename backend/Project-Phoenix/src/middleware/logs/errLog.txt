@@ -3860,3 +3860,18 @@ Stack: Error: Supervisor ID, Student ID, Project ID, and date are required
     at next (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/index.js:280:10)
     at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/middleware/auth/verifyJWT.js:87:7
     at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+20250914	16:21:15	8c3a8f57-bd36-4fde-8e21-8ade20db7852	Error: Invalid email or password
+Stack: Error: Invalid email or password
+    at handleLogin (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/auth/authController.js:52:19)
+20250914	16:22:00	3eabf60e-b650-4bce-8bda-896d9974e5c7	Error: "photo" is not allowed
+Stack: Error: "photo" is not allowed
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/middleware/validation/validation.js:20:19
+    at Layer.handle [as handle_request] (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/route.js:149:13)
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/middleware/auth/verifyRoles.js:15:5
+    at Layer.handle [as handle_request] (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/route.js:149:13)
+    at next (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/route.js:145:7)
+    at next (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/route.js:145:7)
+    at Route.dispatch (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/layer.js:95:5)
