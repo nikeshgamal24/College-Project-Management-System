@@ -1,5 +1,6 @@
 const Joi = require('joi');
 const { AppError } = require('../errorHandler');
+const adminSchemas = require('./schemas/adminSchemas');
 
 // Validation middleware factory
 const validate = (schema) => {
@@ -563,5 +564,6 @@ module.exports = {
   studentSchemas,
   eventSchemas,
   paramSchemas,
-  supervisorSchemas
+  supervisorSchemas,
+  adminSchemas
 };

@@ -109,6 +109,17 @@ app.use(credentials);
 // Cross Origin Resource Sharing
 app.use(cors(corsOptions));
 
+// CORS debugging middleware
+app.use((req, res, next) => {
+  console.log('CORS Debug:', {
+    origin: req.headers.origin,
+    method: req.method,
+    url: req.url,
+    userAgent: req.headers['user-agent']
+  });
+  next();
+});
+
 // Body parsing middleware
 app.use(express.urlencoded({ 
   extended: false,

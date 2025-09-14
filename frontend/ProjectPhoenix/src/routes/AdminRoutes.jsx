@@ -1,6 +1,6 @@
 import AdminDashboard from "@/features/admin/dashboard/AdminDashboard";
 import AdminEvaluators from "@/features/admin/evaluators/AdminEvaluators";
-
+import AdminProfileSettings from "@/features/admin/settings/AdminProfileSettings";
 import AdminNotices from "@/features/admin/notices/AdminNotices";
 import AdminProjects from "@/features/admin/projects/AdminProjects";
 import AdminStudents from "@/features/admin/students/AdminStudents";
@@ -97,6 +97,11 @@ const AdminRoutes = [
   {
     path: "evaluators",
     element: <AdminEvaluators />,
+    errorElement: <Error />,
+  },
+  {
+    path: "settings",
+    element: <AdminProfileSettings />,
     errorElement: <Error />,
   },
 ];

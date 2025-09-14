@@ -38,6 +38,7 @@ router.use("/api/event", require("./api/events"));
 router.use("/api/evaluator", require("./api/evaluators"));
 router.use("/api/student", require("./api/students"));
 router.use("/api/supervisor", require("./api/supervisors"));
+router.use("/api/admin", require("./api/admin"));
 router.use("/api/report-review", require("./api/reportReview"));
 router.use("/api/meetings", require("./api/meetings"));
 router.use("/api/meeting-status", require("./api/meetingStatus"));

@@ -7,6 +7,7 @@ import {
   Home,
   Megaphone,
   Origami,
+  Settings,
   ShieldCheck,
 } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
@@ -160,6 +161,17 @@ function AdminSideBar() {
                   {noticeCount}
                 </span>
               )}
+            </Link>
+            <Link
+              to={`/${ROLES_LIST.admin}/settings`}
+              className={`flex items-center gap-3 rounded-md  px-3 py-2.5 ${
+                isTabActive(currentPath, "settings")
+                  ? "bg-slate-950 text-white"
+                  : "hover:text-slate-950"
+              } text-primary transition-all hover:pl-4`}
+            >
+              <Settings className="h-4 w-4" />
+              Settings
             </Link>
           </nav>
         </div>

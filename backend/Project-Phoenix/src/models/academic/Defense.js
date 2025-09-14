@@ -31,6 +31,23 @@ const defenseSchema = new Schema(
         ref: "Evaluation",
       },
     ],
+    updateHistory: [
+      {
+        updatedAt: {
+          type: Date,
+          default: Date.now
+        },
+        updatedBy: {
+          type: Schema.Types.ObjectId,
+          ref: "Admin"
+        },
+        oldDefenseTime: String,
+        oldDefenseDate: String,
+        newDefenseTime: String,
+        newDefenseDate: String,
+        reason: String
+      }
+    ],
     timeStamps: {
       type: Date,
       timestamps: true,

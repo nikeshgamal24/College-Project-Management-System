@@ -19,10 +19,11 @@ import {
 } from "@/lib/config";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
-import { MoreHorizontal, ArrowUpDown } from "lucide-react";
+import { MoreHorizontal, ArrowUpDown, Clock } from "lucide-react";
 import { Link } from "react-router-dom";
+import UpdateDefenseTimeDialog from "./UpdateDefenseTimeDialog";
 
-export const DefenseColumn = [
+export const DefenseColumn = (onUpdateTime) => [
   {
     accessorKey: "serialNumber",
     header: () => <TableHead>SN</TableHead>,
@@ -157,6 +158,18 @@ export const DefenseColumn = [
                   View Defense
                 </Link>
               </DropdownMenuItem>
+              {row.original.status === "101" && (
+                <DropdownMenuItem
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onUpdateTime?.(row.original);
+                  }}
+                  className="flex items-center gap-2"
+                >
+                  <Clock className="h-4 w-4" />
+                  Update Time
+                </DropdownMenuItem>
+              )}
               <DropdownMenuItem
                 onClick={(e) => {
                   e.stopPropagation();

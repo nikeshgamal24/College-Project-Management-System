@@ -129,6 +129,91 @@ export const adminApiSlice = apiSlice.injectEndpoints({
         method: "GET",
       }),
     }),
+    // ==================== ADMIN ACCESS CODE MANAGEMENT ====================
+    getEvaluatorsWithAccessCodes: builder.query({
+      query: () => ({
+        url: "/event/admin/evaluators/access-codes",
+        method: "GET",
+      }),
+      providesTags: ["EvaluatorAccessCodes"],
+    }),
+    getEvaluatorAccessCodes: builder.query({
+      query: (evaluatorId) => ({
+        url: `/event/admin/evaluators/${evaluatorId}/access-codes`,
+        method: "GET",
+      }),
+      providesTags: ["EvaluatorAccessCodes"],
+    }),
+    regenerateAccessCode: builder.mutation({
+      query: ({ evaluatorId, defenseId }) => ({
+        url: `/event/admin/evaluators/${evaluatorId}/defense/${defenseId}/regenerate-code`,
+        method: "PUT",
+      }),
+      invalidatesTags: ["EvaluatorAccessCodes"],
+    }),
+    resendNotification: builder.mutation({
+      query: ({ evaluatorId, defenseId }) => ({
+        url: `/event/admin/evaluators/${evaluatorId}/defense/${defenseId}/resend-notification`,
+        method: "POST",
+      }),
+    }),
+    getDefenseEvaluators: builder.query({
+      query: (defenseId) => ({
+        url: `/event/admin/defense/${defenseId}/evaluators`,
+        method: "GET",
+      }),
+      providesTags: ["DefenseEvaluators"],
+    }),
+    updateDefenseTime: builder.mutation({
+      query: ({ defenseId, defenseTime, defenseDate, reason }) => ({
+        url: `/event/defense/update-time/${defenseId}`,
+        method: "PUT",
+        body: { defenseTime, defenseDate, reason },
+      }),
+      invalidatesTags: ["Defenses", "Events"],
+    }),
+    // ==================== ADMIN PROFILE MANAGEMENT ====================
+    getAdminProfile: builder.query({
+      query: (id) => ({
+        url: `/admin/profile/${id}`,
+        method: "GET",
+      }),
+      providesTags: ["AdminProfile"],
+    }),
+    updateAdminProfile: builder.mutation({
+      query: ({ id, data }) => ({
+        url: `/admin/profile/${id}`,
+        method: "PUT",
+        body: data,
+      }),
+      invalidatesTags: ["AdminProfile"],
+    }),
+    updateAdminPhoto: builder.mutation({
+      query: ({ id, photo }) => {
+        const formData = new FormData();
+        formData.append("photo", photo);
+        return {
+          url: `/admin/profile/${id}/photo`,
+          method: "PUT",
+          body: formData,
+        };
+      },
+      invalidatesTags: ["AdminProfile"],
+    }),
+    requestAdminPasswordChangeOTP: builder.mutation({
+      query: ({ id, currentPassword, newPassword, confirmPassword }) => ({
+        url: `/admin/profile/${id}/password/request-otp`,
+        method: "POST",
+        body: { currentPassword, newPassword, confirmPassword },
+      }),
+    }),
+    changeAdminPassword: builder.mutation({
+      query: ({ id, otp, newPassword }) => ({
+        url: `/admin/profile/${id}/password/${otp}`,
+        method: "PUT",
+        body: { newPassword },
+      }),
+    }),
   }),
 });
 
@@ -151,4 +236,17 @@ export const {
   useGetAdminProjectIdQuery,
   useGetAdminDashboardQuery,
   useEventResultQuery,
+  // Admin access code management hooks
+  useGetEvaluatorsWithAccessCodesQuery,
+  useGetEvaluatorAccessCodesQuery,
+  useRegenerateAccessCodeMutation,
+  useResendNotificationMutation,
+  useGetDefenseEvaluatorsQuery,
+  useUpdateDefenseTimeMutation,
+  // Admin profile management hooks
+  useGetAdminProfileQuery,
+  useUpdateAdminProfileMutation,
+  useUpdateAdminPhotoMutation,
+  useRequestAdminPasswordChangeOTPMutation,
+  useChangeAdminPasswordMutation,
 } = adminApiSlice;

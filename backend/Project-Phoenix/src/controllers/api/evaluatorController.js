@@ -34,6 +34,9 @@ const {
 const {
   determineAllProjectsEvaluatedByEvaluator,
 } = require("../helpers/evaluation/determineAllProjectsEvaluatedByEvaluator");
+const { generateAccesscode } = require("../helpers/utilities/generateAccessCode");
+const { sendMailToUser } = require("../helpers/email/sendMailToUser");
+const bcrypt = require("bcrypt");
 // require("dotenv").config();
 
 // const Queue = require("bull");
@@ -818,6 +821,408 @@ const createEvaluationRecordWithSession = async ({
   return newEvaluation;
 };
 
+// ==================== ADMIN ACCESS CODE MANAGEMENT ====================
+
+/**
+ * Get all evaluators with their access codes for admin management
+ * @param {Object} req - Request object
+ * @param {Object} res - Response object
+ * @param {Function} next - Next middleware function
+ */
+const getEvaluatorsWithAccessCodes = async (req, res, next) => {
+  try {
+    console.log('🚀 getEvaluatorsWithAccessCodes function called!');
+    
+    const evaluators = await Evaluator.find({})
+      .populate({
+        path: 'defense.defenseId',
+        select: 'defenseType defenseDate defenseTime status event',
+        populate: {
+          path: 'event',
+          select: 'eventName eventCode'
+        }
+      })
+      .select('fullname email contact evaluatorType designation institution defense currentDefense')
+      .lean();
+
+    // Format the response to include readable access codes and defense details
+    const formattedEvaluators = evaluators.map(evaluator => {
+      const formattedDefenses = evaluator.defense.map(defenseObj => ({
+        defenseId: defenseObj.defenseId?._id,
+        defenseType: defenseObj.defenseId?.defenseType,
+        defenseDate: defenseObj.defenseId?.defenseDate,
+        defenseTime: defenseObj.defenseId?.defenseTime,
+        status: defenseObj.defenseId?.status,
+        eventName: defenseObj.defenseId?.event?.eventName,
+        eventCode: defenseObj.defenseId?.event?.eventCode,
+        hasAccessCode: !!defenseObj.accessCode,
+        // Note: We don't return the actual access code for security
+        // Admin will need to regenerate if needed
+      }));
+
+      return {
+        _id: evaluator._id,
+        fullname: evaluator.fullname,
+        email: evaluator.email,
+        contact: evaluator.contact,
+        evaluatorType: evaluator.evaluatorType,
+        designation: evaluator.designation,
+        institution: evaluator.institution,
+        currentDefense: evaluator.currentDefense,
+        defenses: formattedDefenses
+      };
+    });
+
+    console.log('formattedEvaluators: ', formattedEvaluators);
+
+    return res.status(200).json({
+      success: true,
+      data: formattedEvaluators,
+      count: formattedEvaluators.length
+    });
+  } catch (error) {
+    console.error('Error fetching evaluators with access codes:', error);
+    return next(new AppError('Failed to fetch evaluators data', 500));
+  }
+};
+
+/**
+ * Get access codes for a specific evaluator
+ * @param {Object} req - Request object
+ * @param {Object} res - Response object
+ * @param {Function} next - Next middleware function
+ */
+const getEvaluatorAccessCodes = async (req, res, next) => {
+  try {
+    const { evaluatorId } = req.params;
+
+    if (!evaluatorId) {
+      return next(new AppError('Evaluator ID is required', 400));
+    }
+
+    const evaluator = await Evaluator.findById(evaluatorId)
+      .populate({
+        path: 'defense.defenseId',
+        select: 'defenseType defenseDate defenseTime status event',
+        populate: {
+          path: 'event',
+          select: 'eventName eventCode'
+        }
+      })
+      .select('fullname email contact evaluatorType designation institution defense currentDefense')
+      .lean();
+
+    if (!evaluator) {
+      return next(new AppError('Evaluator not found', 404));
+    }
+
+    // Format the response with defense details
+    const formattedDefenses = evaluator.defense.map(defenseObj => ({
+      defenseId: defenseObj.defenseId?._id,
+      defenseType: defenseObj.defenseId?.defenseType,
+      defenseDate: defenseObj.defenseId?.defenseDate,
+      defenseTime: defenseObj.defenseId?.defenseTime,
+      status: defenseObj.defenseId?.status,
+      eventName: defenseObj.defenseId?.event?.eventName,
+      eventCode: defenseObj.defenseId?.event?.eventCode,
+      hasAccessCode: !!defenseObj.accessCode,
+      // Note: We don't return the actual access code for security
+    }));
+
+    return res.status(200).json({
+      success: true,
+      data: {
+        evaluator: {
+          _id: evaluator._id,
+          fullname: evaluator.fullname,
+          email: evaluator.email,
+          contact: evaluator.contact,
+          evaluatorType: evaluator.evaluatorType,
+          designation: evaluator.designation,
+          institution: evaluator.institution,
+          currentDefense: evaluator.currentDefense,
+        },
+        defenses: formattedDefenses
+      }
+    });
+  } catch (error) {
+    console.error('Error fetching evaluator access codes:', error);
+    return next(new AppError('Failed to fetch evaluator data', 500));
+  }
+};
+
+/**
+ * Regenerate access code for a specific evaluator and defense
+ * @param {Object} req - Request object
+ * @param {Object} res - Response object
+ * @param {Function} next - Next middleware function
+ */
+const regenerateAccessCode = async (req, res, next) => {
+  try {
+    const { evaluatorId, defenseId } = req.params;
+
+    if (!evaluatorId || !defenseId) {
+      return next(new AppError('Evaluator ID and Defense ID are required', 400));
+    }
+
+    // Find the evaluator
+    const evaluator = await Evaluator.findById(evaluatorId);
+    if (!evaluator) {
+      return next(new AppError('Evaluator not found', 404));
+    }
+
+    // Find the defense
+    const defense = await Defense.findById(defenseId)
+      .populate('event', 'eventName eventCode')
+      .populate({
+        path: 'rooms',
+        select: 'room evaluators'
+      })
+      .lean();
+    if (!defense) {
+      return next(new AppError('Defense not found', 404));
+    }
+
+    // Find the defense object in evaluator's defense array
+    const defenseObj = evaluator.defense.find(d => d.defenseId.toString() === defenseId);
+    if (!defenseObj) {
+      return next(new AppError('Evaluator is not assigned to this defense', 404));
+    }
+
+    // Generate new access code
+    const newAccessCode = generateAccesscode({ evaluatorEmail: evaluator.email });
+    if (!newAccessCode) {
+      return next(new AppError('Failed to generate access code', 500));
+    }
+
+    // Hash the new access code
+    const hashedAccessCode = await bcrypt.hash(newAccessCode, 10);
+
+    // Update the evaluator's defense array with new access code
+    defenseObj.accessCode = hashedAccessCode;
+    await evaluator.save();
+
+    // Send email notification with new access code
+    // Find the room by looking in the defense's rooms array
+    let roomName = 'TBD';
+    
+    // First try to find room from the defense's rooms
+    if (defense.rooms && defense.rooms.length > 0) {
+      for (const room of defense.rooms) {
+        if (room.evaluators && room.evaluators.some(eval => eval.toString() === evaluatorId)) {
+          roomName = room.room || 'TBD';
+          break;
+        }
+      }
+    }
+    
+    // If not found, try the old method as fallback
+    if (roomName === 'TBD') {
+      const room = await Room.findOne({ 
+        evaluators: evaluatorId,
+        projects: { $in: defense.projects || [] }
+      }).select('room').lean();
+      roomName = room?.room || 'TBD';
+    }
+
+    const emailSent = sendMailToUser({
+      defenseType: defense.defenseType,
+      evaluatorEmail: evaluator.email,
+      accessCode: newAccessCode,
+      room: roomName,
+      defenseDate: defense.defenseDate,
+      defenseTime: defense.defenseTime,
+      evaluatorName: evaluator.fullname,
+    });
+
+    if (!emailSent) {
+      console.warn('Failed to send email notification for regenerated access code');
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: 'Access code regenerated and notification sent',
+      data: {
+        evaluatorId: evaluator._id,
+        evaluatorName: evaluator.fullname,
+        evaluatorEmail: evaluator.email,
+        defenseId: defense._id,
+        defenseType: defense.defenseType,
+        eventName: defense.event?.eventName,
+        eventCode: defense.event?.eventCode,
+        newAccessCode: newAccessCode, // Return plain access code for admin reference
+        emailSent: !!emailSent
+      }
+    });
+  } catch (error) {
+    console.error('Error regenerating access code:', error);
+    return next(new AppError('Failed to regenerate access code', 500));
+  }
+};
+
+/**
+ * Resend notification email to evaluator
+ * @param {Object} req - Request object
+ * @param {Object} res - Response object
+ * @param {Function} next - Next middleware function
+ */
+const resendNotification = async (req, res, next) => {
+  try {
+    const { evaluatorId, defenseId } = req.params;
+
+    if (!evaluatorId || !defenseId) {
+      return next(new AppError('Evaluator ID and Defense ID are required', 400));
+    }
+
+    // Find the evaluator
+    const evaluator = await Evaluator.findById(evaluatorId);
+    if (!evaluator) {
+      return next(new AppError('Evaluator not found', 404));
+    }
+
+    // Find the defense
+    const defense = await Defense.findById(defenseId)
+      .populate('event', 'eventName eventCode')
+      .populate({
+        path: 'rooms',
+        select: 'room evaluators'
+      })
+      .lean();
+    if (!defense) {
+      return next(new AppError('Defense not found', 404));
+    }
+
+    // Find the defense object in evaluator's defense array
+    const defenseObj = evaluator.defense.find(d => d.defenseId.toString() === defenseId);
+    if (!defenseObj || !defenseObj.accessCode) {
+      return next(new AppError('No access code found for this evaluator and defense', 404));
+    }
+
+    // Get room information
+    let roomName = 'TBD';
+    
+    // First try to find room from the defense's rooms
+    if (defense.rooms && defense.rooms.length > 0) {
+      for (const room of defense.rooms) {
+        if (room.evaluators && room.evaluators.some(eval => eval.toString() === evaluatorId)) {
+          roomName = room.room || 'TBD';
+          break;
+        }
+      }
+    }
+    
+    // If not found, try the old method as fallback
+    if (roomName === 'TBD') {
+      const room = await Room.findOne({ 
+        evaluators: evaluatorId,
+        projects: { $in: defense.projects || [] }
+      }).select('room').lean();
+      roomName = room?.room || 'TBD';
+    }
+
+    // Send email notification
+    const emailSent = sendMailToUser({
+      defenseType: defense.defenseType,
+      evaluatorEmail: evaluator.email,
+      accessCode: 'ACCESS_CODE_HIDDEN', // We don't send the actual code in resend
+      room: roomName,
+      defenseDate: defense.defenseDate,
+      defenseTime: defense.defenseTime,
+      evaluatorName: evaluator.fullname,
+    });
+
+    if (!emailSent) {
+      return next(new AppError('Failed to send notification email', 500));
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: 'Notification email sent successfully',
+      data: {
+        evaluatorId: evaluator._id,
+        evaluatorName: evaluator.fullname,
+        evaluatorEmail: evaluator.email,
+        defenseId: defense._id,
+        defenseType: defense.defenseType,
+        eventName: defense.event?.eventName,
+        eventCode: defense.event?.eventCode,
+        emailSent: true
+      }
+    });
+  } catch (error) {
+    console.error('Error resending notification:', error);
+    return next(new AppError('Failed to resend notification', 500));
+  }
+};
+
+/**
+ * Get all evaluators for a specific defense
+ * @param {Object} req - Request object
+ * @param {Object} res - Response object
+ * @param {Function} next - Next middleware function
+ */
+const getDefenseEvaluators = async (req, res, next) => {
+  try {
+    const { defenseId } = req.params;
+
+    if (!defenseId) {
+      return next(new AppError('Defense ID is required', 400));
+    }
+
+    // Find the defense
+    const defense = await Defense.findById(defenseId)
+      .populate('event', 'eventName eventCode')
+      .lean();
+    if (!defense) {
+      return next(new AppError('Defense not found', 404));
+    }
+
+    // Find all evaluators assigned to this defense
+    const evaluators = await Evaluator.find({
+      'defense.defenseId': defenseId
+    })
+    .select('fullname email contact evaluatorType designation institution defense currentDefense')
+    .lean();
+
+    // Format the response
+    const formattedEvaluators = evaluators.map(evaluator => {
+      const defenseObj = evaluator.defense.find(d => d.defenseId.toString() === defenseId);
+      return {
+        _id: evaluator._id,
+        fullname: evaluator.fullname,
+        email: evaluator.email,
+        contact: evaluator.contact,
+        evaluatorType: evaluator.evaluatorType,
+        designation: evaluator.designation,
+        institution: evaluator.institution,
+        currentDefense: evaluator.currentDefense,
+        hasAccessCode: !!defenseObj?.accessCode,
+        assignedAt: defenseObj?.createdAt || evaluator.createdAt
+      };
+    });
+
+    return res.status(200).json({
+      success: true,
+      data: {
+        defense: {
+          _id: defense._id,
+          defenseType: defense.defenseType,
+          defenseDate: defense.defenseDate,
+          defenseTime: defense.defenseTime,
+          status: defense.status,
+          eventName: defense.event?.eventName,
+          eventCode: defense.event?.eventCode,
+        },
+        evaluators: formattedEvaluators,
+        count: formattedEvaluators.length
+      }
+    });
+  } catch (error) {
+    console.error('Error fetching defense evaluators:', error);
+    return next(new AppError('Failed to fetch defense evaluators', 500));
+  }
+};
+
 module.exports = {
   getDefenseBydId,
   getProjectBydId,
@@ -829,4 +1234,10 @@ module.exports = {
   clearEvaluatorAccessCodesWithSession,
   createEvaluationRecord,
   createEvaluationRecordWithSession,
+  // Admin access code management functions
+  getEvaluatorsWithAccessCodes,
+  getEvaluatorAccessCodes,
+  regenerateAccessCode,
+  resendNotification,
+  getDefenseEvaluators,
 };
