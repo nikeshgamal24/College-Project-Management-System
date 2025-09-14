@@ -37,6 +37,7 @@ import { toast } from "@/components/ui/use-toast";
 
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import ApiError from "@/components/error/ApiError";
+import AdminAccessCodeManagement from "./AdminAccessCodeManagement";
 
 function AdminEvaluators() {
   const tableRef = useRef();
@@ -217,6 +218,7 @@ function AdminEvaluators() {
                 <TabsTrigger value="all">All</TabsTrigger>
                 <TabsTrigger value="internal">Internal</TabsTrigger>
                 <TabsTrigger value="external">External</TabsTrigger>
+                <TabsTrigger value="access-codes">Access Codes</TabsTrigger>
               </TabsList>
               <div className="ml-auto flex items-center gap-2">
                 <Button
@@ -281,6 +283,9 @@ function AdminEvaluators() {
                   />
                 </CardContent>
               </Card>
+            </TabsContent>
+            <TabsContent value="access-codes">
+              <AdminAccessCodeManagement />
             </TabsContent>
           </Tabs>
         </>

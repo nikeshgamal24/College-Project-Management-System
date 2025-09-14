@@ -129,6 +129,49 @@ export const adminApiSlice = apiSlice.injectEndpoints({
         method: "GET",
       }),
     }),
+    // ==================== ADMIN ACCESS CODE MANAGEMENT ====================
+    getEvaluatorsWithAccessCodes: builder.query({
+      query: () => ({
+        url: "/event/admin/evaluators/access-codes",
+        method: "GET",
+      }),
+      providesTags: ["EvaluatorAccessCodes"],
+    }),
+    getEvaluatorAccessCodes: builder.query({
+      query: (evaluatorId) => ({
+        url: `/event/admin/evaluators/${evaluatorId}/access-codes`,
+        method: "GET",
+      }),
+      providesTags: ["EvaluatorAccessCodes"],
+    }),
+    regenerateAccessCode: builder.mutation({
+      query: ({ evaluatorId, defenseId }) => ({
+        url: `/event/admin/evaluators/${evaluatorId}/defense/${defenseId}/regenerate-code`,
+        method: "PUT",
+      }),
+      invalidatesTags: ["EvaluatorAccessCodes"],
+    }),
+    resendNotification: builder.mutation({
+      query: ({ evaluatorId, defenseId }) => ({
+        url: `/event/admin/evaluators/${evaluatorId}/defense/${defenseId}/resend-notification`,
+        method: "POST",
+      }),
+    }),
+    getDefenseEvaluators: builder.query({
+      query: (defenseId) => ({
+        url: `/event/admin/defense/${defenseId}/evaluators`,
+        method: "GET",
+      }),
+      providesTags: ["DefenseEvaluators"],
+    }),
+    updateDefenseTime: builder.mutation({
+      query: ({ defenseId, defenseTime, defenseDate, reason }) => ({
+        url: `/event/defense/update-time/${defenseId}`,
+        method: "PUT",
+        body: { defenseTime, defenseDate, reason },
+      }),
+      invalidatesTags: ["Defenses", "Events"],
+    }),
   }),
 });
 
@@ -151,4 +194,11 @@ export const {
   useGetAdminProjectIdQuery,
   useGetAdminDashboardQuery,
   useEventResultQuery,
+  // Admin access code management hooks
+  useGetEvaluatorsWithAccessCodesQuery,
+  useGetEvaluatorAccessCodesQuery,
+  useRegenerateAccessCodeMutation,
+  useResendNotificationMutation,
+  useGetDefenseEvaluatorsQuery,
+  useUpdateDefenseTimeMutation,
 } = adminApiSlice;

@@ -3,6 +3,7 @@ const router = express.Router();
 const ROLES_LIST = require("../../config/constants/roles");
 const verifyRoles = require("../../middleware/auth/verifyRoles");
 const eventController = require("../../controllers/api/eventController");
+const evaluatorController = require("../../controllers/api/evaluatorController");
 
 /******SECTION FOR EVENTS*********/
 
@@ -1289,6 +1290,79 @@ router
   .route("/defense/defenses")
   .get(verifyRoles(ROLES_LIST.Admin), eventController.getAllDefenses);
 
+/**
+ * @openapi
+ * '/api/event/defense/update-time/{defenseId}':
+ *   put:
+ *     tags:
+ *       - Admin API
+ *     summary: Update Defense Time and Date
+ *     parameters:
+ *       - in: path
+ *         name: defenseId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Defense ID
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - defenseTime
+ *               - defenseDate
+ *             properties:
+ *               defenseTime:
+ *                 type: string
+ *                 format: date-time
+ *                 example: "2024-06-04T10:00:00.000Z"
+ *               defenseDate:
+ *                 type: string
+ *                 format: date-time
+ *                 example: "2024-06-08T18:14:59.000Z"
+ *               reason:
+ *                 type: string
+ *                 example: "Postponed due to technical issues"
+ *     responses:
+ *       '200':
+ *         description: Defense time updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Defense time updated successfully"
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     defenseId:
+ *                       type: string
+ *                     oldDefenseTime:
+ *                       type: string
+ *                     oldDefenseDate:
+ *                       type: string
+ *                     newDefenseTime:
+ *                       type: string
+ *                     newDefenseDate:
+ *                       type: string
+ *                     updatedAt:
+ *                       type: string
+ *                       format: date-time
+ *       '400':
+ *         description: Bad request - missing fields or defense cannot be updated
+ *       '404':
+ *         description: Defense not found
+ *       '500':
+ *         description: Server error
+ */
+router
+  .route("/defense/update-time/:defenseId")
+  .put(verifyRoles(ROLES_LIST.Admin), eventController.updateDefenseTime);
+
 router
   .route("/defense/:id")
   .get(verifyRoles(ROLES_LIST.Admin), eventController.getDefenseById);
@@ -1328,5 +1402,193 @@ router
 router
   .route("/event/result/:id")
   .get(verifyRoles(ROLES_LIST.Admin), eventController.getResultDetails);
+
+// ==================== ADMIN ACCESS CODE MANAGEMENT ROUTES ====================
+
+/**
+ * @openapi
+ * '/api/event/admin/evaluators/access-codes':
+ *   get:
+ *     tags:
+ *       - Admin API
+ *     summary: Get all evaluators with their access codes
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved evaluators with access codes
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       _id:
+ *                         type: string
+ *                       fullname:
+ *                         type: string
+ *                       email:
+ *                         type: string
+ *                       evaluatorType:
+ *                         type: string
+ *                       defenses:
+ *                         type: array
+ *                         items:
+ *                           type: object
+ *                           properties:
+ *                             defenseId:
+ *                               type: string
+ *                             defenseType:
+ *                               type: string
+ *                             hasAccessCode:
+ *                               type: boolean
+ *       401:
+ *         description: Unauthorized
+ *       500:
+ *         description: Internal Server Error
+ */
+router
+  .route("/admin/evaluators/access-codes")
+  .get(verifyRoles(ROLES_LIST.Admin), evaluatorController.getEvaluatorsWithAccessCodes);
+
+/**
+ * @openapi
+ * '/api/event/admin/evaluators/{evaluatorId}/access-codes':
+ *   get:
+ *     tags:
+ *       - Admin API
+ *     summary: Get access codes for a specific evaluator
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - name: evaluatorId
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved evaluator access codes
+ *       404:
+ *         description: Evaluator not found
+ *       500:
+ *         description: Internal Server Error
+ */
+router
+  .route("/admin/evaluators/:evaluatorId/access-codes")
+  .get(verifyRoles(ROLES_LIST.Admin), evaluatorController.getEvaluatorAccessCodes);
+
+/**
+ * @openapi
+ * '/api/event/admin/evaluators/{evaluatorId}/defense/{defenseId}/regenerate-code':
+ *   put:
+ *     tags:
+ *       - Admin API
+ *     summary: Regenerate access code for evaluator and defense
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - name: evaluatorId
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: string
+ *       - name: defenseId
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Access code regenerated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 message:
+ *                   type: string
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     newAccessCode:
+ *                       type: string
+ *                     emailSent:
+ *                       type: boolean
+ *       404:
+ *         description: Evaluator or defense not found
+ *       500:
+ *         description: Internal Server Error
+ */
+router
+  .route("/admin/evaluators/:evaluatorId/defense/:defenseId/regenerate-code")
+  .put(verifyRoles(ROLES_LIST.Admin), evaluatorController.regenerateAccessCode);
+
+/**
+ * @openapi
+ * '/api/event/admin/evaluators/{evaluatorId}/defense/{defenseId}/resend-notification':
+ *   post:
+ *     tags:
+ *       - Admin API
+ *     summary: Resend notification email to evaluator
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - name: evaluatorId
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: string
+ *       - name: defenseId
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Notification sent successfully
+ *       404:
+ *         description: Evaluator or defense not found
+ *       500:
+ *         description: Internal Server Error
+ */
+router
+  .route("/admin/evaluators/:evaluatorId/defense/:defenseId/resend-notification")
+  .post(verifyRoles(ROLES_LIST.Admin), evaluatorController.resendNotification);
+
+/**
+ * @openapi
+ * '/api/event/admin/defense/{defenseId}/evaluators':
+ *   get:
+ *     tags:
+ *       - Admin API
+ *     summary: Get all evaluators for a specific defense
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - name: defenseId
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved defense evaluators
+ *       404:
+ *         description: Defense not found
+ *       500:
+ *         description: Internal Server Error
+ */
+router
+  .route("/admin/defense/:defenseId/evaluators")
+  .get(verifyRoles(ROLES_LIST.Admin), evaluatorController.getDefenseEvaluators);
 
 module.exports = router;

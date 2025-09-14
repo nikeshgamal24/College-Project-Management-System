@@ -348,9 +348,14 @@ const getAllDefenses = async (req, res) => {
     // Find all events and populate the author field
     const allDefenses = await Defense.find()
       .sort({ createdAt: -1 })
-      .populate("rooms")
+      .populate({
+        path: "rooms",
+        populate: {
+          path: "evaluators",
+          select: "fullname email contact evaluatorType designation institution defense currentDefense"
+        }
+      })
       .populate("event");
-
 
     // Filter out defenses where event population failed
     const defenses = allDefenses.filter(defense => defense.event !== null);
@@ -606,6 +611,101 @@ const extendDeadline = async (req, res) => {
   } catch (err) {
     console.error(`error-message:${err.message}`);
     return res.sendStatus(500);
+  }
+};
+
+const updateDefenseTime = async (req, res) => {
+  try {
+    const { defenseId } = req.params;
+    const { defenseTime, defenseDate, reason } = req.body;
+
+    // Validate required fields
+    if (!defenseTime || !defenseDate) {
+      return res.status(400).json({
+        message: "Defense time and date are required"
+      });
+    }
+
+    // Find the defense
+    const defense = await Defense.findById(defenseId)
+      .populate('event', 'eventName eventCode')
+      .populate({
+        path: 'rooms',
+        populate: {
+          path: 'evaluators',
+          select: 'fullname email'
+        }
+      });
+
+    if (!defense) {
+      return res.status(404).json({
+        message: "Defense not found"
+      });
+    }
+
+    // Check if defense is still active (can be updated)
+    if (defense.status !== "101") {
+      return res.status(400).json({
+        message: "Cannot update time for completed or cancelled defenses"
+      });
+    }
+
+    // Store old values for logging
+    const oldDefenseTime = defense.defenseTime;
+    const oldDefenseDate = defense.defenseDate;
+
+    // Update defense time and date
+    defense.defenseTime = defenseTime;
+    defense.defenseDate = defenseDate;
+    
+    // Add update history
+    if (!defense.updateHistory) {
+      defense.updateHistory = [];
+    }
+    
+    defense.updateHistory.push({
+      updatedAt: new Date(),
+      updatedBy: req.userId,
+      oldDefenseTime,
+      oldDefenseDate,
+      newDefenseTime: defenseTime,
+      newDefenseDate: defenseDate,
+      reason: reason || "Defense time updated"
+    });
+
+    await defense.save();
+
+    // Send notification emails to evaluators about the time change
+    try {
+      const DefenseNotificationService = require('../../services/email/defenseNotificationService');
+      await DefenseNotificationService.sendDefenseTimeUpdateNotification(
+        defense, 
+        oldDefenseTime, 
+        oldDefenseDate, 
+        reason
+      );
+    } catch (emailError) {
+      console.error('Error sending defense time update notifications:', emailError);
+      // Don't fail the request if email sending fails
+    }
+
+    return res.status(200).json({
+      message: "Defense time updated successfully",
+      data: {
+        defenseId: defense._id,
+        oldDefenseTime,
+        oldDefenseDate,
+        newDefenseTime: defenseTime,
+        newDefenseDate: defenseDate,
+        updatedAt: new Date()
+      }
+    });
+
+  } catch (error) {
+    console.error("Error updating defense time:", error);
+    return res.status(500).json({
+      message: "Server error while updating defense time"
+    });
   }
 };
 
@@ -896,6 +996,7 @@ module.exports = {
   createNewDefense,
   getDefenseById,
   extendDeadline,
+  updateDefenseTime,
   getAllProjects,
   getAllStudents,
   getAllSupervisors,

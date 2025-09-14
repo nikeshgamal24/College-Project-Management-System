@@ -25,13 +25,26 @@ import { File } from "lucide-react";
 
 import { DataTable } from "./DefenseDataTable";
 import { numberOfValues } from "@/lib/utils";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import ApiError from "@/components/error/ApiError";
+import UpdateDefenseTimeDialog from "./UpdateDefenseTimeDialog";
 
 function AdminDefense() {
   const navigate = useNavigate();
   const tableRef = useRef();
+  const [isUpdateDialogOpen, setIsUpdateDialogOpen] = useState(false);
+  const [selectedDefense, setSelectedDefense] = useState(null);
   console.log("AdminDefense Block");
+
+  const handleUpdateTime = (defense) => {
+    setSelectedDefense(defense);
+    setIsUpdateDialogOpen(true);
+  };
+
+  const handleCloseUpdateDialog = () => {
+    setIsUpdateDialogOpen(false);
+    setSelectedDefense(null);
+  };
   const {
     data: defenses,
     isLoading,
@@ -229,7 +242,7 @@ function AdminDefense() {
                 <CardContent>
                   <DataTable
                     ref={tableRef}
-                    columns={DefenseColumn}
+                    columns={DefenseColumn(handleUpdateTime)}
                     data={activedefenses}
                   />
                 </CardContent>
@@ -246,7 +259,7 @@ function AdminDefense() {
                 <CardContent>
                   <DataTable
                     ref={tableRef}
-                    columns={DefenseColumn}
+                    columns={DefenseColumn(handleUpdateTime)}
                     data={completedefenses}
                   />
                 </CardContent>
@@ -263,7 +276,7 @@ function AdminDefense() {
                 <CardContent>
                   <DataTable
                     ref={tableRef}
-                    columns={DefenseColumn}
+                    columns={DefenseColumn(handleUpdateTime)}
                     data={archivedefenses}
                   />
                 </CardContent>
@@ -280,7 +293,7 @@ function AdminDefense() {
                 <CardContent>
                   <DataTable
                     ref={tableRef}
-                    columns={DefenseColumn}
+                    columns={DefenseColumn(handleUpdateTime)}
                     data={defenses.data}
                   />
                 </CardContent>
@@ -294,7 +307,16 @@ function AdminDefense() {
     content = <ApiError error={error} />;
   }
 
-  return content;
+  return (
+    <>
+      {content}
+      <UpdateDefenseTimeDialog
+        isOpen={isUpdateDialogOpen}
+        onClose={handleCloseUpdateDialog}
+        defense={selectedDefense}
+      />
+    </>
+  );
 }
 
 export default AdminDefense;
