@@ -79,12 +79,6 @@ function AdminMobileSideBar() {
             >
               <CalendarDays className="h-5 w-5" />
               Events
-              <Badge
-                variant="secondary"
-                className="ml-auto flex  shrink-0 items-center justify-center rounded-full"
-              >
-                3
-              </Badge>
             </Link>
           </SheetClose>
           <SheetClose asChild>
@@ -98,12 +92,6 @@ function AdminMobileSideBar() {
             >
               <ShieldCheck className="h-5 w-5" />
               Defense
-              <Badge
-                variant="secondary"
-                className="ml-auto flex  shrink-0 items-center justify-center rounded-full"
-              >
-                3
-              </Badge>
             </Link>
           </SheetClose>
           <SheetClose asChild>
@@ -117,12 +105,6 @@ function AdminMobileSideBar() {
             >
               <FolderGit2 className="h-5 w-5" />
               Projects
-              <Badge
-                variant="secondary"
-                className="ml-auto flex  shrink-0 items-center justify-center rounded-full"
-              >
-                6
-              </Badge>
             </Link>
           </SheetClose>
           <SheetClose asChild>
@@ -136,12 +118,6 @@ function AdminMobileSideBar() {
             >
               <GraduationCap className="h-5 w-5" />
               Students
-              <Badge
-                variant="secondary"
-                className="ml-auto flex  shrink-0 items-center justify-center rounded-full"
-              >
-                2336
-              </Badge>
             </Link>
           </SheetClose>
           <SheetClose asChild>
@@ -155,12 +131,6 @@ function AdminMobileSideBar() {
             >
               <Cctv className="h-5 w-5" />
               Supervisors
-              <Badge
-                variant="secondary"
-                className="ml-auto flex  shrink-0 items-center justify-center rounded-full"
-              >
-                16
-              </Badge>
             </Link>
           </SheetClose>
           <SheetClose asChild>
@@ -174,12 +144,6 @@ function AdminMobileSideBar() {
             >
               <FileCheck className="h-5 w-5" />
               Evaluators
-              <Badge
-                variant="secondary"
-                className="ml-auto flex shrink-0 items-center justify-center rounded-full"
-              >
-                44
-              </Badge>
             </Link>
           </SheetClose>
           <SheetClose asChild>
