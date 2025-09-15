@@ -471,7 +471,10 @@ function SupervisorLayout() {
                   <DropdownMenuSeparator className="my-2" />
 
                   {/* Support & Help */}
-                  <DropdownMenuItem className="flex items-center gap-3 px-3 py-2 cursor-pointer hover:bg-blue-50">
+                  <DropdownMenuItem 
+                    onClick={() => navigate(`/${ROLES_LIST.supervisor}/help-support`)}
+                    className="flex items-center gap-3 px-3 py-2 cursor-pointer hover:bg-blue-50"
+                  >
                     <HelpCircle className="h-4 w-4 text-orange-600" />
                     <div className="flex-1">
                       <div className="font-medium">Help & Support</div>
