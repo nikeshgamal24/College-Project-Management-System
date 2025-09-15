@@ -83,7 +83,6 @@ const verifyJWT = (req, res, next) => {
         userId: freshUser._id,
         userRole: role
       };
-      console.log('JWT verified successfully');
       next();
     } catch (error) {
       console.error(error);

@@ -5,6 +5,7 @@ import StudentGuidelines from "@/features/student/StudentGuidelines";
 import StudentProject from "@/features/student/project/StudentProject";
 import StudentProfileSettings from "@/features/student/settings/StudentProfileSettings";
 import StudentNotices from "@/features/student/notices/StudentNotices";
+import StudentHelpSupport from "@/features/student/helpSupport/StudentHelpSupport";
 
 import { Navigate } from "react-router-dom";
 import Error from "@/components/error/Error";
@@ -55,6 +56,11 @@ const StudentRoutes = [
   {
     path: "notices",
     element: <StudentNotices />,
+    errorElement: <Error />,
+  },
+  {
+    path: "help-support",
+    element: <StudentHelpSupport />,
     errorElement: <Error />,
   },
   {

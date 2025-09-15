@@ -45,5 +45,6 @@ router.use("/api/meeting-status", require("./api/meetingStatus"));
 router.use("/api/reminders", require("./api/reminder"));
 router.use("/api/notices", require("./api/notices"));
 router.use("/api/notices", require("./api/noticeUpload"));
+router.use("/api/tickets", require("./api/tickets"));
 
 module.exports = router;

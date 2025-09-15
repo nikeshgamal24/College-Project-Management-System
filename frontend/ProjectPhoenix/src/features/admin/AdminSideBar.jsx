@@ -9,6 +9,8 @@ import {
   Origami,
   Settings,
   ShieldCheck,
+  BarChart3,
+  HelpCircle,
 } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 
@@ -68,9 +70,6 @@ function AdminSideBar() {
             >
               <CalendarDays className="h-4 w-4" />
               Events
-              <div className="ml-auto flex shrink-0 items-center justify-center">
-                3
-              </div>
             </Link>
             <Link
               to={`/${ROLES_LIST.admin}/defense`}
@@ -82,9 +81,6 @@ function AdminSideBar() {
             >
               <ShieldCheck className="h-4 w-4" />
               Defense
-              <div className="ml-auto flex shrink-0 items-center justify-center">
-                3
-              </div>
             </Link>
             <Link
               to={`/${ROLES_LIST.admin}/projects`}
@@ -96,9 +92,6 @@ function AdminSideBar() {
             >
               <FolderGit2 className="h-4 w-4" />
               Projects
-              <div className="ml-auto flex shrink-0 items-center justify-center">
-                26
-              </div>
             </Link>
             <Link
               to={`/${ROLES_LIST.admin}/students`}
@@ -110,9 +103,6 @@ function AdminSideBar() {
             >
               <GraduationCap className="h-4 w-4" />
               Students
-              <div className="ml-auto flex shrink-0 items-center justify-center">
-                1156
-              </div>
             </Link>
             <Link
               to={`/${ROLES_LIST.admin}/supervisors`}
@@ -124,9 +114,6 @@ function AdminSideBar() {
             >
               <Cctv className="h-4 w-4" />
               Supervisors
-              <div className="ml-auto flex shrink-0 items-center justify-center">
-                26
-              </div>
             </Link>
             <Link
               to={`/${ROLES_LIST.admin}/evaluators`}
@@ -138,9 +125,28 @@ function AdminSideBar() {
             >
               <FileCheck className="h-4 w-4" />
               Evaluators
-              <div className="ml-auto flex shrink-0 items-center justify-center">
-                44
-              </div>
+            </Link>
+            <Link
+              to={`/${ROLES_LIST.admin}/results`}
+              className={`flex items-center gap-3 rounded-md  px-3 py-2.5 ${
+                isTabActive(currentPath, "results")
+                  ? "bg-slate-950 text-white"
+                  : "hover:text-slate-950"
+              } text-primary transition-all hover:pl-4`}
+            >
+              <BarChart3 className="h-4 w-4" />
+              Results
+            </Link>
+            <Link
+              to={`/${ROLES_LIST.admin}/help-support`}
+              className={`flex items-center gap-3 rounded-md  px-3 py-2.5 ${
+                isTabActive(currentPath, "help-support")
+                  ? "bg-slate-950 text-white"
+                  : "hover:text-slate-950"
+              } text-primary transition-all hover:pl-4`}
+            >
+              <HelpCircle className="h-4 w-4" />
+              Help & Support
             </Link>
             <Link
               to={`/${ROLES_LIST.admin}/notices`}

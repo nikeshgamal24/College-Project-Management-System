@@ -19,6 +19,8 @@ import {
   Origami,
   Settings,
   ShieldCheck,
+  BarChart3,
+  HelpCircle,
 } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { isTabActive } from "@/lib/utils";
@@ -78,12 +80,6 @@ function AdminMobileSideBar() {
             >
               <CalendarDays className="h-5 w-5" />
               Events
-              <Badge
-                variant="secondary"
-                className="ml-auto flex  shrink-0 items-center justify-center rounded-full"
-              >
-                3
-              </Badge>
             </Link>
           </SheetClose>
           <SheetClose asChild>
@@ -97,12 +93,6 @@ function AdminMobileSideBar() {
             >
               <ShieldCheck className="h-5 w-5" />
               Defense
-              <Badge
-                variant="secondary"
-                className="ml-auto flex  shrink-0 items-center justify-center rounded-full"
-              >
-                3
-              </Badge>
             </Link>
           </SheetClose>
           <SheetClose asChild>
@@ -116,12 +106,6 @@ function AdminMobileSideBar() {
             >
               <FolderGit2 className="h-5 w-5" />
               Projects
-              <Badge
-                variant="secondary"
-                className="ml-auto flex  shrink-0 items-center justify-center rounded-full"
-              >
-                6
-              </Badge>
             </Link>
           </SheetClose>
           <SheetClose asChild>
@@ -135,12 +119,6 @@ function AdminMobileSideBar() {
             >
               <GraduationCap className="h-5 w-5" />
               Students
-              <Badge
-                variant="secondary"
-                className="ml-auto flex  shrink-0 items-center justify-center rounded-full"
-              >
-                2336
-              </Badge>
             </Link>
           </SheetClose>
           <SheetClose asChild>
@@ -154,12 +132,6 @@ function AdminMobileSideBar() {
             >
               <Cctv className="h-5 w-5" />
               Supervisors
-              <Badge
-                variant="secondary"
-                className="ml-auto flex  shrink-0 items-center justify-center rounded-full"
-              >
-                16
-              </Badge>
             </Link>
           </SheetClose>
           <SheetClose asChild>
@@ -173,12 +145,32 @@ function AdminMobileSideBar() {
             >
               <FileCheck className="h-5 w-5" />
               Evaluators
-              <Badge
-                variant="secondary"
-                className="ml-auto flex shrink-0 items-center justify-center rounded-full"
-              >
-                44
-              </Badge>
+            </Link>
+          </SheetClose>
+          <SheetClose asChild>
+            <Link
+              to={`/${ROLES_LIST.admin}/results`}
+              className={`mx-[-0.65rem]  flex items-center ${
+                isTabActive(currentPath, "results")
+                  ? "bg-slate-950 text-white"
+                  : ""
+              }  gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground`}
+            >
+              <BarChart3 className="h-5 w-5" />
+              Results
+            </Link>
+          </SheetClose>
+          <SheetClose asChild>
+            <Link
+              to={`/${ROLES_LIST.admin}/help-support`}
+              className={`mx-[-0.65rem]  flex items-center ${
+                isTabActive(currentPath, "help-support")
+                  ? "bg-slate-950 text-white"
+                  : ""
+              }  gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground`}
+            >
+              <HelpCircle className="h-5 w-5" />
+              Help & Support
             </Link>
           </SheetClose>
           <SheetClose asChild>
