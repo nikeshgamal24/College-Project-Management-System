@@ -789,6 +789,23 @@ const changeSupervisorPassword = async (req, res) => {
       });
     }
 
+    // Handle temporary password users - skip OTP verification
+    if (supervisor.isTemporaryPassword && otp === "TEMP_PASSWORD") {
+      // Update password and clear temporary password flag
+      supervisor.password = newPassword;
+      supervisor.isTemporaryPassword = false;
+      supervisor.lastPasswordChange = new Date();
+      supervisor.OTP = undefined;
+      supervisor.OTPExpiry = undefined;
+      await supervisor.save();
+
+      return res.status(200).json({
+        success: true,
+        message: "Temporary password changed successfully. You can now use your new password to login.",
+      });
+    }
+
+    // Regular password change flow for non-temporary password users
     console.log("🚀 ~ supervisor.OTP:", supervisor);
     console.log("🚀 ~ otp:", otp);
     // Verify OTP
@@ -817,6 +834,8 @@ const changeSupervisorPassword = async (req, res) => {
 
     // Update password
     supervisor.password = newPassword;
+    supervisor.isTemporaryPassword = false; // Clear temporary password flag
+    supervisor.lastPasswordChange = new Date();
     
     // Clear OTP after successful password change
     supervisor.OTP = undefined;

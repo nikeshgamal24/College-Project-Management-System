@@ -2,7 +2,7 @@ import ApiError from "@/components/error/ApiError";
 import { useGetAllStudentsQuery } from "../adminApiSlice";
 import Loader from "@/components/Loader";
 import { useNavigate } from "react-router-dom";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Activity,
@@ -14,6 +14,8 @@ import {
   FileQuestion,
   Handshake,
   UserCheck,
+  Plus,
+  Users,
 } from "lucide-react";
 import {
   Card,
@@ -25,6 +27,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { DataTable } from "./StudentDataTable";
 import { StudentColumn } from "./StudentColumn";
+// User management moved to dedicated page
 
 function AdminStudents() {
   const {
@@ -37,6 +40,8 @@ function AdminStudents() {
 
   const navigate = useNavigate();
   const tableRef = useRef();
+  
+  // User management moved to dedicated page
 
   let content;
   let assocaiatedStudents, notAssociatedStudents;
@@ -70,16 +75,19 @@ function AdminStudents() {
     } else {
       content = (
         <div>
-          <div className="text-xl font-semibold tracking-tight flex items-center gap-4 mb-4">
-            <Button
-              variant="outline"
-              size="icon"
-              className="h-8 w-8"
-              onClick={() => navigate(-1)}
-            >
-              <ChevronLeft className="h-5 w-5" />
-            </Button>
-            Students
+          <div className="text-xl font-semibold tracking-tight flex items-center justify-between mb-4">
+            <div className="flex items-center gap-4">
+              <Button
+                variant="outline"
+                size="icon"
+                className="h-8 w-8"
+                onClick={() => navigate(-1)}
+              >
+                <ChevronLeft className="h-5 w-5" />
+              </Button>
+              Students
+            </div>
+            {/* User management moved to dedicated page */}
           </div>
           <div className="grid gap-4 grid-cols-2 md:gap-8 xl:grid-cols-4">
             <Card>

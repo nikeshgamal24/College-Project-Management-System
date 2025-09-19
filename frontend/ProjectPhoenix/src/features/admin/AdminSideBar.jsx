@@ -11,6 +11,7 @@ import {
   ShieldCheck,
   BarChart3,
   HelpCircle,
+  Users,
 } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 
@@ -114,6 +115,17 @@ function AdminSideBar() {
             >
               <Cctv className="h-4 w-4" />
               Supervisors
+            </Link>
+            <Link
+              to={`/${ROLES_LIST.admin}/user-management`}
+              className={`flex items-center gap-3 rounded-md  px-3 py-2.5 ${
+                isTabActive(currentPath, "user-management")
+                  ? "bg-slate-950 text-white"
+                  : "hover:text-slate-950"
+              } text-primary transition-all hover:pl-4 `}
+            >
+              <Users className="h-4 w-4" />
+              User Management
             </Link>
             <Link
               to={`/${ROLES_LIST.admin}/evaluators`}

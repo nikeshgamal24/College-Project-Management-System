@@ -47,4 +47,7 @@ router.use("/api/notices", require("./api/notices"));
 router.use("/api/notices", require("./api/noticeUpload"));
 router.use("/api/tickets", require("./api/tickets"));
 
+// Admin user management routes
+router.use("/api/admin/users", require("./admin/users"));
+
 module.exports = router;
