@@ -106,6 +106,22 @@ app.set('trust proxy', 1);
 // Middleware for access-control-allow credentials
 app.use(credentials);
 
+// Additional CORS headers middleware for preflight requests
+app.use((req, res, next) => {
+  if (process.env.NODE_ENV === 'production') {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,PATCH,OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With, Accept, Origin');
+    res.header('Access-Control-Allow-Credentials', 'true');
+    
+    if (req.method === 'OPTIONS') {
+      res.sendStatus(200);
+      return;
+    }
+  }
+  next();
+});
+
 // Cross Origin Resource Sharing
 app.use(cors(corsOptions));
 

@@ -46,15 +46,31 @@ const fallbackCorsOptions = {
   origin: true, // Allow all origins in production
   credentials: true,
   optionsSuccessStatus: 200,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS', 'HEAD'],
+  allowedHeaders: [
+    'Content-Type', 
+    'Authorization', 
+    'X-Requested-With', 
+    'Accept', 
+    'Origin',
+    'Access-Control-Allow-Origin',
+    'Access-Control-Allow-Headers',
+    'Access-Control-Allow-Methods',
+    'Access-Control-Allow-Credentials'
+  ],
+  exposedHeaders: ['Set-Cookie'],
+  preflightContinue: false
 };
 
-// Use fallback CORS in production if CORS_STRICT is not set or if we detect common CORS issues
+// Use fallback CORS in production by default (more permissive)
+// Only use strict CORS if explicitly enabled
 const shouldUseFallback = process.env.NODE_ENV === 'production' && 
-  (!process.env.CORS_STRICT || process.env.USE_CORS_FALLBACK === 'true');
+  process.env.CORS_STRICT !== 'true';
 
-const finalCorsOptions = shouldUseFallback ? fallbackCorsOptions : corsOptions;
+// For immediate fix: always use fallback in production
+const finalCorsOptions = process.env.NODE_ENV === 'production' 
+  ? fallbackCorsOptions 
+  : corsOptions;
 
 // Log CORS configuration for debugging
 console.log('CORS Configuration:', {

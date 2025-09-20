@@ -6,8 +6,9 @@ const allowedOrigins = [
   "https://project-phoenix-omega.vercel.app",
   "https://projectphoenix.vercel.app",
   "https://college-project-management-frontend-system.vercel.app",
-  // Add more specific patterns for your actual hosted domain
-  "https://college-project-management-backend-system.vercel.app"
+  "https://college-project-management-backend-system.vercel.app",
+  // Add the exact frontend domain from the browser
+  "https://college-project-management-frontend-system.vercel.app"
 ];
 
 module.exports = allowedOrigins;  
