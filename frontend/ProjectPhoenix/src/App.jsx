@@ -6,6 +6,7 @@ import { Provider } from "react-redux";
 import { store } from "./store";
 import { ROLES_LIST } from "./lib/config";
 import NotFound from "./components/NotFound";
+import { StatusBar, Style } from "@capacitor/status-bar";
 
 import AdminRoutes from "./routes/AdminRoutes";
 import Unauthorized from "./components/Unauthorized";
@@ -83,10 +84,17 @@ const router = createBrowserRouter([
 export default function App() {
   useEffect(() => {
     const configureStatusBar = async () => {
-      await StatusBar.setStyle({ style: Style.Light });
-      await StatusBar.setBackgroundColor({ color: "#ffffff" });
-      await StatusBar.show();
-      StatusBar.setOverlaysWebView({ overlay: true });
+      try {
+        // Only configure StatusBar if running in a mobile environment
+        if (window.Capacitor && window.Capacitor.isNativePlatform()) {
+          await StatusBar.setStyle({ style: Style.Light });
+          await StatusBar.setBackgroundColor({ color: "#ffffff" });
+          await StatusBar.show();
+          StatusBar.setOverlaysWebView({ overlay: true });
+        }
+      } catch (error) {
+        console.log("StatusBar configuration not available in web environment");
+      }
     };
 
     configureStatusBar();

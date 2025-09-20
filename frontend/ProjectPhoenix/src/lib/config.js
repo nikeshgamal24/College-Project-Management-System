@@ -9,6 +9,9 @@ export const API_BASE_URL =
 
 // Log the API URL being used
 console.log("Using API URL:", API_BASE_URL);
+console.log("Environment:", import.meta.env.MODE);
+console.log("Is Production:", import.meta.env.PROD);
+console.log("VITE_API_BASE_URL:", import.meta.env.VITE_API_BASE_URL);
 
 export const GOOGLE_CLIENT_ID =
   "802396137377-5pfhl96kiru3ttesrvt52uqsq0631jma.apps.googleusercontent.com";
