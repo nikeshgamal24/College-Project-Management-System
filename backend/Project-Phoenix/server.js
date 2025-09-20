@@ -108,13 +108,24 @@ app.use(credentials);
 
 // Additional CORS headers middleware for preflight requests (unified for dev and prod)
 app.use((req, res, next) => {
-  // Set CORS headers for all environments
-  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,PATCH,OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With, Accept, Origin');
+  const origin = req.headers.origin;
+  console.log('Server middleware - Request from origin:', origin);
+  console.log('Server middleware - Request method:', req.method);
+  
+  // Set permissive CORS headers for all environments
+  if (origin) {
+    res.header('Access-Control-Allow-Origin', origin);
+  } else {
+    res.header('Access-Control-Allow-Origin', '*');
+  }
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,PATCH,OPTIONS,HEAD');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With, Accept, Origin, Access-Control-Request-Method, Access-Control-Request-Headers');
   res.header('Access-Control-Allow-Credentials', 'true');
+  res.header('Access-Control-Max-Age', '86400'); // 24 hours
   
   // Handle preflight requests
   if (req.method === 'OPTIONS') {
+    console.log('Server middleware - Handling OPTIONS preflight request');
     res.sendStatus(200);
     return;
   }
