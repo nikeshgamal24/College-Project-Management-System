@@ -1,7 +1,9 @@
 // Use environment variable in production, fallback to localhost for development
 export const API_BASE_URL = 
   import.meta.env.VITE_API_BASE_URL ||
-  "http://localhost:3500/api";
+  (import.meta.env.PROD 
+    ? "https://college-project-management-backend-system.vercel.app/api"
+    : "http://localhost:3500/api");
 
 // export const API_BASE_URL = "http://localhost:3500/api";
 

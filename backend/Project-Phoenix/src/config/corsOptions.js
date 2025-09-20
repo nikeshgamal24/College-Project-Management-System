@@ -21,7 +21,8 @@ const corsOptions = {
       if (origin.includes('vercel.app') || 
           origin.includes('college-project-management') ||
           origin.includes('project-phoenix') ||
-          origin.includes('projectphoenix')) {
+          origin.includes('projectphoenix') ||
+          origin.includes('nikesh-gamals-projects.vercel.app')) {
         console.log('CORS allowed origin (production wildcard):', origin);
         return callback(null, true);
       }

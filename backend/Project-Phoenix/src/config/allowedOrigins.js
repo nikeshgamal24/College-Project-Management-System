@@ -7,8 +7,11 @@ const allowedOrigins = [
   "https://projectphoenix.vercel.app",
   "https://college-project-management-frontend-system.vercel.app",
   "https://college-project-management-backend-system.vercel.app",
-  // Add the exact frontend domain from the browser
-  "https://college-project-management-frontend-system.vercel.app"
+  // Add all Vercel deployment domains
+  "https://college-project-management-system-38x3-k27dya8ed.vercel.app",
+  "https://college-project-management-system.vercel.app",
+  // Add git-based deployment URLs
+  "https://college-project-management-sy-git-9016f3-nikesh-gamals-projects.vercel.app"
 ];
 
 module.exports = allowedOrigins;  
