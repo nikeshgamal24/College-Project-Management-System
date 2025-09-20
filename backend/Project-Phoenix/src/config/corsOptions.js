@@ -16,11 +16,13 @@ const corsOptions = {
       return callback(null, true);
     }
     
-    // In production, allow Vercel domains and college-project-management domains
+    // In production, be more permissive with Vercel and college-project-management domains
     if (process.env.NODE_ENV === 'production') {
       if (origin.includes('vercel.app') || 
           origin.includes('college-project-management') ||
-          origin.includes('project-phoenix')) {
+          origin.includes('project-phoenix') ||
+          origin.includes('projectphoenix')) {
+        console.log('CORS allowed origin (production wildcard):', origin);
         return callback(null, true);
       }
     }
@@ -29,6 +31,7 @@ const corsOptions = {
     console.log('CORS blocked origin:', origin);
     console.log('Allowed origins:', allowedOrigins);
     console.log('NODE_ENV:', process.env.NODE_ENV);
+    console.log('Request headers:', origin);
     
     callback(new Error("Not Allowed by CORS"));
   },
@@ -47,9 +50,19 @@ const fallbackCorsOptions = {
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin'],
 };
 
-// Use fallback CORS in production if CORS_STRICT is not set
-const finalCorsOptions = process.env.NODE_ENV === 'production' && !process.env.CORS_STRICT 
-  ? fallbackCorsOptions 
-  : corsOptions;
+// Use fallback CORS in production if CORS_STRICT is not set or if we detect common CORS issues
+const shouldUseFallback = process.env.NODE_ENV === 'production' && 
+  (!process.env.CORS_STRICT || process.env.USE_CORS_FALLBACK === 'true');
+
+const finalCorsOptions = shouldUseFallback ? fallbackCorsOptions : corsOptions;
+
+// Log CORS configuration for debugging
+console.log('CORS Configuration:', {
+  NODE_ENV: process.env.NODE_ENV,
+  CORS_STRICT: process.env.CORS_STRICT,
+  USE_CORS_FALLBACK: process.env.USE_CORS_FALLBACK,
+  usingFallback: shouldUseFallback,
+  allowedOrigins: allowedOrigins
+});
 
 module.exports = finalCorsOptions;
