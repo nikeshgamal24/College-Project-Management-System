@@ -1,6 +1,6 @@
 const allowedOrigins = require("./allowedOrigins");
 
-// More permissive CORS for production
+// Unified CORS for both development and production
 const corsOptions = {
   origin: (origin, callback) => {
     // Allow requests with no origin (like mobile apps or curl requests)
@@ -8,31 +8,30 @@ const corsOptions = {
     
     // Check if origin is in allowed origins
     if (allowedOrigins.indexOf(origin) !== -1) {
+      console.log('CORS allowed origin (from allowedOrigins):', origin);
       return callback(null, true);
     }
     
-    // In development, allow localhost with any port
-    if (process.env.NODE_ENV === 'development' && origin.includes('localhost')) {
+    // Allow localhost with any port (for development)
+    if (origin.includes('localhost') || origin.includes('127.0.0.1')) {
+      console.log('CORS allowed origin (localhost):', origin);
       return callback(null, true);
     }
     
-    // In production, be more permissive with Vercel and college-project-management domains
-    if (process.env.NODE_ENV === 'production') {
-      if (origin.includes('vercel.app') || 
-          origin.includes('college-project-management') ||
-          origin.includes('project-phoenix') ||
-          origin.includes('projectphoenix') ||
-          origin.includes('nikesh-gamals-projects.vercel.app')) {
-        console.log('CORS allowed origin (production wildcard):', origin);
-        return callback(null, true);
-      }
+    // Allow Vercel and college-project-management domains (for production)
+    if (origin.includes('vercel.app') || 
+        origin.includes('college-project-management') ||
+        origin.includes('project-phoenix') ||
+        origin.includes('projectphoenix') ||
+        origin.includes('nikesh-gamals-projects.vercel.app')) {
+      console.log('CORS allowed origin (wildcard match):', origin);
+      return callback(null, true);
     }
     
     // Log the blocked origin for debugging
     console.log('CORS blocked origin:', origin);
     console.log('Allowed origins:', allowedOrigins);
     console.log('NODE_ENV:', process.env.NODE_ENV);
-    console.log('Request headers:', origin);
     
     callback(new Error("Not Allowed by CORS"));
   },
@@ -63,23 +62,12 @@ const fallbackCorsOptions = {
   preflightContinue: false
 };
 
-// Use fallback CORS in production by default (more permissive)
-// Only use strict CORS if explicitly enabled
-const shouldUseFallback = process.env.NODE_ENV === 'production' && 
-  process.env.CORS_STRICT !== 'true';
-
-// For immediate fix: always use fallback in production
-const finalCorsOptions = process.env.NODE_ENV === 'production' 
-  ? fallbackCorsOptions 
-  : corsOptions;
-
 // Log CORS configuration for debugging
 console.log('CORS Configuration:', {
   NODE_ENV: process.env.NODE_ENV,
-  CORS_STRICT: process.env.CORS_STRICT,
-  USE_CORS_FALLBACK: process.env.USE_CORS_FALLBACK,
-  usingFallback: shouldUseFallback,
-  allowedOrigins: allowedOrigins
+  allowedOrigins: allowedOrigins,
+  message: 'Using unified CORS for both development and production'
 });
 
-module.exports = finalCorsOptions;
+// Export the unified CORS configuration
+module.exports = corsOptions;
