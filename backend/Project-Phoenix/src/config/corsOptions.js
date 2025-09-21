@@ -20,45 +20,54 @@ const isLocalhost = (origin) => {
 const isValidVercelDomain = (origin) => {
   if (!origin || !origin.includes('vercel.app')) return false;
   
-  // Only allow domains that end with .vercel.app (prevents subdomain attacks)
-  const vercelRegex = /^https:\/\/[a-zA-Z0-9\-]+(-[a-zA-Z0-9\-]+)*\.vercel\.app$/;
+  // Allow domains that end with .vercel.app (more permissive for complex Vercel URLs)
+  // This handles URLs like: https://college-project-management-frontend-system.vercel.app
+  const vercelRegex = /^https:\/\/[a-zA-Z0-9\-\.]+\.vercel\.app$/;
   return vercelRegex.test(origin);
 };
 
 // Main CORS configuration
 const corsOptions = {
   origin: (origin, callback) => {
+    console.log('🔍 CORS: Processing origin:', origin);
+    console.log('🔍 CORS: Environment:', process.env.NODE_ENV);
+    
     // Allow requests with no origin (mobile apps, Postman, server-to-server)
     if (!origin) {
-      console.log('CORS: Allowing request with no origin');
+      console.log('✅ CORS: Allowing request with no origin');
       return callback(null, true);
     }
 
     // Development: Allow any localhost port for convenience
     if (process.env.NODE_ENV === 'development' && isLocalhost(origin)) {
-      console.log('CORS: Allowed localhost origin (development):', origin);
+      console.log('✅ CORS: Allowed localhost origin (development):', origin);
       return callback(null, true);
     }
 
-    // Check exact match in allowed origins (after localhost check for proper precedence)
+    // Check exact match in allowed origins first
     if (allowedOrigins.includes(origin)) {
-      console.log('CORS: Allowed origin (whitelist):', origin);
+      console.log('✅ CORS: Allowed origin (whitelist):', origin);
       return callback(null, true);
     }
 
-    // Production: Additional validation for known deployment patterns
-    if (process.env.NODE_ENV === 'production') {
-      // Validate Vercel domains securely (no wildcard matching)
-      if (isValidVercelDomain(origin)) {
-        console.log('CORS: Allowed Vercel origin (production):', origin);
-        return callback(null, true);
-      }
+    // For production or when NODE_ENV is not set (common in Vercel), allow valid Vercel domains
+    const isProduction = process.env.NODE_ENV === 'production' || !process.env.NODE_ENV;
+    if (isProduction && isValidVercelDomain(origin)) {
+      console.log('✅ CORS: Allowed Vercel origin (production):', origin);
+      return callback(null, true);
+    }
+
+    // Additional fallback for common deployment patterns
+    if (origin && origin.includes('vercel.app')) {
+      console.log('✅ CORS: Allowed Vercel domain (fallback):', origin);
+      return callback(null, true);
     }
 
     // Log blocked requests for debugging
-    console.warn('CORS: Blocked origin:', origin);
-    console.log('CORS: Environment:', process.env.NODE_ENV);
-    console.log('CORS: Allowed origins:', allowedOrigins);
+    console.warn('❌ CORS: Blocked origin:', origin);
+    console.log('🔍 CORS: Environment:', process.env.NODE_ENV);
+    console.log('🔍 CORS: Allowed origins:', allowedOrigins);
+    console.log('🔍 CORS: Is valid Vercel domain:', isValidVercelDomain(origin));
     
     // Return CORS error
     const error = new Error(`CORS policy violation: Origin '${origin}' is not allowed`);
@@ -97,7 +106,10 @@ const corsOptions = {
   maxAge: 86400,
 
   // Don't pass preflight response to next handler
-  preflightContinue: false
+  preflightContinue: false,
+
+  // Handle preflight requests properly
+  handlePreflight: true
 };
 
 // Log CORS configuration on startup

@@ -168,6 +168,12 @@ app.get('/api/health', (req, res) => {
   });
 });
 
+// Explicit OPTIONS handler for preflight requests (additional safety)
+app.options('*', (req, res) => {
+  console.log('🔍 OPTIONS preflight request from:', req.headers.origin);
+  res.status(200).end();
+});
+
 // API Documentation
 // swaggerDocs(app, PORT);
 
