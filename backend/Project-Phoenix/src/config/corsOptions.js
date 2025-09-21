@@ -68,6 +68,14 @@ const corsOptions = {
     console.log('🔍 CORS: Environment:', process.env.NODE_ENV);
     console.log('🔍 CORS: Allowed origins:', allowedOrigins);
     console.log('🔍 CORS: Is valid Vercel domain:', isValidVercelDomain(origin));
+    console.log('🔍 CORS: Origin includes vercel.app:', origin && origin.includes('vercel.app'));
+    console.log('🔍 CORS: Origin regex test:', /^https:\/\/[a-zA-Z0-9\-\.]+\.vercel\.app$/.test(origin));
+    
+    // For debugging, temporarily allow all Vercel domains
+    if (origin && origin.includes('vercel.app')) {
+      console.log('🚨 CORS: Temporarily allowing Vercel domain for debugging:', origin);
+      return callback(null, true);
+    }
     
     // Return CORS error
     const error = new Error(`CORS policy violation: Origin '${origin}' is not allowed`);
