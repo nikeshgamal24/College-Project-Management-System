@@ -326,7 +326,6 @@ const changeStudentPassword = async (req, res) => {
       });
     }
 
-
     // Get student with OTP for verification
     const student = await Student.findById(req.params.id)
       .select("+password +OTP +OTPExpiry")
@@ -336,8 +335,24 @@ const changeStudentPassword = async (req, res) => {
       return res.status(404).json({ message: "Student not found." });
     }
 
+    // Handle temporary password users - skip OTP verification
+    if (student.isTemporaryPassword && otp === "TEMP_PASSWORD") {
+      // Update password and clear temporary password flag
+      student.password = newPassword;
+      student.isTemporaryPassword = false;
+      student.lastPasswordChange = new Date();
+      student.OTP = undefined;
+      student.OTPExpiry = undefined;
+      await student.save();
+
+      return res.status(200).json({
+        success: true,
+        message: "Temporary password changed successfully. You can now use your new password to login.",
+      });
+    }
+
+    // Regular password change flow for non-temporary password users
     // Check if OTP exists 
-    //  # TODO is not expired
     if (!student.OTP) {
       return res.status(400).json({
         message: "No OTP requested or OTP expired. Please request a new OTP."
@@ -358,6 +373,8 @@ const changeStudentPassword = async (req, res) => {
 
     // Update password and clear OTP
     student.password = newPassword;
+    student.isTemporaryPassword = false; // Clear temporary password flag
+    student.lastPasswordChange = new Date();
     student.OTP = undefined;
     student.OTPExpiry = undefined;
     await student.save();

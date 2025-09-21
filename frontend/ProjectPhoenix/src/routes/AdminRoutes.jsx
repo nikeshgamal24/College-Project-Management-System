@@ -19,6 +19,7 @@ import AdminProjectDetails from "@/features/admin/projects/AdminProjectDetails";
 import AdminEventResult from "@/features/admin/events/results/AdminEventResult";
 import AdminResults from "@/features/admin/results/AdminResults";
 import AdminHelpSupport from "@/features/admin/helpSupport/AdminHelpSupport";
+import AdminUserManagementPage from "@/features/admin/userManagement/AdminUserManagementPage";
 
 const AdminRoutes = [
   {
@@ -94,6 +95,11 @@ const AdminRoutes = [
   {
     path: "supervisors",
     element: <AdminSupervisors />,
+    errorElement: <Error />,
+  },
+  {
+    path: "user-management",
+    element: <AdminUserManagementPage />,
     errorElement: <Error />,
   },
   {

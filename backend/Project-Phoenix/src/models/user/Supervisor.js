@@ -51,6 +51,28 @@ const supervisorSchema = new Schema(
       type: Date,
       select: false
     },
+    // Admin user management fields
+    isTemporaryPassword: {
+      type: Boolean,
+      default: false
+    },
+    status: {
+      type: String,
+      enum: ['PENDING_ACTIVATION', 'ACTIVE', 'INACTIVE', 'SUSPENDED'],
+      default: 'ACTIVE'
+    },
+    createdBy: {
+      type: Schema.Types.ObjectId,
+      ref: 'Admin'
+    },
+    updatedBy: {
+      type: Schema.Types.ObjectId,
+      ref: 'Admin'
+    },
+    lastPasswordChange: {
+      type: Date,
+      default: null
+    },
     timeStamps: {
       type: Date,
       timestamps: true,

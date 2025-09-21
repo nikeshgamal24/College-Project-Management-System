@@ -106,19 +106,8 @@ app.set('trust proxy', 1);
 // Middleware for access-control-allow credentials
 app.use(credentials);
 
-// Cross Origin Resource Sharing
+// Cross Origin Resource Sharing - Single CORS configuration
 app.use(cors(corsOptions));
-
-// CORS debugging middleware
-app.use((req, res, next) => {
-  console.log('CORS Debug:', {
-    origin: req.headers.origin,
-    method: req.method,
-    url: req.url,
-    userAgent: req.headers['user-agent']
-  });
-  next();
-});
 
 // Body parsing middleware
 app.use(express.urlencoded({ 
@@ -129,6 +118,21 @@ app.use(express.urlencoded({
 app.use(express.json({ 
   limit: '10mb' // Add size limit for security
 }));
+
+// Request debugging middleware (moved after body parsing)
+app.use((req, res, next) => {
+  console.log('🚀 ===== REQUEST DEBUG =====');
+  console.log('🚀 Method:', req.method);
+  console.log('🚀 URL:', req.originalUrl);
+  console.log('🚀 Headers:', {
+    'content-type': req.headers['content-type'],
+    'authorization': req.headers['authorization'] ? 'Bearer token present' : 'No auth token'
+  });
+  console.log('🚀 Body:', req.body);
+  console.log('🚀 Query:', req.query);
+  console.log('🚀 =======================');
+  next();
+});
 
 // Cookie parser middleware
 app.use(cookieParser());

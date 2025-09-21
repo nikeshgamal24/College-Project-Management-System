@@ -33,11 +33,7 @@ const { validate, authSchemas } = require("../../middleware/validation/validatio
  *       200:
  *         description: Successfully login
  *         content:
- *           application/json:onst evaluators = await Evaluator.find({ role });
-
-    if (!evaluators) {
-      return res.sendStatus(204);
-    }
+ *           application/json:
  *             schema:
  *               type: object
  *               properties:
@@ -141,5 +137,39 @@ router.post("/", validate(authSchemas.login), authController.handleLogin);
  */
 
 router.post("/evaluator", validate(authSchemas.evaluatorLogin), authController.handleEvaluatorLogin);
+
+/**
+ * @openapi
+ * '/api/auth/change-temporary-password':
+ *   post:
+ *     tags:
+ *       - Login API
+ *     summary: Change temporary password
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - userId
+ *               - newPassword
+ *               - role
+ *             properties:
+ *               userId:
+ *                 type: string
+ *               newPassword:
+ *                 type: string
+ *               role:
+ *                 type: number
+ *     responses:
+ *       200:
+ *         description: Password changed successfully
+ *       400:
+ *         description: Bad Request
+ *       404:
+ *         description: User not found
+ */
+router.post("/change-temporary-password", authController.changeTemporaryPassword);
 
 module.exports = router;

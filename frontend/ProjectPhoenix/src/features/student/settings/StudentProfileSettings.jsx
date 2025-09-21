@@ -34,6 +34,7 @@ const StudentProfileSettings = () => {
   console.log("🔍 StudentProfileSettings rendered");
   console.log("🔍 Current user:", user);
   console.log("🔍 User ID:", user?._id);
+  console.log("🔍 Has temporary password:", user?.isTemporaryPassword);
 
   // Form states
   const [profileData, setProfileData] = useState({
@@ -198,6 +199,17 @@ const StudentProfileSettings = () => {
       return;
     }
 
+    // For users with temporary password, skip current password validation
+    if (user?.isTemporaryPassword) {
+      // Skip OTP for temporary password users - go directly to password change
+      setOtpData({
+        otp: "TEMP_PASSWORD", // Special marker for temporary password users
+        showOtpStep: true,
+        email: user.email,
+      });
+      return;
+    }
+
     try {
       const result = await requestPasswordOTP({
         id: user._id,
@@ -237,7 +249,45 @@ const StudentProfileSettings = () => {
   const handlePasswordChange = async (e) => {
     e.preventDefault();
     
-    // Enhanced debug logging for OTP validation
+    // For temporary password users, skip OTP validation
+    if (user?.isTemporaryPassword && otpData.otp === "TEMP_PASSWORD") {
+      try {
+        const result = await changePassword({
+          id: user._id,
+          otp: "TEMP_PASSWORD", // Special marker for temporary password users
+          newPassword: passwordData.newPassword,
+        }).unwrap();
+
+        if (result.success) {
+          toast({
+            title: "Password Changed!",
+            description: "Your temporary password has been changed successfully. You can now use your new password to login.",
+            className: "bg-green-50 border-green-200 text-green-800",
+          });
+          
+          // Reset all password-related state
+          setPasswordData({
+            currentPassword: "",
+            newPassword: "",
+            confirmPassword: "",
+          });
+          setOtpData({
+            otp: "",
+            showOtpStep: false,
+            email: "",
+          });
+        }
+      } catch (error) {
+        toast({
+          variant: "destructive",
+          title: "Password Change Failed",
+          description: error?.data?.message || "Failed to change password. Please try again.",
+        });
+      }
+      return;
+    }
+    
+    // Enhanced debug logging for OTP validation (for regular users)
     console.log("🔍 ===== OTP VALIDATION DEBUG =====");
     console.log("🔍 Form submitted - OTP data:", otpData.otp);
     console.log("🔍 OTP type:", typeof otpData.otp);
@@ -562,45 +612,53 @@ const StudentProfileSettings = () => {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Shield className="h-5 w-5" />
-                Change Password
+                {user?.isTemporaryPassword ? "Change Temporary Password" : "Change Password"}
               </CardTitle>
               <CardDescription>
-                {otpData.showOtpStep 
-                  ? `Enter the OTP sent to ${otpData.email} to complete password change`
-                  : "Update your password to keep your account secure. An OTP will be sent to your email for verification."
-                }
+                {user?.isTemporaryPassword ? (
+                  otpData.showOtpStep 
+                    ? "You're changing your temporary password. Click 'Change Password' to proceed."
+                    : "You're currently using a temporary password. Please set a new secure password for your account."
+                ) : (
+                  otpData.showOtpStep 
+                    ? `Enter the OTP sent to ${otpData.email} to complete password change`
+                    : "Update your password to keep your account secure. An OTP will be sent to your email for verification."
+                )}
               </CardDescription>
             </CardHeader>
             <CardContent>
               {!otpData.showOtpStep ? (
                 // Step 1: Request OTP
                 <form onSubmit={handleRequestPasswordOTP} className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="currentPassword">Current Password</Label>
-                    <div className="relative">
-                      <Input
-                        id="currentPassword"
-                        type={showCurrentPassword ? "text" : "password"}
-                        value={passwordData.currentPassword}
-                        onChange={(e) => setPasswordData({ ...passwordData, currentPassword: e.target.value })}
-                        placeholder="Enter your current password"
-                        required
-                      />
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        size="sm"
-                        className="absolute right-0 top-0 h-full px-3 hover:bg-transparent"
-                        onClick={() => setShowCurrentPassword(!showCurrentPassword)}
-                      >
-                        {showCurrentPassword ? (
-                          <EyeOff className="h-4 w-4" />
-                        ) : (
-                          <Eye className="h-4 w-4" />
-                        )}
-                      </Button>
+                  {/* Show current password field only for regular users, not temporary password users */}
+                  {!user?.isTemporaryPassword && (
+                    <div className="space-y-2">
+                      <Label htmlFor="currentPassword">Current Password</Label>
+                      <div className="relative">
+                        <Input
+                          id="currentPassword"
+                          type={showCurrentPassword ? "text" : "password"}
+                          value={passwordData.currentPassword}
+                          onChange={(e) => setPasswordData({ ...passwordData, currentPassword: e.target.value })}
+                          placeholder="Enter your current password"
+                          required
+                        />
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="sm"
+                          className="absolute right-0 top-0 h-full px-3 hover:bg-transparent"
+                          onClick={() => setShowCurrentPassword(!showCurrentPassword)}
+                        >
+                          {showCurrentPassword ? (
+                            <EyeOff className="h-4 w-4" />
+                          ) : (
+                            <Eye className="h-4 w-4" />
+                          )}
+                        </Button>
+                      </div>
                     </div>
-                  </div>
+                  )}
 
                   <div className="space-y-2">
                     <Label htmlFor="newPassword">New Password</Label>
@@ -715,59 +773,74 @@ const StudentProfileSettings = () => {
                       {requestingOTP ? (
                         <>
                           <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                          Sending OTP...
+                          {user?.isTemporaryPassword ? "Processing..." : "Sending OTP..."}
                         </>
                       ) : (
                         <>
                           <Shield className="mr-2 h-4 w-4" />
-                          Send OTP
+                          {user?.isTemporaryPassword ? "Continue" : "Send OTP"}
                         </>
                       )}
                     </Button>
                   </div>
                 </form>
               ) : (
-                // Step 2: Enter OTP
+                // Step 2: Enter OTP (or confirm for temporary password users)
                 <form onSubmit={handlePasswordChange} className="space-y-4">
-                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
-                    <div className="flex items-center gap-2 text-blue-800">
-                      <Shield className="h-5 w-5" />
-                      <span className="font-medium">OTP Verification Required</span>
+                  {user?.isTemporaryPassword ? (
+                    <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-4">
+                      <div className="flex items-center gap-2 text-amber-800">
+                        <Shield className="h-5 w-5" />
+                        <span className="font-medium">Temporary Password Change</span>
+                      </div>
+                      <p className="text-sm text-amber-700 mt-1">
+                        You're changing your temporary password. Click "Change Password" below to set your new secure password.
+                      </p>
                     </div>
-                    <p className="text-sm text-blue-700 mt-1">
-                      We've sent a 6-digit OTP to <strong>{otpData.email}</strong>. 
-                      Please check your email and enter the OTP below.
-                    </p>
-                  </div>
+                  ) : (
+                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
+                      <div className="flex items-center gap-2 text-blue-800">
+                        <Shield className="h-5 w-5" />
+                        <span className="font-medium">OTP Verification Required</span>
+                      </div>
+                      <p className="text-sm text-blue-700 mt-1">
+                        We've sent a 6-digit OTP to <strong>{otpData.email}</strong>. 
+                        Please check your email and enter the OTP below.
+                      </p>
+                    </div>
+                  )}
 
-                  <div className="space-y-2">
-                    <Label htmlFor="otp">Enter OTP</Label>
-                    <Input
-                      id="otp"
-                      type="text"
-                      value={otpData.otp}
-                      onChange={(e) => {
-                        // Only allow numbers and ensure OTP is always a string
-                        const inputValue = e.target.value;
-                        const numericValue = inputValue.replace(/[^0-9]/g, ''); // Remove non-numeric characters
-                        const otpValue = String(numericValue);
-                        
-                        console.log("🔍 OTP Input Change:", otpValue);
-                        console.log("🔍 OTP Type:", typeof otpValue);
-                        console.log("🔍 OTP Length:", otpValue.length);
-                        
-                        setOtpData({ ...otpData, otp: otpValue });
-                      }}
-                      placeholder="Enter 6-digit OTP"
-                      maxLength={6}
-                      pattern="[0-9]{6}"
-                      className="text-center text-lg tracking-widest"
-                      required
-                    />
-                    <p className="text-xs text-gray-500 text-center">
-                      Enter the 6-digit OTP from your email
-                    </p>
-                  </div>
+                  {/* Show OTP input only for regular users, not temporary password users */}
+                  {!user?.isTemporaryPassword && (
+                    <div className="space-y-2">
+                      <Label htmlFor="otp">Enter OTP</Label>
+                      <Input
+                        id="otp"
+                        type="text"
+                        value={otpData.otp}
+                        onChange={(e) => {
+                          // Only allow numbers and ensure OTP is always a string
+                          const inputValue = e.target.value;
+                          const numericValue = inputValue.replace(/[^0-9]/g, ''); // Remove non-numeric characters
+                          const otpValue = String(numericValue);
+                          
+                          console.log("🔍 OTP Input Change:", otpValue);
+                          console.log("🔍 OTP Type:", typeof otpValue);
+                          console.log("🔍 OTP Length:", otpValue.length);
+                          
+                          setOtpData({ ...otpData, otp: otpValue });
+                        }}
+                        placeholder="Enter 6-digit OTP"
+                        maxLength={6}
+                        pattern="[0-9]{6}"
+                        className="text-center text-lg tracking-widest"
+                        required
+                      />
+                      <p className="text-xs text-gray-500 text-center">
+                        Enter the 6-digit OTP from your email
+                      </p>
+                    </div>
+                  )}
 
                   <Separator />
 
@@ -782,17 +855,17 @@ const StudentProfileSettings = () => {
                     <Button 
                       type="submit" 
                       disabled={changingPassword}
-                      className="bg-red-600 hover:bg-red-700"
+                      className={user?.isTemporaryPassword ? "bg-green-600 hover:bg-green-700" : "bg-red-600 hover:bg-red-700"}
                     >
                       {changingPassword ? (
                         <>
                           <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                          Changing Password...
+                          {user?.isTemporaryPassword ? "Setting New Password..." : "Changing Password..."}
                         </>
                       ) : (
                         <>
                           <Shield className="mr-2 h-4 w-4" />
-                          Change Password
+                          {user?.isTemporaryPassword ? "Set New Password" : "Change Password"}
                         </>
                       )}
                     </Button>

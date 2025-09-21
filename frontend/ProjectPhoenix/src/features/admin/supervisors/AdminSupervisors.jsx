@@ -20,6 +20,8 @@ import {
   ChevronLeft,
   Cctv,
   Dot,
+  Plus,
+  Users,
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -43,6 +45,7 @@ import ApiError from "@/components/error/ApiError";
 import Loader from "@/components/Loader";
 import { DataTable } from "./SupervisorDataTable";
 import { SupervisorColumn } from "./SupervisorColumn";
+// User management moved to dedicated page
 
 function AdminSupervisors() {
   const tableRef = useRef();
@@ -56,6 +59,8 @@ function AdminSupervisors() {
   } = useGetAllSupervisorsQuery();
 
   const navigate = useNavigate();
+  
+  // User management moved to dedicated page
 
   let content;
   let available, unavailable;
@@ -89,16 +94,19 @@ function AdminSupervisors() {
     } else {
       content = (
         <>
-          <div className="text-xl font-semibold tracking-tight flex items-center gap-4 mb-4">
-            <Button
-              variant="outline"
-              size="icon"
-              className="h-8 w-8"
-              onClick={() => navigate(-1)}
-            >
-              <ChevronLeft className="h-5 w-5" />
-            </Button>
-            Supervisors
+          <div className="text-xl font-semibold tracking-tight flex items-center justify-between mb-4">
+            <div className="flex items-center gap-4">
+              <Button
+                variant="outline"
+                size="icon"
+                className="h-8 w-8"
+                onClick={() => navigate(-1)}
+              >
+                <ChevronLeft className="h-5 w-5" />
+              </Button>
+              Supervisors
+            </div>
+            {/* User management moved to dedicated page */}
           </div>
           <div className="grid gap-4 grid-cols-2 md:gap-8 xl:grid-cols-4">
             <Card>

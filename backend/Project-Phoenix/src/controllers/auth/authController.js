@@ -21,6 +21,8 @@ const handleLogin = async (req, res, next) => {
           return Supervisor;
         case roleList.Admin:
           return Admin;
+        case roleList.Evaluator:
+          return Evaluator;
         default:
           return null;
       }
@@ -50,6 +52,23 @@ console.log("🚀 ~ handleLogin ~ UserModel:", UserModel)
     console.log("🚀 ~ handleLogin ~ isPasswordValid:", isPasswordValid);
     if (!isPasswordValid) {
       return next(new AppError('Invalid email or password', 401));
+    }
+
+    // Check user status - prevent login for deactivated or suspended users
+    if (foundUser.status === 'INACTIVE') {
+      return next(new AppError('Your account has been deactivated. Please contact an administrator.', 403));
+    }
+    
+    if (foundUser.status === 'SUSPENDED') {
+      return next(new AppError('Your account has been suspended. Please contact an administrator.', 403));
+    }
+
+    // Update user status to ACTIVE if they were PENDING_ACTIVATION
+    // Allow users to login with temporary password - password change will be in settings
+    if (foundUser.status === 'PENDING_ACTIVATION') {
+      foundUser.status = 'ACTIVE';
+      // Keep isTemporaryPassword as true - user can change it in settings later
+      await foundUser.save();
     }
 
     // Get user roles
@@ -143,6 +162,15 @@ const handleEvaluatorLogin = async (req, res, next) => {
       return next(new AppError('Invalid access code', 401));
     }
 
+    // Check user status - prevent login for deactivated or suspended evaluators
+    if (foundUser.status === 'INACTIVE') {
+      return next(new AppError('Your account has been deactivated. Please contact an administrator.', 403));
+    }
+    
+    if (foundUser.status === 'SUSPENDED') {
+      return next(new AppError('Your account has been suspended. Please contact an administrator.', 403));
+    }
+
     // Get user roles
     const userRoles = Object.values(foundUser.role);
 
@@ -199,4 +227,69 @@ const handleEvaluatorLogin = async (req, res, next) => {
     next(error);
   }
 };
-module.exports = { handleLogin, handleEvaluatorLogin };
+
+// Change temporary password
+const changeTemporaryPassword = async (req, res, next) => {
+  try {
+    const { userId, newPassword, role } = req.body;
+
+    // Get user model based on role
+    const getUserModel = (role) => {
+      switch (role) {
+        case roleList.Student:
+          return Student;
+        case roleList.Supervisor:
+          return Supervisor;
+        case roleList.Admin:
+          return Admin;
+        case roleList.Evaluator:
+          return Evaluator;
+        default:
+          return null;
+      }
+    };
+
+    const UserModel = getUserModel(role);
+    if (!UserModel) {
+      return next(new AppError('Invalid role specified', 400));
+    }
+
+    // Find user
+    const user = await UserModel.findById(userId).select('+password');
+    if (!user) {
+      return next(new AppError('User not found', 404));
+    }
+
+    // Check if user has temporary password
+    if (!user.isTemporaryPassword) {
+      return next(new AppError('User does not have a temporary password', 400));
+    }
+
+    // Hash new password
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    // Update user
+    user.password = hashedPassword;
+    user.isTemporaryPassword = false;
+    user.status = 'ACTIVE';
+    user.lastPasswordChange = new Date();
+    await user.save();
+
+    // Prepare response
+    const userResponse = user.toObject();
+    delete userResponse.password;
+
+    res.status(200).json({
+      status: 'success',
+      message: 'Password changed successfully',
+      data: {
+        user: userResponse
+      }
+    });
+
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = { handleLogin, handleEvaluatorLogin, changeTemporaryPassword };
