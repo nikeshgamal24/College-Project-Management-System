@@ -18,6 +18,7 @@ const rootRoutes = require('./root');
 
 // Public routes
 router.use("/", rootRoutes);
+router.use("/api/guidelines", require("./api/guidelines"));
 
 // Authentication routes with rate limiting
 router.use("/api/register", authLimiter, require("./auth/register"));

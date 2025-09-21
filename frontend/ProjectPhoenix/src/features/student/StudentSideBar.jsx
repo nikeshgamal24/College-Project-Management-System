@@ -91,17 +91,6 @@ function StudentSideBar() {
               Guidelines
             </Link>
             <Link
-              to={`/${ROLES_LIST.student}/coverpage`}
-              className={`flex items-center gap-3 rounded-md  px-3 py-2.5 ${
-                isTabActive(currentPath, "coverpage")
-                  ? "bg-slate-950 text-white"
-                  : "hover:text-slate-950"
-              } text-primary transition-all hover:pl-4`}
-            >
-              <BookOpen className="h-4 w-4" />
-              Coverpage
-            </Link>
-            <Link
               to={`/${ROLES_LIST.student}/notices`}
               className={`flex items-center gap-3 rounded-md  px-3 py-2.5 ${
                 isTabActive(currentPath, "notices")
