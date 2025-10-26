@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Plus, Users, Download } from "lucide-react";
 import AdminUserManagement from "../users/AdminUserManagement";
 import CreateUserModal from "../users/CreateUserModal";
-import BulkCreateModal from "../users/BulkCreateModal";
+import EnhancedBulkCreateModal from "../users/EnhancedBulkCreateModal";
 import UserDetailModal from "../users/UserDetailModal";
 import EditUserModal from "../users/EditUserModal";
 import { toast } from "@/components/ui/use-toast";
@@ -158,7 +158,7 @@ const AdminUserManagementPage = () => {
         onSuccess={handleUserCreated}
       />
       
-      <BulkCreateModal
+      <EnhancedBulkCreateModal
         isOpen={isBulkModalOpen}
         onClose={() => setIsBulkModalOpen(false)}
         onSuccess={handleBulkCreated}
