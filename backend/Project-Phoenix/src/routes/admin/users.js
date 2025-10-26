@@ -186,4 +186,8 @@ router.delete(
   userController.deleteUser
 );
 
+// Import and use bulk user routes
+const bulkUserRoutes = require('./bulkUsers');
+router.use('/bulk', bulkUserRoutes);
+
 module.exports = router;

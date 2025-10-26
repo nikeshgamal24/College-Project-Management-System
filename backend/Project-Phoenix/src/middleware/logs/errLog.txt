@@ -3926,3 +3926,147 @@ Stack: Error: Supervisor ID, Student ID, Project ID, and date are required
     at next (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/index.js:280:10)
     at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/middleware/auth/verifyJWT.js:86:7
     at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+20250921	15:27:54	1508edb1-6911-4632-8d08-52cfe5663fde	Error: Supervisor ID, Student ID, Project ID, and date are required
+Stack: Error: Supervisor ID, Student ID, Project ID, and date are required
+    at getAvailableSlots (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/meetingController.js:482:13)
+    at Layer.handle [as handle_request] (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/layer.js:95:5)
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/index.js:284:15
+    at Function.process_params (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/index.js:346:12)
+    at next (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/index.js:280:10)
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/middleware/auth/verifyJWT.js:86:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+20250921	15:30:26	25cf1960-929c-409b-a2f0-013855cdc911	Error: Supervisor ID, Student ID, Project ID, and date are required
+Stack: Error: Supervisor ID, Student ID, Project ID, and date are required
+    at getAvailableSlots (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/meetingController.js:482:13)
+    at Layer.handle [as handle_request] (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/layer.js:95:5)
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/index.js:284:15
+    at Function.process_params (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/index.js:346:12)
+    at next (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/index.js:280:10)
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/middleware/auth/verifyJWT.js:86:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+20250921	15:34:20	1e151e86-93ff-487c-89df-8148180318a9	Error: Supervisor ID, Student ID, Project ID, and date are required
+Stack: Error: Supervisor ID, Student ID, Project ID, and date are required
+    at getAvailableSlots (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/meetingController.js:482:13)
+    at Layer.handle [as handle_request] (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/layer.js:95:5)
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/index.js:284:15
+    at Function.process_params (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/index.js:346:12)
+    at next (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/index.js:280:10)
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/middleware/auth/verifyJWT.js:86:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+20250921	15:38:46	4a677d27-4862-4f4d-8cf3-a8c38ed80191	Error: Supervisor ID, Student ID, Project ID, and date are required
+Stack: Error: Supervisor ID, Student ID, Project ID, and date are required
+    at getAvailableSlots (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/meetingController.js:482:13)
+    at Layer.handle [as handle_request] (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/layer.js:95:5)
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/index.js:284:15
+    at Function.process_params (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/index.js:346:12)
+    at next (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/index.js:280:10)
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/middleware/auth/verifyJWT.js:86:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+20250921	15:57:39	4cee59a2-3793-4a22-8d02-d7e52b66f2ff	Error: Supervisor ID, Student ID, Project ID, and date are required
+Stack: Error: Supervisor ID, Student ID, Project ID, and date are required
+    at getAvailableSlots (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/meetingController.js:482:13)
+    at Layer.handle [as handle_request] (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/layer.js:95:5)
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/index.js:284:15
+    at Function.process_params (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/index.js:346:12)
+    at next (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/index.js:280:10)
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/middleware/auth/verifyJWT.js:86:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+20250921	15:57:43	335965ad-d138-4b24-9137-416033833c76	Error: Supervisor ID, Student ID, Project ID, and date are required
+Stack: Error: Supervisor ID, Student ID, Project ID, and date are required
+    at getAvailableSlots (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/meetingController.js:482:13)
+    at Layer.handle [as handle_request] (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/layer.js:95:5)
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/index.js:284:15
+    at Function.process_params (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/index.js:346:12)
+    at next (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/index.js:280:10)
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/middleware/auth/verifyJWT.js:86:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+20250921	15:57:47	f6179e69-32fd-4c93-9cc5-0b40f38df8d6	Error: Supervisor ID, Student ID, Project ID, and date are required
+Stack: Error: Supervisor ID, Student ID, Project ID, and date are required
+    at getAvailableSlots (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/meetingController.js:482:13)
+    at Layer.handle [as handle_request] (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/layer.js:95:5)
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/index.js:284:15
+    at Function.process_params (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/index.js:346:12)
+    at next (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/index.js:280:10)
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/middleware/auth/verifyJWT.js:86:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+20250921	16:02:51	7a40930a-e047-4c87-8212-c1b927fb00a5	Error: Supervisor ID, Student ID, Project ID, and date are required
+Stack: Error: Supervisor ID, Student ID, Project ID, and date are required
+    at getAvailableSlots (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/meetingController.js:482:13)
+    at Layer.handle [as handle_request] (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/layer.js:95:5)
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/index.js:284:15
+    at Function.process_params (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/index.js:346:12)
+    at next (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/index.js:280:10)
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/middleware/auth/verifyJWT.js:86:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+20250921	16:02:56	fa48a543-0a64-4eee-bca7-b3b691ce3692	Error: Supervisor ID, Student ID, Project ID, and date are required
+Stack: Error: Supervisor ID, Student ID, Project ID, and date are required
+    at getAvailableSlots (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/meetingController.js:482:13)
+    at Layer.handle [as handle_request] (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/layer.js:95:5)
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/index.js:284:15
+    at Function.process_params (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/index.js:346:12)
+    at next (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/index.js:280:10)
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/middleware/auth/verifyJWT.js:86:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+20250921	16:02:59	fa79952f-536c-4598-8527-3e208a1739db	Error: Supervisor ID, Student ID, Project ID, and date are required
+Stack: Error: Supervisor ID, Student ID, Project ID, and date are required
+    at getAvailableSlots (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/meetingController.js:482:13)
+    at Layer.handle [as handle_request] (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/layer.js:95:5)
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/index.js:284:15
+    at Function.process_params (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/index.js:346:12)
+    at next (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/index.js:280:10)
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/middleware/auth/verifyJWT.js:86:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+20251017	16:22:52	6ae0b124-c374-4632-b600-af1ccb9cf65c	Error: Supervisor ID, Student ID, Project ID, and date are required
+Stack: Error: Supervisor ID, Student ID, Project ID, and date are required
+    at getAvailableSlots (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/meetingController.js:482:13)
+    at Layer.handle [as handle_request] (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/layer.js:95:5)
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/index.js:284:15
+    at Function.process_params (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/index.js:346:12)
+    at next (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/index.js:280:10)
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/middleware/auth/verifyJWT.js:86:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+20251017	16:22:59	7e085c43-932d-4159-934c-28eb8a7c5d63	Error: Supervisor ID, Student ID, Project ID, and date are required
+Stack: Error: Supervisor ID, Student ID, Project ID, and date are required
+    at getAvailableSlots (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/meetingController.js:482:13)
+    at Layer.handle [as handle_request] (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/layer.js:95:5)
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/index.js:284:15
+    at Function.process_params (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/index.js:346:12)
+    at next (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/index.js:280:10)
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/middleware/auth/verifyJWT.js:86:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)

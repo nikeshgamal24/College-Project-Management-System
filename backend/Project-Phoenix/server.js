@@ -109,6 +109,29 @@ app.use(credentials);
 // Cross Origin Resource Sharing - Single CORS configuration
 app.use(cors(corsOptions));
 
+// Manual CORS headers as fallback (for debugging)
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+  console.log('🔧 Manual CORS check - Origin:', origin);
+  
+  // Allow all Vercel domains for now (debugging)
+  if (origin && origin.includes('vercel.app')) {
+    res.header('Access-Control-Allow-Origin', origin);
+    res.header('Access-Control-Allow-Credentials', 'true');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS, HEAD');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, Accept, Origin, Cache-Control, X-File-Name');
+    res.header('Access-Control-Expose-Headers', 'Content-Range, X-Content-Range, X-Total-Count');
+    console.log('🔧 Manual CORS headers set for:', origin);
+  }
+  
+  if (req.method === 'OPTIONS') {
+    console.log('🔧 Manual OPTIONS response');
+    return res.status(200).end();
+  }
+  
+  next();
+});
+
 // Body parsing middleware
 app.use(express.urlencoded({ 
   extended: false,
@@ -156,7 +179,7 @@ app.use(cookieParser());
 // }
 
 // Serve static files
-// app.use(express.static(path.join(__dirname, "/public")));
+app.use('/public', express.static(path.join(__dirname, "/public")));
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {
@@ -167,6 +190,8 @@ app.get('/api/health', (req, res) => {
     uptime: process.uptime()
   });
 });
+
+// OPTIONS handler is now handled in the manual CORS middleware above
 
 // API Documentation
 // swaggerDocs(app, PORT);

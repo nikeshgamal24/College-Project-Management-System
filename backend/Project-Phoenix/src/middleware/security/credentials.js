@@ -19,8 +19,9 @@ const isLocalhost = (origin) => {
 const isValidVercelDomain = (origin) => {
   if (!origin || !origin.includes('vercel.app')) return false;
   
-  // Only allow domains that end with .vercel.app (prevents subdomain attacks)
-  const vercelRegex = /^https:\/\/[a-zA-Z0-9\-]+(-[a-zA-Z0-9\-]+)*\.vercel\.app$/;
+  // Allow domains that end with .vercel.app (more permissive for complex Vercel URLs)
+  // This handles URLs like: https://college-project-management-frontend-system.vercel.app
+  const vercelRegex = /^https:\/\/[a-zA-Z0-9\-\.]+\.vercel\.app$/;
   return vercelRegex.test(origin);
 };
 
@@ -39,8 +40,11 @@ const credentials = (req, res, next) => {
   } else if (process.env.NODE_ENV === 'development' && isLocalhost(origin)) {
     // Allow credentials for localhost in development
     allowCredentials = true;
-  } else if (process.env.NODE_ENV === 'production' && isValidVercelDomain(origin)) {
-    // Allow credentials for valid Vercel domains in production
+  } else if ((process.env.NODE_ENV === 'production' || !process.env.NODE_ENV) && isValidVercelDomain(origin)) {
+    // Allow credentials for valid Vercel domains in production (or when NODE_ENV is not set)
+    allowCredentials = true;
+  } else if (origin && origin.includes('vercel.app')) {
+    // Additional fallback for Vercel domains
     allowCredentials = true;
   }
 
