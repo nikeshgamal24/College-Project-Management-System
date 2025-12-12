@@ -4070,3 +4070,96 @@ Stack: Error: Supervisor ID, Student ID, Project ID, and date are required
     at next (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/index.js:280:10)
     at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/middleware/auth/verifyJWT.js:86:7
     at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+20251026	18:52:58	61d99e9a-a026-4f25-aafd-43eaee0e50a4	Error: Supervisor ID, Student ID, Project ID, and date are required
+Stack: Error: Supervisor ID, Student ID, Project ID, and date are required
+    at getAvailableSlots (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/meetingController.js:482:13)
+    at Layer.handle [as handle_request] (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/layer.js:95:5)
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/index.js:284:15
+    at Function.process_params (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/index.js:346:12)
+    at next (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/index.js:280:10)
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/middleware/auth/verifyJWT.js:86:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+20251026	18:53:29	fc186515-1388-4e27-bd84-d34f025feca4	Error: Supervisor ID, Student ID, Project ID, and date are required
+Stack: Error: Supervisor ID, Student ID, Project ID, and date are required
+    at getAvailableSlots (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/meetingController.js:482:13)
+    at Layer.handle [as handle_request] (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/layer.js:95:5)
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/index.js:284:15
+    at Function.process_params (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/index.js:346:12)
+    at next (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/index.js:280:10)
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/middleware/auth/verifyJWT.js:86:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+20251026	18:54:10	ec8ffb40-d0fb-4d1b-9a01-14e9367d0655	Error: Supervisor ID, Student ID, Project ID, and date are required
+Stack: Error: Supervisor ID, Student ID, Project ID, and date are required
+    at getAvailableSlots (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/meetingController.js:482:13)
+    at Layer.handle [as handle_request] (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/layer.js:95:5)
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/index.js:284:15
+    at Function.process_params (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/index.js:346:12)
+    at next (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/index.js:280:10)
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/middleware/auth/verifyJWT.js:86:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+20251026	18:55:24	e8af1187-2133-47ff-befc-316b78aa49ac	Error: You are not authorized to respond to this report
+Stack: Error: You are not authorized to respond to this report
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/reportReviewController.js:353:15
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async TransactionService.executeTransaction (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/services/database/transactionService.js:29:24)
+    at async respondToFeedback (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/reportReviewController.js:344:20)
+20251026	18:55:25	56974101-a368-4f5b-9593-a73e81534983	Error: You are not authorized to respond to this report
+Stack: Error: You are not authorized to respond to this report
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/reportReviewController.js:353:15
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async TransactionService.executeTransaction (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/services/database/transactionService.js:29:24)
+    at async respondToFeedback (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/reportReviewController.js:344:20)
+20251026	19:02:35	a18ec39b-68cd-4af4-87c6-8c5222a06932	Error: Invalid email or password
+Stack: Error: Invalid email or password
+    at handleLogin (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/auth/authController.js:54:19)
+20251026	19:02:36	fa5938ec-a032-4ea8-8476-64b6223fda22	Error: Invalid email or password
+Stack: Error: Invalid email or password
+    at handleLogin (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/auth/authController.js:54:19)
+20251026	19:14:28	a3ac7139-bdd9-42fe-b1a0-151d2c5553af	Error: Supervisor ID, Student ID, Project ID, and date are required
+Stack: Error: Supervisor ID, Student ID, Project ID, and date are required
+    at getAvailableSlots (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/api/meetingController.js:482:13)
+    at Layer.handle [as handle_request] (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/layer.js:95:5)
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/index.js:284:15
+    at Function.process_params (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/index.js:346:12)
+    at next (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/express/lib/router/index.js:280:10)
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/middleware/auth/verifyJWT.js:86:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+20251212	11:10:52	d9e7b3d0-8710-46f6-a0dd-3ad96291976c	ValidationError: Evaluator validation failed: phoneNumber: Please enter your phone number!
+Stack: ValidationError: Evaluator validation failed: phoneNumber: Please enter your phone number!
+    at Document.invalidate (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/mongoose/lib/document.js:3358:32)
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/mongoose/lib/document.js:3119:17
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/mongoose/lib/schemaType.js:1410:9
+    at process.processTicksAndRejections (node:internal/process/task_queues:85:11)
+20251212	11:11:30	48d8c0b6-83ff-424c-b407-b55739cb0868	ValidationError: Evaluator validation failed: phoneNumber: Please enter your phone number!
+Stack: ValidationError: Evaluator validation failed: phoneNumber: Please enter your phone number!
+    at Document.invalidate (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/mongoose/lib/document.js:3358:32)
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/mongoose/lib/document.js:3119:17
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/mongoose/lib/schemaType.js:1410:9
+    at process.processTicksAndRejections (node:internal/process/task_queues:85:11)
+20251212	11:11:35	9aeee929-8df6-4482-ab1e-b136993ad006	ValidationError: Evaluator validation failed: phoneNumber: Please enter your phone number!
+Stack: ValidationError: Evaluator validation failed: phoneNumber: Please enter your phone number!
+    at Document.invalidate (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/mongoose/lib/document.js:3358:32)
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/mongoose/lib/document.js:3119:17
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/mongoose/lib/schemaType.js:1410:9
+    at process.processTicksAndRejections (node:internal/process/task_queues:85:11)
+20251212	11:11:42	0c35e3a3-0df9-4bd4-a14c-317b1d805494	Error: Invalid access code
+Stack: Error: Invalid access code
+    at handleEvaluatorLogin (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/src/controllers/auth/authController.js:162:19)
+20251212	11:11:51	7efbc011-0741-4470-a01e-198a33f47fb2	ValidationError: Evaluator validation failed: phoneNumber: Please enter your phone number!
+Stack: ValidationError: Evaluator validation failed: phoneNumber: Please enter your phone number!
+    at Document.invalidate (/home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/mongoose/lib/document.js:3358:32)
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/mongoose/lib/document.js:3119:17
+    at /home/nikesh-gamal/Desktop/project phoenix/backend/Project-Phoenix/node_modules/mongoose/lib/schemaType.js:1410:9
+    at process.processTicksAndRejections (node:internal/process/task_queues:85:11)
